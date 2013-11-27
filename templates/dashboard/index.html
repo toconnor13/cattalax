@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% load nvd3_tags %}
+
+{% block graph_code %}
+<!--  code to include the NVD3 and D3 libraries goes here   -->
+<!--  load_nvd3 filter takes a comma-separated list of id's where   -->
+<!--  the charts need to be rendered to   -->
+
+{% include_nvd3jscss %}
+{% load_chart charttype1 chartdata1 "linechart_container1" "%A %d %b" %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="pagination pagination-centered">
+	<ul>
+		<li {% if not levels%}class="active"{% endif %}><a href="/dashboard/">Rates</a></li>
+		<li {% if levels%}class="disabled"{% endif %}><a href="/dashboard/numbers/">Numbers</a></li>
+	</ul>
+</div>
+
+
+<div class="container" style = "max-width: 700px">
+	<table class="table table-bordered table-condensed" style="margin: 30px;">
+		<thead>
+
+			<th>Day</th>
+			{% if levels %}
+				<th>No. of Walkbys</th>
+				<th>No. of Captures</th>
+				<th>No. of Bounces</th>
+
+			{% else %} 
+				<th>Capture Rate (%)</th>
+				<th>Bounce Rate (%)</th>
+			{% endif %}
+			<th>Avg. Duration (mins)</th>
+		</thead>
+
+		<tbody>
+			{% for day in day_list %}
+				<tr>
+					<td><a href="/dashboard/{{day.id}}">{{day.get_day_string}}</a></td>
+					{% if levels %}
+						<td>{{day.no_of_walkbys}}</td>
+						<td>{{day.no_of_entries}}</td>
+						<td>{{day.no_of_bounces}}</td>
+						<td>{{day.get_avg_duration}}</td>
+					{% else %}
+						<td>{{day.get_capture_rate}}</td>
+						<td>{{day.get_bounce_rate}}</td>
+						<td>{{day.get_avg_duration}}</td>
+					{% endif %}
+				<tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+</div>
+
+
+
+<div class="container">
+	<h3 style="text-align:center;">Visit Overview</h3>
+	{% include_container "linechart_container1" 300 600 %}
+</div>
+
+<hr style="margin: 30px 0px;">
+<div class="footer">
+	<p>&copy; <a href="mailto:toconnor13@gmail.com">Allamew Analytics</a></p>
+</div>
+
+
+
+
+{% endblock %}
+
+
+
+

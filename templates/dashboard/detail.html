@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load tag %}
+
+{% load nvd3_tags %}
+
+{% block graph_code %}
+<!--  code to include the NVD3 and D3 libraries goes here   -->
+<!--  load_nvd3 filter takes a comma-separated list of id's where   -->
+<!--  the charts need to be rendered to   -->
+
+{% include_nvd3jscss %}
+
+{% load_chart charttype1 chartdata1 "barchart_container1"  %}
+{% load_chart charttype2 chartdata2 "barchart_container2"  %}
+{% endblock %}
+
+{% block content %}
+
+<div class="pagination pagination-centered" style="margin-bottom: 0px;">
+
+	<h2 style="text-align:center; margin: 0px 0px 15px 0px;">{{day.get_day_string}} <a href="/dashboard/">{{day.year}}</a> </h2>
+	<ul>
+		<li {% if not levels %}class="active"{% endif %} ><a href="/dashboard/{{day.id}}/">Rates</a> </li>
+		<li {% if levels %}class="active"{% endif %}><a href="/dashboard/{{day.id}}/numbers/">Numbers</a></li>
+	</ul>
+</div>
+
+<div class="container" style = "max-width: 700px">
+	<table class="table table-bordered table-condensed" style="margin: 20px; ">
+		<thead>
+
+			<th>Hour</th>
+			{% if levels %}
+
+				<th>No. of Walkbys</th>
+				<th>No. of Entries</th>
+				<th>No. of Bounces</th>
+				<th>Avg. Duration (mins)</th>
+
+			{% else %}
+				<th>Capture Rate (%)</th>
+				<th>Bounce Rate (%)</th>
+				<th>Avg. Duration (mins)</th>
+			{% endif %}
+
+		</thead>
+
+		<tbody>
+			{% for hour in hour_list %}
+			<tr>
+				{% if levels %}
+					<td>{{hour.get_hour_string}}</td>				
+					<td>{{hour.no_of_walkbys}}</td>
+					<td>{{hour.no_of_entries}}</td>
+					<td>{{hour.no_of_bounces}}</td>
+					<td>{{hour.get_avg_duration}}</td>
+				{% else %}
+					<td>{{hour.get_hour_string}}</td>
+					<td>{{hour.get_capture_rate}}</td>
+					<td>{{hour.get_bounce_rate}}</td>
+					<td>{{hour.get_avg_duration}}</td>
+				{% endif %}
+				<tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+</div>
+
+
+
+<div class="container" style="text-align:center; " >
+	<div>
+		<h3>Hourly Capture and Bounce Rates</h3>
+			{% include_container "barchart_container1" 300 600 %}
+		<h3>Hourly Duration</h3>
+			{% include_container "barchart_container2" 300 600 %}
+	</div>
+</div>
+
+
+
+
+
+<hr style="margin: 30px 0px;">
+<div class="footer">
+	<p>&copy; <a href="mailto:toconnor13@gmail.com">Allamew Analytics</a></p>
+</div>
+
+
+
+
+{% endblock %}
+
+
+
+
