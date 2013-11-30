@@ -1,6 +1,7 @@
 # Django settings for cattalax project.
 import os, sys
-
+db_pw = os.environ['CAT_PW']
+amw_email_pw = os.environ['AMW_EMAIL_PWD']
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -19,7 +20,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'cat_dashboard',                      # Or path to database file if using sqlite3.
         'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'the power to do what is right',                  # Not used with sqlite3.
+        'PASSWORD': db_pw,                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -139,11 +140,11 @@ ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = ('/dashboard/')
 LOGIN_URL = ('/login/')
 
-SERVER_EMAIL = 'daphlet.polls@gmail.com'
+SERVER_EMAIL = 'allamew.analytics@gmail.com'
 EMAIL_USE_TLS=True
 EMAIL_HOST='smtp.gmail.com'
-EMAIL_HOST_USER='daphlet.polls@gmail.com'
-#EMAIL_HOST_PASSWORD=os.environ['DAPH_MAIL_PWD']
+EMAIL_HOST_USER='allamew.analytics@gmail.com'
+EMAIL_HOST_PASSWORD = amw_email_pw
 EMAIL_PORT=587
 
 # A sample logging configuration. The only tangible logging
