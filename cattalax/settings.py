@@ -4,6 +4,12 @@ db_pw = os.environ['CAT_PW']
 amw_email_pw = os.environ['AMW_EMAIL_PWD']
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+if os.environ['MACHINE_ID']=='cattalax_0':
+	db_host='10.24.18.6'
+	user='bismere0'
+else:
+	db_host = 'localhost'
+	user = 'root'
 
 ADMINS = (
      ('Tony O\'Connor', 'toconnor13@gmail.com'),
@@ -19,9 +25,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'cat_dashboard',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
+        'USER': user,                      # Not used with sqlite3.
         'PASSWORD': db_pw,                  # Not used with sqlite3.
-        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': db_host,                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
