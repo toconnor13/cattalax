@@ -32,6 +32,13 @@ DATABASES = {
     }
 }
 
+BOWER_COMPONENTS_ROOT = '~/.virtualenvs/cattalax/components/'
+BOWER_PATH = 'usr/bin/bower'
+BOWER_INSTALLED_APPS = (
+	'jquery#1.9',
+	'underscore',
+)
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -88,6 +95,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+	'djangobower.finders.BowerFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -139,6 +147,7 @@ INSTALLED_APPS = (
 	'emailusernames',
 	'registration',
 	'django_nvd3',
+	'djangobower',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
