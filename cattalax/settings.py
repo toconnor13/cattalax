@@ -32,8 +32,9 @@ DATABASES = {
     }
 }
 
-BOWER_COMPONENTS_ROOT = '~/.virtualenvs/cattalax/components/'
-BOWER_PATH = 'usr/bin/bower'
+BOWER_COMPONENTS_ROOT = '/root/.virtualenvs/cattalax/cattalax/components/'
+# BOWER_PATH = 'usr/bin/bower'
+# BOWER_PATH = '~/.virtualenvs/cattalax/bin/bower'
 BOWER_INSTALLED_APPS = (
 	'jquery#1.9',
 	'underscore',
