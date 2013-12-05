@@ -4,6 +4,9 @@ db_pw = os.environ['CAT_PW']
 amw_email_pw = os.environ['AMW_EMAIL_PWD']
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+
 if os.environ['MACHINE_ID']=='cattalax_0':
 	db_host='10.24.18.6'
 	user='bismere0'
@@ -32,12 +35,14 @@ DATABASES = {
     }
 }
 
-BOWER_COMPONENTS_ROOT = '/root/.virtualenvs/cattalax/cattalax/components/'
+BOWER_COMPONENTS_ROOT = os.path.join('/root/.virtualenvs/cattalax/cattalax', 'dashboard/static1')
 # BOWER_PATH = 'usr/bin/bower'
 # BOWER_PATH = '~/.virtualenvs/cattalax/bin/bower'
 BOWER_INSTALLED_APPS = (
 	'jquery#1.9',
 	'underscore',
+	'd3',
+	'nvd3',
 )
 
 # Local time zone for this installation. Choices can be found here:
@@ -78,7 +83,7 @@ SITE_URL = os.environ['ALLAMEW_SITE_ID']
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = '' 
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -86,6 +91,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+#	'~/.virtualenvs/cattalax/cattalax/components/',	
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -93,6 +99,7 @@ STATICFILES_DIRS = (
 
 # List of finder classes that know how to find static files in
 # various locations.
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
