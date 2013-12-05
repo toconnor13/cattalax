@@ -47,13 +47,21 @@ def dashboard(request, levels=False):
 
 
 	charttype1 = "lineChart"
+	chartcontainer = 'linechart_container' # container name
 
 	data = {
 		'charttype1': charttype1,
 		'chartdata1': chartdata1, 
 		'day_list': days_to_graph,
 		'levels' : levels,
+		'chartcontainer1': chartcontainer,
+		'extra': {
+			'x_is_date': True,
+			'x_axis_format': '%d %b',
+			'tag_script_js': True,
+			'jquery_on_ready': False,
 		}
+	}
 
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
 
@@ -106,15 +114,25 @@ def detail(request, day_id, levels=False):
 	charttype1 = "multiBarChart"
 	charttype2 = "multiBarChart"
 
+	chartcontainer1 = "multibarchart_container1"
+	chartcontainer2 = "multibarchart_container2"
 
 	data = {
 		'hour_list': hours_to_show,
 		'charttype1': charttype1,
 		'chartdata1': chartdata1,
+		'chartcontainer1': chartcontainer1,
 		'charttype2': charttype2,
 		'chartdata2': chartdata2,
+		'chartcontainer2': chartcontainer2,
 		'day': d,
 		'levels': levels,
+		'extra': {
+			'x_is_date': False,
+			'x_axis_format': '',
+			'tag_script_js': True,
+			'jquery_on_ready': True
+		}
 	}
 
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))

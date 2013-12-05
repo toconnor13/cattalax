@@ -5,10 +5,15 @@
 {% block graph_code %}
 <!--  code to include the NVD3 and D3 libraries goes here   -->
 <!--  load_nvd3 filter takes a comma-separated list of id's where   -->
-<!--  the charts need to be rendered to   -->
+	{% load staticfiles %}
+	<link media="all" href="{% static "bower_components/nvd3/nv.d3.css"%}" type="text/css" rel="stylesheet">
+	<script src="{% static "bower_components/d3/d3.min.js" %}" type="text/javascript"></script>
+	<script src="{% static "bower_components/nvd3/nv.d3.min.js" %}" type="text/javascript"></script>
 
-{% include_nvd3jscss %}
-{% load_chart charttype1 chartdata1 "linechart_container1" "%A %d %b" %}
+	
+<!--  the charts need to be rendered to   include_chart_jscss -->
+
+	{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
 
 {% endblock %}
 
@@ -64,7 +69,7 @@
 
 <div class="container">
 	<h3 style="text-align:center;">Visit Overview</h3>
-	{% include_container "linechart_container1" 300 600 %}
+	{% include_container chartcontainer1 300 600 %}
 </div>
 
 <hr style="margin: 30px 0px;">

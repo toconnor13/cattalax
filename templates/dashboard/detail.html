@@ -4,14 +4,18 @@
 {% load nvd3_tags %}
 
 {% block graph_code %}
+	{# JQuery CDN: Needed when jquery_on_ready=True  #}
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <!--  code to include the NVD3 and D3 libraries goes here   -->
 <!--  load_nvd3 filter takes a comma-separated list of id's where   -->
 <!--  the charts need to be rendered to   -->
+	{% load staticfiles %}
+	<link media="all" href="{% static "bower_components/nvd3/nv.d3.css" %}" type="text/css" rel="stylesheet">
+	<script src="{% static "bower_components/d3/d3.min.js"%}" type="text/javascript"></script>
+	<script src="{% static "bower_components/nvd3/nv.d3.min.js" %}" type="text/javascript"></script>
 
-{% include_nvd3jscss %}
-
-{% load_chart charttype1 chartdata1 "barchart_container1"  %}
-{% load_chart charttype2 chartdata2 "barchart_container2"  %}
+{% load_chart charttype1 chartdata1 chartcontainer1 extra  %}
+{% load_chart charttype2 chartdata2 chartcontainer2 extra  %}
 {% endblock %}
 
 {% block content %}
@@ -72,9 +76,9 @@
 <div class="container" style="text-align:center; " >
 	<div>
 		<h3>Hourly Capture and Bounce Rates</h3>
-			{% include_container "barchart_container1" 300 600 %}
+			{% include_container chartcontainer1 300 600 %}
 		<h3>Hourly Duration</h3>
-			{% include_container "barchart_container2" 300 600 %}
+			{% include_container chartcontainer2 300 600 %}
 	</div>
 </div>
 
