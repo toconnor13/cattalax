@@ -35,11 +35,12 @@ DATABASES = {
     }
 }
 
-BOWER_COMPONENTS_ROOT = os.path.join('/root/.virtualenvs/cattalax/cattalax', 'dashboard/static1')
+BOWER_COMPONENTS_ROOT = os.path.join('/root/.virtualenvs/cattalax/cattalax', 'dashboard/static')
 # BOWER_PATH = 'usr/bin/bower'
 # BOWER_PATH = '~/.virtualenvs/cattalax/bin/bower'
 BOWER_INSTALLED_APPS = (
 	'jquery#1.9',
+	'bootstrap',
 	'underscore',
 	'd3',
 	'nvd3',
@@ -156,6 +157,7 @@ INSTALLED_APPS = (
 	'registration',
 	'django_nvd3',
 	'djangobower',
+	'bootstrapform',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

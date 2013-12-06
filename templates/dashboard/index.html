@@ -19,15 +19,11 @@
 
 {% block content %}
 
-<div class="pagination pagination-centered">
-	<ul>
+<div class="container text-center" style = "max-width: 700px">
+	<ul class="pagination">
 		<li {% if not levels%}class="active"{% endif %}><a href="/dashboard/">Rates</a></li>
-		<li {% if levels%}class="disabled"{% endif %}><a href="/dashboard/numbers/">Numbers</a></li>
+		<li {% if levels%}class="active"{% endif %}><a href="/dashboard/numbers/">Numbers</a></li>
 	</ul>
-</div>
-
-
-<div class="container" style = "max-width: 700px">
 	<table class="table table-bordered table-condensed" style="margin: 30px;">
 		<thead>
 

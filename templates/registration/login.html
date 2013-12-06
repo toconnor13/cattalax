@@ -1,21 +1,25 @@
 {% extends "base.html" %}
 
-
+{% load bootstrap %}
 {% block content %}
 
 
-<div class="container-fluid" style="margin: 20px 220px;">
+<div class="container" style="margin: 20px 220px;">
 	<div class="row">
 		<div class="offset2 span4">
 			<h2>Login</h2>
-			<form action="" method="post" class="form-signin">
+			<form action="" method="post" class="form-signin" role="form">
 				{% csrf_token %}
-				{{ form.as_p }}
-				<input type="submit" class="btn" value="Login">
+				{{ form|bootstrap }}
+				<label class="checkbox">
+					<input type="checkbox" value="remember-me"> Remember me
+				<a style="float: right;" href="/passwordreset">Forgot password?</a>
+				</label>
+				<input type="submit" class="btn btn-lg btn-primary btn-block" value="Login">
 			</form>
-			<a href="/passwordreset">Forgot password?</a>
 		</div>
 	</div>
+
 </div>
 
 {% endblock %}
