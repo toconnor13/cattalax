@@ -20,16 +20,16 @@
 
 {% block content %}
 
-<div class="pagination pagination-centered" style="margin-bottom: 0px;">
+<div class="container text-center" style="margin-top: 30px;">
 
 	<h2 style="text-align:center; margin: 0px 0px 15px 0px;">{{day.get_day_string}} <a href="/dashboard/">{{day.year}}</a> </h2>
-	<ul>
+	<ul class="pagination">
 		<li {% if not levels %}class="active"{% endif %} ><a href="/dashboard/{{day.id}}/">Rates</a> </li>
 		<li {% if levels %}class="active"{% endif %}><a href="/dashboard/{{day.id}}/numbers/">Numbers</a></li>
 	</ul>
 </div>
 
-<div class="container" style = "max-width: 700px">
+<div class="container text-center" style = "max-width: 700px">
 	<table class="table table-bordered table-condensed" style="margin: 20px; ">
 		<thead>
 
