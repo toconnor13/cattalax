@@ -11,14 +11,14 @@
 		<script src="{% static "bower_components/jquery/jquery.js"%}"></script>
 		<script src="{% static "bower_components/bootstrap/dist/js/bootstrap.js" %}"></script>
 		<script src="{{STATIC_URL}}bootstrap-datetimepicker.min.js"></script>
+		<script src="{% static "bower_components/bootstrap3-datepicker/js/bootstrap-datepicker.js" %}"></script>
 
 		<link rel="stylesheet" href="{% static "bower_components/bootstrap/dist/css/bootstrap.css" %}"  />
 
 		<link rel="stylesheet" href="{{STATIC_URL}}custom_style.css"  />
 		<link rel="stylesheet" href="{{STATIC_URL}}bootstrap-responsive.css"  />
-
 		<link rel="stylesheet" href="{{STATIC_URL}}datetimepicker.css"/>
-
+		<link rel="stylesheet" href="{% static "bower_components/bootstrap3-datepicker/dist/css/datepicker.css" %}"/>
 		<link rel="shortcut icon" href="favicon.ico" />
 		<style type="type/css">
 			body {
@@ -70,7 +70,6 @@
 						<a href="/login/">Login</a>
 						</li>
 						{% endif %}
-						
 					</ul>
 					
 				</div>
@@ -80,7 +79,13 @@
 			{% block content %}{% endblock %}
 		</div>
 
-
+		<script type="text/javascript">
+		$('#sandbox-container .input-daterange').datepicker({
+		    keyboardNavigation: false,
+		    calendarWeeks: true,
+		    autoclose: true
+		});
+		</script>
 		<script type="text/javascript">
 			  // Fix input element click problem
 			  $('.dropdown input, .dropdown label').click(function(e) {

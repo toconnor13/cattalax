@@ -44,6 +44,7 @@ BOWER_INSTALLED_APPS = (
 	'underscore',
 	'd3',
 	'nvd3',
+	'bootstrap3-datepicker',
 )
 
 # Local time zone for this installation. Choices can be found here:
