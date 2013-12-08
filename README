@@ -1,1 +1,7 @@
-hello cattalax
+In this project, the contents of the folders are as follows:
+
+scripts
+	This contain the Python files that creates the Django model instances. 
+	duration.py contain the R functions, that counts and describes the number of visits.
+
+templates: This contains all the HTML files for the project.
