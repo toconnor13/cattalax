@@ -5,3 +5,5 @@ scripts
 	duration.py contain the R functions, that counts and describes the number of visits.
 
 templates: This contains all the HTML files for the project.
+
+dashboard:  This is the main folder, containing the models.py and views.py that executes the bulk of the processing.
