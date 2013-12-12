@@ -24,11 +24,17 @@
 		<li {% if not levels%}class="active"{% endif %}><a href="/dashboard/">Rates</a></li>
 		<li {% if levels%}class="active"{% endif %}><a href="/dashboard/numbers/">Numbers</a></li>
 	</ul>
-	    <div class="input-daterange" id="datepicker">
-		    <input type="text" class="input-small" name="start" />
-		    <span class="add-on">to</span>
-		    <input type="text" class="input-small" name="end" />
-	    </div>
+		<form method="POST" action="some_url_that_goes_to_view_here" class="">
+			<div class="input-daterange" id="datepicker">
+				<label>
+					From <input type="text" class="form-control input-small" name="start" />
+				</label>
+				<label>
+					To <input type="text" class="form-control input-small" name="end" />
+				</label>
+			</div>
+				<input class="btn" type="submit" value="Show Dates"/>
+		</form>
 	<table class="table table-bordered table-condensed" style="margin: 30px;">
 		<thead>
 
