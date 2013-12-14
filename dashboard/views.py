@@ -55,10 +55,10 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph):
 				dict_names[2]: extra_serie,
 			}
 
-		elif index==6:
+		elif i==6:
 			new_dict = {
 				dict_names[0]: 'Duration',
-				dict_names[1]: [float(v.no_of_captures) for v in time_periods_to_graph],
+				dict_names[1]: [float(v.avg_duration) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
 	
@@ -67,11 +67,14 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph):
 
 
 
-def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, levels=False, graph_no=1):
-	if levels==False:
-		chartdata = get_chartdata(x_axis_data, objects_to_graph, [4,5])	
+def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, levels=False, graph_no=1, x_is_date=True, x_format='%d %b', non_level=False, var_list=[]):
+	if non_level==False:
+		if levels==False:
+			chartdata = get_chartdata(x_axis_data, objects_to_graph, [4,5])	
+		else:
+			chartdata = get_chartdata(x_axis_data, objects_to_graph, [1,2,3])
 	else:
-		chartdata = get_chartdata(x_axis_data, objects_to_graph, [1,2,3])
+		chartdata = get_chartdata(x_axis_data, objects_to_graph, var_list)
 	dict_items = ['charttype', 'chartdata', 'chartcontainer']
 	var_names = [i + str(graph_no) for i in dict_items]
 	if graph_no==1:
@@ -82,8 +85,8 @@ def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, level
 			'object_list': objects_to_graph,
 			'levels': levels,
 			'extra': {
-				'x_is_date': True,			
-				'x_axis_format': '%d %b',
+				'x_is_date': x_is_date,			
+				'x_axis_format': x_format,
 				'tag_script_js': True,
 				'jquery_on_ready': False,
 			}
@@ -109,50 +112,15 @@ def detail(request, day_id, levels=False):
 	d = get_object_or_404(Day, pk=day_id)
 	hours_to_show = [h for h in d.hour_set.all() if h.hour>6 and h.hour<20]
 	xdata = map(lambda h: str(h.hour), hours_to_show)
-	ydata = [v.avg_duration for v in hours_to_show]
-	
-	tooltip_date = "%A %d %b"
-	extra_serie2 = {
-		"tooltip": {"y_start": "", "y_end": " seconds"},
-		"date_format": tooltip_date,
-	}
 
-	chartdata1 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container1', levels, 1)
-
-#	if levels==False:
-#		chartdata1 = get_percentage_graph(xdata, hours_to_show)
-#
-#	if levels==True:
-#		chartdata1 = get_levels_graph(xdata, hours_to_show)
-	
-	chartdata2 = {'x': xdata,
-			'name1': 'Duration', 'y1': ydata, 'extra1': extra_serie2,
-	}
-
-	charttype1 = "multiBarChart"
-	charttype2 = "multiBarChart"
-
-	chartcontainer1 = "multibarchart_container1"
-	chartcontainer2 = "multibarchart_container2"
+	chartdata1 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container1', levels, 1, x_is_date=False, x_format='')
+	chartdata2a = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
 
 	data = {
-		'hour_list': hours_to_show,
-#		'charttype1': charttype1,
-#		'chartdata1': chartdata1,
-#		'chartcontainer1': chartcontainer1,
-		'charttype2': charttype2,
-		'chartdata2': chartdata2,
-		'chartcontainer2': chartcontainer2,
-		'day': d,
-		'levels': levels,
-		'extra': {
-			'x_is_date': False,
-			'x_axis_format': '',
-			'tag_script_js': True,
-			'jquery_on_ready': True
-		}
+		'hour_list': hours_to_show, # This is object list -> must be changed and deleted
+		'day': d, # Sure this can be added in the below.  Check later.
 	}
-	data = dict(data.items() + chartdata1.items())
+	data = dict(data.items() + chartdata1.items() + chartdata2a.items())
 
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
