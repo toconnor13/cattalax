@@ -28,10 +28,10 @@
 		{% csrf_token %}
 			<div class="input-daterange" id="datepicker">
 				<label>
-					From <input type="text" class="form-control input-small" name="start" />
+					From <input type="text" class="form-control input-small" name="start" value={{ start }} />
 				</label>
 				<label>
-					To <input type="text" class="form-control input-small" name="end" />
+					To <input type="text" class="form-control input-small" name="end" value={{ end }}/>
 				</label>
 			</div>
 				<input class="btn" type="submit" value="Show Dates"/>

@@ -10,7 +10,7 @@ import random
 
 def perdelta(start, end, delta):
 	cur = start
-	while cur < end:
+	while cur <= end:
 		yield cur
 		cur += delta
 
@@ -128,6 +128,7 @@ def dashboard(request, levels=False):
 #	days_to_show = sorted(days_to_show, key=lambda day: day.day_no)
 	xdata = map(lambda x: int(time.mktime(datetime.datetime(x.year, x.month, x.day, 12).timetuple())*1000), days_to_show)
 	data = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container', levels, 1)
+	data = dict(data.items() +[('start', start),('end', end)])
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
 
 
