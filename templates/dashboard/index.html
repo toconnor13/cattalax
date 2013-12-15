@@ -24,7 +24,8 @@
 		<li {% if not levels%}class="active"{% endif %}><a href="/dashboard/">Rates</a></li>
 		<li {% if levels%}class="active"{% endif %}><a href="/dashboard/numbers/">Numbers</a></li>
 	</ul>
-		<form method="POST" action="some_url_that_goes_to_view_here" class="">
+	<form method="POST" action="{{request.path}}" class="">
+		{% csrf_token %}
 			<div class="input-daterange" id="datepicker">
 				<label>
 					From <input type="text" class="form-control input-small" name="start" />

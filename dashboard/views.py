@@ -4,10 +4,15 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext, Context
 from dashboard.models import Day, Hour
 import datetime
-
+import re
 import time
 import random
 
+def perdelta(start, end, delta):
+	cur = start
+	while cur < end:
+		yield cur
+		cur += delta
 
 def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph):
 	tooltip_date = "%A %d %b"
@@ -101,10 +106,28 @@ def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, level
 
 
 def dashboard(request, levels=False):
-	days_to_graph = sorted(Day.objects.all(), key=Day.day_no)
-	xdata = map(lambda x: int(time.mktime(datetime.datetime(x.year, x.month, x.day, 12).timetuple())*1000), days_to_graph)
-	data = create_graph(xdata, days_to_graph, 'lineChart', 'linechart_container', levels, 1)
-
+	if request.method=='POST':
+		start = request.POST['start']
+		end = request.POST['end']
+		pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
+	else:
+		start = '08/24/2015'
+		end = '08/30/2015'
+		pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
+#	days_to_graph = sorted(Day.objects.all(), key=Day.day_no)
+	days_to_graph = Day.objects.all()
+	start_match = re.match(pattern, start)
+	end_match = re.match(pattern, end)
+	start_date = datetime.date(int(start_match.group(3)), int(start_match.group(1)), int(start_match.group(2)))
+	end_date = datetime.date(int(end_match.group(3)), int(end_match.group(1)), int(end_match.group(2)))
+	days_to_show = []
+	for date in perdelta(start_date, end_date, datetime.timedelta(days=1)):
+		day = days_to_graph.get(year=date.year, month=date.month, day=date.day)
+		days_to_show.append(day)
+	
+#	days_to_show = sorted(days_to_show, key=lambda day: day.day_no)
+	xdata = map(lambda x: int(time.mktime(datetime.datetime(x.year, x.month, x.day, 12).timetuple())*1000), days_to_show)
+	data = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container', levels, 1)
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
 
 
@@ -113,17 +136,12 @@ def detail(request, day_id, levels=False):
 	hours_to_show = [h for h in d.hour_set.all() if h.hour>6 and h.hour<20]
 	xdata = map(lambda h: str(h.hour), hours_to_show)
 
-	chartdata1 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container1', levels, 1, x_is_date=False, x_format='')
-	chartdata2a = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
+	chartdata1 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
+	chartdata2 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
 
-	data = {
-		'hour_list': hours_to_show, # This is object list -> must be changed and deleted
-		'day': d, # Sure this can be added in the below.  Check later.
-	}
-	data = dict(data.items() + chartdata1.items() + chartdata2a.items())
+	data = dict( chartdata1.items() + chartdata2.items() + [('day',d)])
 
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
-
 
 def contact(request):
 	path = request.path
