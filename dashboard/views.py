@@ -147,3 +147,6 @@ def detail(request, day_id, levels=False):
 def contact(request):
 	path = request.path
 	return render_to_response('contact.html', {'path':path}, context_instance=RequestContext(request))
+
+def opt_out(request):
+	return render_to_response('opt-out.html', context_instance=RequestContext(request))

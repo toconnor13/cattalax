@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container centred">
+	<h2>Opt-out</h2>
+	<p>Enter your MAC address in the box below, and Allamew will stop collection of, and delete, all data pertaining to that address</p>
+	<form class="form-inline" role="form">
+		<div class="form-group">
+			<label class="sr-only" for="mac_addr">MAC Address</label>
+			<input type="email" class="form-control" id="mac_addr" placeholder="Enter MAC Address">
+		</div>
+		<button type="submit" class="btn btn-default">Submit</button>
+	</form>
+	
+	<h3>How to Find Your MAC Address</h3>
+	<table class="table table-bordered">
+		<thead>
+			<th>Phone Type</th>
+			<th>To find address, go to:</th>
+		</thead>
+
+		<tr>
+			<td><b>iPhone</b></td>
+			<td> Settings &gt; General &gt; About &gt; WiFi Address</td>
+		</tr>
+		
+		<tr>
+			<td><b>Android</b> (some versions)</td>
+			<td> Settings &gt; About &gt; Status &gt; WiFi MAC Address</td>
+		</tr>
+		
+		<tr>
+			<td><b>Android</b> (other versions)</td>
+			<td> Settings &gt; About &gt; Hardware information &gt; WiFi MAC Address</td>
+		</tr>
+		
+		<tr>
+			<td><b>Windows Phone</b></td>
+			<td> Settings &gt; About &gt; More info &gt; WiFi Address</td>
+		</tr>
+
+		<tr>
+			<td><b>Blackberry</b> (some versions)</td>
+			<td> Options &gt; Status &gt; WLAN MAC</td>
+		</tr>
+		
+		<tr>
+			<td><b>Blackberry</b> (other versions)</td>
+			<td> Setup &gt; Options &gt; Device &gt; Device and Status Information &gt; WLAN MAC </td>
+		</tr>
+
+	</table>
+
+
+</div>
+
+{% endblock %}
+
