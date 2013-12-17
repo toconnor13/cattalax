@@ -9,3 +9,14 @@ templates: This contains all the HTML files for the project.
 dashboard:  This is the main folder, containing the models.py and views.py that executes the bulk of the processing.
 
 emailusernames: This app enables the website to take email addresses as usernames.
+
+
+Features to consider:
+
+1. Uploading a dependent variable, and translating this into some sort of model.
+
+2. More graphs.
+
+3. Where to put the MAC addresses.
+
+4. More info on privacy.
