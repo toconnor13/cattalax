@@ -1,6 +1,5 @@
 from django.db import models
 from datetime import datetime
-import datetime as datetime2
 
 # Create your models here.
 class Customer(models.Model):
@@ -54,7 +53,7 @@ class Day(models.Model):
 		return int(self.day)
 
 	def get_day_string(self):
-		d = datetime2.datetime(self.year, self.month, self.day)
+		d = datetime(self.year, self.month, self.day)
 		return d.strftime("%a %d %b")
 	
 	def get_capture_rate(self):
@@ -84,7 +83,7 @@ class Hour(models.Model):
 	avg_duration = models.IntegerField()
 
 	def get_hour_string(self):
-		d = datetime2.datetime(self.day.year, self.day.month, self.day.day, self.hour)
+		d = datetime(self.day.year, self.day.month, self.day.day, self.hour)
 		return d.strftime("%A %H:%M")
 
 	def get_capture_rate(self):
