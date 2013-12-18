@@ -2,7 +2,8 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 #from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, Context
-from dashboard.models import Day, Hour
+from dashboard.models import Day, Hour, Outlet
+from django.contrib.auth.decorators import login_required
 import datetime
 import re
 import time
@@ -104,7 +105,7 @@ def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, level
 		}
 	return data
 
-
+@login_required
 def dashboard(request, levels=False):
 	if request.method=='POST':
 		start = request.POST['start']
@@ -115,7 +116,9 @@ def dashboard(request, levels=False):
 		end = '08/30/2015'
 		pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
 #	days_to_graph = sorted(Day.objects.all(), key=Day.day_no)
-	days_to_graph = Day.objects.all()
+	vendor_username = request.user.username
+	vendor = Outlet.objects.get(agent=vendor_username)
+	days_to_graph = Day.objects.filter(vendor=vendor)
 	start_match = re.match(pattern, start)
 	end_match = re.match(pattern, end)
 	start_date = datetime.date(int(start_match.group(3)), int(start_match.group(1)), int(start_match.group(2)))
@@ -149,4 +152,10 @@ def contact(request):
 	return render_to_response('contact.html', {'path':path}, context_instance=RequestContext(request))
 
 def opt_out(request):
-	return render_to_response('opt-out.html', context_instance=RequestContext(request))
+	message = "The MAC Address has successfully been submitted."
+	mac_addr_submitted = False
+	if request.method=='POST':
+		mac_addr = request.POST['mac_addr']
+		mac_addr_submitted = True
+		print mac_addr
+	return render_to_response('opt-out.html', {'message': message, 'submitted': mac_addr_submitted}, context_instance=RequestContext(request))
