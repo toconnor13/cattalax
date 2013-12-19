@@ -125,8 +125,11 @@ def dashboard(request, levels=False):
 	end_date = datetime.date(int(end_match.group(3)), int(end_match.group(1)), int(end_match.group(2)))
 	days_to_show = []
 	for date in perdelta(start_date, end_date, datetime.timedelta(days=1)):
-		day = days_to_graph.get(year=date.year, month=date.month, day=date.day)
-		days_to_show.append(day)
+		try:
+			day = days_to_graph.get(year=date.year, month=date.month, day=date.day)
+			days_to_show.append(day)
+		except:
+			pass
 	
 #	days_to_show = sorted(days_to_show, key=lambda day: day.day_no)
 	xdata = map(lambda x: int(time.mktime(datetime.datetime(x.year, x.month, x.day, 12).timetuple())*1000), days_to_show)
