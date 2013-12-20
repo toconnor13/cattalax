@@ -18,6 +18,8 @@ USER="root"
 PW="the power to do what is right"
 DB="cattalax"
 
+## TO DO:  need to make a loop out of this for each sensor id - so a double loop
+
 con = MySQLdb.connect(HOST,USER,PW,DB)
 cur = con.cursor()
 
