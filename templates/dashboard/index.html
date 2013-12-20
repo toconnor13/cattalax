@@ -19,24 +19,44 @@
 
 {% block content %}
 
-<div id="sandbox-container" class="container text-center" style = "max-width: 700px">
-	<ul class="pagination">
-		<li {% if not levels%}class="active"{% endif %}><a href="/dashboard/">Rates</a></li>
-		<li {% if levels%}class="active"{% endif %}><a href="/dashboard/numbers/">Numbers</a></li>
-	</ul>
-	<form method="POST" action="{{request.path}}" class="">
-		{% csrf_token %}
-			<div class="input-daterange" id="datepicker">
-				<label>
-					From <input type="text" class="form-control input-small" name="start" value={{ start }} />
-				</label>
-				<label>
-					To <input type="text" class="form-control input-small" name="end" value={{ end }}> <!-- Slash removed here - was appearing in text box with cumulative selection -->
-				</label>
+<div class="" style="margin: 10px; padding: 10px;">
+	<div class="navbar navbar-default">
+					
+		<div class="container">
+			<div class="collapse navbar-collapse">
+				<ul class="pagination pull-left" style="margin-right: 10px;">
+					<li {% if not levels %}class="active"{% endif %}><a href="/dashboard/">Rates</a></li>
+					<li {% if levels %}class="active"{% endif %}><a href="/dashboard/numbers/">Numbers</a></li>
+				</ul>
 
-				<input class="btn" type="submit" value="Show Dates"/>
+				<ul class="pagination pull-left">
+					<li class="active"><a href="#">Day</a></li>
+					<li> <a href="#">Week</a> </li>
+					<li> <a href="#">Month</a> </li>
+				</ul>
+
+				<div id="sandbox-container" class="text-center">
+					<form method="POST" action="{{ request.path }}" class="" style="margin-top: 5px;" >
+						{% csrf_token %}
+						<div class="input-daterange" id="datepicker">
+							<label>
+								From <input type="text" class="form-control input-small" name="start" value="{{ start }}" />
+							</label>
+							<label>
+								To <input type="text" class="form-control input-small" name="end" value="{{ end }}"> <!-- Slash removed here - was appearing in text box with cumulative selection -->
+							</label>
+							<label>
+								<button class="btn" type="submit" value="Show Dates">Show</button>
+							</label>
+						</div>
+					</form>
+				</div>
 			</div>
-		</form>
+		</div>
+	</div>
+</div>
+
+<div class="container text-center" style = "max-width: 700px">
 	<table class="table table-bordered table-condensed" style="margin: 30px;">
 		<thead>
 
