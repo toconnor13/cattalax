@@ -19,40 +19,46 @@
 
 {% block content %}
 
-<div class="" style="margin: 10px; padding: 10px;">
-	<div class="navbar navbar-default">
-					
-		<div class="container">
-			<div class="collapse navbar-collapse">
-				<ul class="pagination pull-left" style="margin-right: 10px;">
-					<li {% if not levels %}class="active"{% endif %}><a href="/dashboard/">Rates</a></li>
-					<li {% if levels %}class="active"{% endif %}><a href="/dashboard/numbers/">Numbers</a></li>
-				</ul>
+<div class="navbar navbar-default" style="margin: 10px; padding: 10px;" role="navigation">
+	<!--
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+			<span class="sr-only">Toggle Navigation</span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="#">Brand</a>
+	</div>
+	-->
 
-				<ul class="pagination pull-left">
-					<li class="active"><a href="#">Day</a></li>
-					<li> <a href="#">Week</a> </li>
-					<li> <a href="#">Month</a> </li>
-				</ul>
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+		<ul class="pagination pull-left" style="margin-right: 10px;">
+			<li {% if not levels %}class="active"{% endif %}><a href="/dashboard/">Rates</a></li>
+			<li {% if levels %}class="active"{% endif %}><a href="/dashboard/numbers/">Numbers</a></li>
+		</ul>
 
-				<div id="sandbox-container" class="text-center">
-					<form method="POST" action="{{ request.path }}" class="" style="margin-top: 5px;" >
-						{% csrf_token %}
-						<div class="input-daterange" id="datepicker">
-							<label>
-								From <input type="text" class="form-control input-small" name="start" value="{{ start }}" />
-							</label>
-							<label>
-								To <input type="text" class="form-control input-small" name="end" value="{{ end }}"> <!-- Slash removed here - was appearing in text box with cumulative selection -->
-							</label>
-							<label>
-								<button class="btn" type="submit" value="Show Dates">Show</button>
-							</label>
-						</div>
-					</form>
+		<ul class="pagination pull-left">
+			<li class="active"><a href="#">Day</a></li>
+			<li> <a href="#">Week</a> </li>
+			<li> <a href="#">Month</a> </li>
+		</ul>
+
+			<form method="POST" id="sandbox-container" action="{{ request.path }}" class="navbar-form navbar-right" role="search" style="margin-top: 20px;" role="search" >
+				{% csrf_token %}
+				<div class="input-daterange" id="datepicker">
+									<div class="form-group">
+						<input type="text" class="form-control input-small" name="start" value="{{ start }}" />
 				</div>
-			</div>
-		</div>
+				<div class="form-group" style="margin-top:5px;" >
+					<p><strong>to</strong></p>
+				</div>
+
+
+				<div class="form-group">
+					<input type="text" class="form-control input-small" name="end" value="{{ end }}"> <!-- Slash removed here - was appearing in text box with cumulative selection -->
+				</div>
+					<button class="btn btn-default" type="submit" value="Show Dates">Show</button>
+				</div>
+			</form>
 	</div>
 </div>
 
