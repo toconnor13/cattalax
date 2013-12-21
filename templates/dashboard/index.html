@@ -42,23 +42,24 @@
 			<li> <a href="#">Month</a> </li>
 		</ul>
 
-			<form method="POST" id="sandbox-container" action="{{ request.path }}" class="navbar-form navbar-right" role="search" style="margin-top: 20px;" role="search" >
-				{% csrf_token %}
-				<div class="input-daterange" id="datepicker">
-									<div class="form-group">
-						<input type="text" class="form-control input-small" name="start" value="{{ start }}" />
-				</div>
-				<div class="form-group" style="margin-top:5px;" >
-					<p><strong>to</strong></p>
-				</div>
-
-
+		<form method="POST" id="sandbox-container" action="{{ request.path }}" class="navbar-form navbar-right" role="search" style="margin-top: 20px;" role="search" >
+			{% csrf_token %}
+			<div class="input-daterange" id="datepicker">
 				<div class="form-group">
-					<input type="text" class="form-control input-small" name="end" value="{{ end }}"> <!-- Slash removed here - was appearing in text box with cumulative selection -->
+					<div class="input-group">
+						<span class="input-group-addon">From</span>
+						<input type="text" class="form-control input-small" name="start" value="{{ start }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<span class="input-group-addon">To</span>
+						<input type="text" class="form-control input-small" name="end" value="{{ end }}"/>
+					</div>
 				</div>
 					<button class="btn btn-default" type="submit" value="Show Dates">Show</button>
-				</div>
-			</form>
+			</div>
+		</form>
 	</div>
 </div>
 
