@@ -53,37 +53,30 @@
 	</div>
 </div>
 
-<div class="container" style = "max-width: 600px">
+<div class="container" style = "max-width: 705px">
 	<table class="table table-bordered table-condensed table-hover" style="margin: 30px;">
 		<thead>
 
 			<th>Day</th>
-			{% if levels %}
-				<th>No. of Walkbys</th>
-				<th>No. of Captures</th>
-				<th>No. of Bounces</th>
+				<th>Walkbys</th>
+				<th>Captures</th>
+				<th>Bounces</th>
 
-			{% else %} 
 				<th>Capture Rate (%)</th>
 				<th>Bounce Rate (%)</th>
-			{% endif %}
-			<th>Duration (mins)</th>
+				<th>Duration (mins)</th>
 		</thead>
 
 		<tbody>
 			{% for day in object_list %}
 				<tr>
 					<td><a href="/dashboard/{{day.id}}">{{day.get_day_string}}</a></td>
-					{% if levels %}
 						<td>{{day.no_of_walkbys}}</td>
 						<td>{{day.no_of_entries}}</td>
 						<td>{{day.no_of_bounces}}</td>
-						<td>{{day.get_avg_duration}}</td>
-					{% else %}
 						<td>{{day.get_capture_rate}}</td>
 						<td>{{day.get_bounce_rate}}</td>
 						<td>{{day.get_avg_duration}}</td>
-					{% endif %}
 				<tr>
 			{% endfor %}
 		</tbody>
@@ -96,7 +89,7 @@
 <div class="container text-center centered">
 	<h3>Visit Overview</h3>
 	<div class="svg_container">
-		{% include_container chartcontainer1 300 600 %}
+		{% include_container chartcontainer1 300 400 %}
 	</div>
 </div>
 
