@@ -1,69 +1,42 @@
-{% extends "base.html" %}
-{% load tag %}
+{% extends "base_dashboard.html" %}
 
-{% load nvd3_tags %}
-
-{% block graph_code %}
-	{# JQuery CDN: Needed when jquery_on_ready=True  #}
-	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<!--  code to include the NVD3 and D3 libraries goes here   -->
-<!--  load_nvd3 filter takes a comma-separated list of id's where   -->
-<!--  the charts need to be rendered to   -->
-	{% load staticfiles %}
-	<link media="all" href="{% static "bower_components/nvd3/nv.d3.css" %}" type="text/css" rel="stylesheet">
-	<script src="{% static "bower_components/d3/d3.min.js"%}" type="text/javascript"></script>
-	<script src="{% static "bower_components/nvd3/nv.d3.min.js" %}" type="text/javascript"></script>
-
+{% block graphs %}
 {% load_chart charttype1 chartdata1 chartcontainer1 extra  %}
 {% load_chart charttype2 chartdata2 chartcontainer2 extra  %}
 {% endblock %}
 
-{% block content %}
+{% block table_and_graph_html %}
 
 <div class="container text-center" style="margin-top: 30px;">
 
 	<h2 style="text-align:center; margin: 0px 0px 15px 0px;">{{day.get_day_string}} <a href="/dashboard/">{{day.year}}</a> </h2>
-	<ul class="pagination">
-		<li {% if not levels %}class="active"{% endif %} ><a href="/dashboard/{{day.id}}/">Rates</a> </li>
-		<li {% if levels %}class="active"{% endif %}><a href="/dashboard/{{day.id}}/numbers/">Numbers</a></li>
-	</ul>
+	
 </div>
 
-<div class="container text-center" style = "max-width: 700px">
+<div class="container text-center" style = "max-width: 710px">
 	<table class="table table-bordered table-condensed" style="margin: 20px; ">
 		<thead>
 
 			<th>Hour</th>
-			{% if levels %}
-
-				<th>No. of Walkbys</th>
-				<th>No. of Entries</th>
-				<th>No. of Bounces</th>
-				<th>Avg. Duration (mins)</th>
-
-			{% else %}
+				<th>Walkbys</th>
+				<th>Entries</th>
+				<th>Bounces</th>
 				<th>Capture Rate (%)</th>
 				<th>Bounce Rate (%)</th>
-				<th>Avg. Duration (mins)</th>
-			{% endif %}
+				<th>Duration (mins)</th>
 
 		</thead>
 
 		<tbody>
 			{% for hour in object_list %}
 			<tr>
-				{% if levels %}
 					<td>{{hour.get_hour_string}}</td>				
 					<td>{{hour.no_of_walkbys}}</td>
 					<td>{{hour.no_of_entries}}</td>
 					<td>{{hour.no_of_bounces}}</td>
-					<td>{{hour.get_avg_duration}}</td>
-				{% else %}
-					<td>{{hour.get_hour_string}}</td>
 					<td>{{hour.get_capture_rate}}</td>
 					<td>{{hour.get_bounce_rate}}</td>
 					<td>{{hour.get_avg_duration}}</td>
-				{% endif %}
 				<tr>
 			{% endfor %}
 		</tbody>
@@ -86,18 +59,6 @@
 			</div>
 	</div>
 </div>
-
-
-
-
-
-<hr style="margin: 30px 0px;">
-<div class="footer">
-	<p>&copy; <a href="mailto:toconnor13@gmail.com">Allamew Analytics</a></p>
-</div>
-
-
-
 
 {% endblock %}
 
