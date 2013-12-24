@@ -13,8 +13,9 @@
 	
 <!--  the charts need to be rendered to   include_chart_jscss -->
 
-	{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
 
+	{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
+	{% load_chart charttype2 chartdata2 chartcontainer2 extra %}
 {% endblock %}
 
 {% block content %}
@@ -91,6 +92,10 @@
 	<div class="svg_container">
 		{% include_container chartcontainer1 300 400 %}
 	</div>
+	<div class="svg_container">
+		{% include_container chartcontainer2 300 400 %}
+	</div>
+
 </div>
 
 <hr style="margin: 30px 0px;">
