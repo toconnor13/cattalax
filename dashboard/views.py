@@ -32,19 +32,19 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph):
 		dict_names = [att+str(index) for att in graph_att]
 		if i==1:
 			new_dict = {
-				dict_names[0]: 'No. of Walkbys',
+				dict_names[0]: 'Walkbys',
 				dict_names[1]: [float(v.no_of_walkbys) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
 		elif i==2:
 			new_dict = {
-				dict_names[0]: 'No. of Captures',
+				dict_names[0]: 'Captures',
 				dict_names[1]: [float(v.no_of_entries) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
 		elif i==3:
 			new_dict = {
-				dict_names[0]: 'No. of Bounces',
+				dict_names[0]: 'Bounces',
 				dict_names[1]: [float(v.no_of_bounces) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}

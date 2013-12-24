@@ -87,14 +87,19 @@
 
 
 
-<div class="container text-center centered">
-	<h3>Visit Overview</h3>
-	<div class="svg_container">
-		{% include_container chartcontainer1 300 400 %}
+	<div class="row-fluid" style="margin-top: 30px;">
+		<div class="span5" style="margin-left:120px;">
+			<div class="svg_container">
+				{% include_container chartcontainer1 300 400 %}
+			</div>
+		</div>
+		<div class="span5" style="margin-left: 40px;">
+			<div class="svg_container">
+				{% include_container chartcontainer2 300 400 %}
+			</div>
+		</div>
 	</div>
-	<div class="svg_container">
-		{% include_container chartcontainer2 300 400 %}
-	</div>
+
 
 </div>
 

@@ -18,19 +18,19 @@
     right: 0;
     margin: auto;
 }
-#linechart_container2 {
+#linechart_container2_inv {
 	text-align: center;
 	margin: 20px 0px 0px 250px;
 	display: block;
 }
 
-#barchart_container1 {
+#barchart_container1_inv {
 	text-align: center;
 	margin: 20px 0px 0px 250px;
 	display: block;
 }
 
-#barchart_container2 {
+#barchart_container2_inv {
 	text-align: center;
 	margin: 20px 0px 0px 250px;
 	display: block;
