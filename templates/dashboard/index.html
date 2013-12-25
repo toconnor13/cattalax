@@ -1,9 +1,10 @@
 {% extends "base_dashboard.html" %}
 
+{% load nvd3_tags %}
 {% block graphs %}
 
-{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
-{% load_chart charttype2 chartdata2 chartcontainer2 extra %}
+	{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
+	{% load_chart charttype2 chartdata2 chartcontainer2 extra %}
 
 {% endblock %}
 
