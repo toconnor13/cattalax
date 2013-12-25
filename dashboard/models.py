@@ -84,7 +84,7 @@ class Hour(models.Model):
 
 	def get_hour_string(self):
 		d = datetime(self.day.year, self.day.month, self.day.day, self.hour)
-		return d.strftime("%A %H:%M")
+		return d.strftime("%H:%M") # prepend %A for day string
 
 	def get_capture_rate(self):
 		if (self.no_of_walkbys==0):
