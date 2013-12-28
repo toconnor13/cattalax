@@ -10,7 +10,7 @@
 
 {% block table_and_graph_html %}
 
-	<div class="container" style = "max-width: 705px">
+	<div class="container pull-left" style = "max-width: 565px">
 		<table class="table table-bordered table-condensed table-hover" style="margin: 30px; max-width: 705px;">
 			<thead>
 
@@ -19,9 +19,9 @@
 					<th>Captures</th>
 					<th>Bounces</th>
 
-					<th>Capture Rate (%)</th>
-					<th>Bounce Rate (%)</th>
-					<th>Duration (mins)</th>
+					<th>Capture</th>
+					<th>Bounce</th>
+					<th>Duration</th>
 			</thead>
 
 			<tbody>
@@ -31,8 +31,8 @@
 							<td>{{day.no_of_walkbys}}</td>
 							<td>{{day.no_of_entries}}</td>
 							<td>{{day.no_of_bounces}}</td>
-							<td>{{day.get_capture_rate}}</td>
-							<td>{{day.get_bounce_rate}}</td>
+							<td>{{day.get_capture_rate}}%</td>
+							<td>{{day.get_bounce_rate}}%</td>
 							<td>{{day.get_avg_duration}}</td>
 					<tr>
 				{% endfor %}
