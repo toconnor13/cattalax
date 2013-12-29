@@ -10,51 +10,57 @@
 
 {% block table_and_graph_html %}
 
-	<div class="container pull-left" style = "max-width: 565px">
-		<table class="table table-bordered table-condensed table-hover" style="margin: 30px; max-width: 705px;">
-			<thead>
-
-				<th>Day</th>
-					<th>Walkbys</th>
-					<th>Captures</th>
-					<th>Bounces</th>
-
-					<th>Capture</th>
-					<th>Bounce</th>
-					<th>Duration</th>
-			</thead>
-
-			<tbody>
-				{% for day in object_list %}
-					<tr>
-						<td><a href="/dashboard/{{day.id}}">{{day.get_day_string}}</a></td>
-							<td>{{day.no_of_walkbys}}</td>
-							<td>{{day.no_of_entries}}</td>
-							<td>{{day.no_of_bounces}}</td>
-							<td>{{day.get_capture_rate}}%</td>
-							<td>{{day.get_bounce_rate}}%</td>
-							<td>{{day.get_avg_duration}}</td>
-					<tr>
-				{% endfor %}
-			</tbody>
-		</table>
-
-	</div>
-
-
-
 	<div class="row" style="margin-top: 40px; max-width: 1050px;">
-		<div class="col-md-2 col-md-offset-2" >
-			<div class="svg_container">
-				{% include_container chartcontainer1 300 400 %}
-			</div>
+		<div class="col-md-6" style = "max-width: 565px">
+			<table class="table table-bordered table-condensed table-hover" style="margin: 30px; max-width: 705px;">
+				<thead>
+
+					<th>Day</th>
+						<th>Walkbys</th>
+						<th>Captures</th>
+						<th>Bounces</th>
+
+						<th>Capture</th>
+						<th>Bounce</th>
+						<th>Duration</th>
+				</thead>
+
+				<tbody>
+					{% for day in object_list %}
+						<tr>
+							<td><a href="/dashboard/{{day.id}}">{{day.get_day_string}}</a></td>
+								<td>{{day.no_of_walkbys}}</td>
+								<td>{{day.no_of_entries}}</td>
+								<td>{{day.no_of_bounces}}</td>
+								<td>{{day.get_capture_rate}}%</td>
+								<td>{{day.get_bounce_rate}}%</td>
+								<td>{{day.get_avg_duration}}</td>
+						<tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
 		</div>
-		<div class="col-md-2 col-md-offset-3" >
-			<div class="svg_container">
-				{% include_container chartcontainer2 300 400 %}
+
+		<div class="col-md-6">
+			<div class="row">
+			<div class="col-md-2 col-md-offset-1" >
+				<div class="svg_container">
+					{% include_container chartcontainer1 250 400 %}
+				</div>
+			</div>
+			</div>
+
+			<div class="row">
+			<div class="col-md-2 col-md-offset-1" >
+				<div class="svg_container">
+					{% include_container chartcontainer2 250 400 %}
+				</div>
+			</div>
 			</div>
 		</div>
 	</div>
+
 {% endblock %}
 
 
