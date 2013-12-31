@@ -14,16 +14,17 @@
 	
 </div>
 
-<div class="container text-center pull-left" style = "max-width: 550px">
-	<table class="table table-bordered table-condensed" style="margin: 20px; ">
+<div class="row" style = "max-width: 1050px;">
+	<div class="col-md-8" style="max-width: 585px;">
+	<table class="table table-bordered table-condensed" style="margin: 30px; max-width: 715px;">
 		<thead>
 
 			<th>Hour</th>
 				<th>Walkbys</th>
 				<th>Entries</th>
 				<th>Bounces</th>
-				<th>Capture Rate </th>
-				<th>Bounce Rate</th>
+				<th>Capture</th>
+				<th>Bounce</th>
 				<th>Duration</th>
 
 		</thead>
@@ -35,8 +36,8 @@
 					<td>{{hour.no_of_walkbys}}</td>
 					<td>{{hour.no_of_entries}}</td>
 					<td>{{hour.no_of_bounces}}</td>
-					<td>{{hour.get_capture_rate}}</td>
-					<td>{{hour.get_bounce_rate}}</td>
+					<td>{{hour.get_capture_rate}}%</td>
+					<td>{{hour.get_bounce_rate}}%</td>
 					<td>{{hour.get_avg_duration}}</td>
 				<tr>
 			{% endfor %}
@@ -46,18 +47,24 @@
 </div>
 
 
-
-<div class="container" style="text-align:center; " >
-	<div>
-
-			<div class="svg_container">
-				{% include_container chartcontainer1 250 335 %}
+	<div class="col-md-4" style="margin: 30px 40px;">
+		<div class="row">
+			<div class="col-md-2 col-md-offset-1">
+				<div class="svg_container">
+				{% include_container chartcontainer1 250 400 %}
+				</div>
 			</div>
-			<div class="svg_container">
-				{% include_container chartcontainer2 250 335 %}
+		</div>
+
+		<div class="row">
+			<div class="col-md-2 col-md-offset-1">
+				<div class="svg_container">
+				{% include_container chartcontainer2 250 400 %}
+				</div>
 			</div>
+		</div>
 	</div>
-</div>
+	</div>
 
 {% endblock %}
 
