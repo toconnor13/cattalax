@@ -159,9 +159,12 @@ INSTALLED_APPS = (
 	'django_nvd3',
 	'djangobower',
 	'bootstrapform',
+	'debug_toolbar',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+INTERNAL_IPS=('127.0.0.1',)
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
