@@ -19,18 +19,29 @@
 {% block content %}
 
 <div class="container">
-	<div class="navbar navbar-default" style="margin: 10px auto; padding: 10px; max-width:850px; " role="navigation">
+	<div class="navbar navbar-default" style="margin: 10px auto -15px auto; padding: 0px; max-width:770px; " role="navigation">
 		<div class="collapse navbar-collapse">
 
-			<ul class="pagination pull-left">
-				<li class="active"><a href="#">Day</a></li>
-				<li> <a href="#">Week</a> </li>
-				<li> <a href="#">Month</a> </li>
-			</ul>
-
-			<form method="POST" id="sandbox-container" action="{{ request.path }}" class="navbar-form navbar-right" role="search" style="margin-top: 19px;">
+			<form method="POST" id="sandbox-container" action="{{ request.path }}" class="navbar-form navbar-right" role="search" style="">
 				{% csrf_token %}
+				
 				<div class="input-daterange" id="datepicker">
+					<div class="form-group">
+						<div class="input-group">
+						<select name="shop_no" class="form-control" style="max-width: 157px;">
+							<option value=1>Sheefrex's Elixir</option>
+						</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<select name="view" class="form-control">
+								<option value=>Daily</option>
+								<option>Weekly</option>
+								<option>Monthly</option>
+							</select>
+						</div>
+					</div>
 					<div class="form-group">
 						<div class="input-group" style="width: 200px;">
 							<span class="input-group-addon">From:</span>
