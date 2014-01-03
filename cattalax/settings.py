@@ -10,9 +10,11 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 if os.environ['MACHINE_ID']=='cattalax_0':
 	db_host='10.24.18.6'
 	user='bismere0'
+	root_dir='/root'
 else:
 	db_host = 'localhost'
 	user = 'root'
+	root_dir = '/home/sheefrex'
 
 ADMINS = (
      ('Tony O\'Connor', 'toconnor13@gmail.com'),
@@ -35,7 +37,7 @@ DATABASES = {
     }
 }
 
-BOWER_COMPONENTS_ROOT = os.path.join('/root/.virtualenvs/cattalax/cattalax', 'dashboard/static')
+BOWER_COMPONENTS_ROOT = os.path.join(root_dir + '/.virtualenvs/cattalax/cattalax', 'dashboard/static')
 # BOWER_PATH = 'usr/bin/bower'
 # BOWER_PATH = '~/.virtualenvs/cattalax/bin/bower'
 BOWER_INSTALLED_APPS = (
