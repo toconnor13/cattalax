@@ -137,7 +137,7 @@ def dashboard(request, levels=False):
 	xdata = map(lambda x: int(time.mktime(datetime.datetime(x.year, x.month, x.day, 12).timetuple())*1000), days_to_show)
 	data1 = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container1', levels, graph_no=1)
 	data2 = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container2', levels=True, graph_no=2)
-	data = dict(data1.items()+ data2.items() +[('start', start),('end', end), (outlet_list, 'outlet_list')])
+	data = dict(data1.items()+ data2.items() +[('start', start),('end', end), ('outlet_list', outlet_list)])
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
 
 
