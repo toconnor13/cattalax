@@ -7,44 +7,39 @@
 {% endblock %}
 
 {% block table_and_graph_html %}
+	<div class="container text-center" style="margin-top: 30px;">
+		<h2 style="text-align:center; margin: 0px 0px 15px 0px;">{{day.describe}} <a href="/dashboard/">{{day.year}}</a> </h2>
+	</div>
 
-<div class="container text-center" style="margin-top: 30px;">
+	<div class="row" style = "">
+		<div class="col-md-8" style="max-width: 535px;">
+		<table class="table table-bordered table-condensed" style="margin: 20px 0px 0px 40px;">
+			<thead>
+				<th>Hour</th>
+					<th>Walkbys</th>
+					<th>Entries</th>
+					<th>Bounces</th>
+					<th>Capture</th>
+					<th>Bounce</th>
+					<th>Duration</th>
 
-	<h2 style="text-align:center; margin: 0px 0px 15px 0px;">{{day.get_day_string}} <a href="/dashboard/">{{day.year}}</a> </h2>
-	
-</div>
+			</thead>
 
-<div class="row" style = "">
-	<div class="col-md-8" style="max-width: 535px;">
-	<table class="table table-bordered table-condensed" style="margin: 20px 0px 0px 40px;">
-		<thead>
-
-			<th>Hour</th>
-				<th>Walkbys</th>
-				<th>Entries</th>
-				<th>Bounces</th>
-				<th>Capture</th>
-				<th>Bounce</th>
-				<th>Duration</th>
-
-		</thead>
-
-		<tbody>
-			{% for object in object_list %}
-			<tr>
-					<td>{{object.describe}}</td>				
-					<td>{{object.no_of_walkbys}}</td>
-					<td>{{object.no_of_entries}}</td>
-					<td>{{object.no_of_bounces}}</td>
-					<td>{{object.get_capture_rate}}%</td>
-					<td>{{object.get_bounce_rate}}%</td>
-					<td>{{object.get_avg_duration}}</td>
+			<tbody>
+				{% for object in object_list %}
 				<tr>
-			{% endfor %}
-		</tbody>
-	</table>
-
-</div>
+						<td>{{object.describe}}</td>				
+						<td>{{object.no_of_walkbys}}</td>
+						<td>{{object.no_of_entries}}</td>
+						<td>{{object.no_of_bounces}}</td>
+						<td>{{object.get_capture_rate}}%</td>
+						<td>{{object.get_bounce_rate}}%</td>
+						<td>{{object.get_avg_duration}}</td>
+					<tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 
 
 	<div class="col-md-4" style="margin: 30px 40px;">

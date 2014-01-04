@@ -2,24 +2,19 @@
 
 {% load nvd3_tags %}
 {% block graphs %}
-
 	{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
 	{% load_chart charttype2 chartdata2 chartcontainer2 extra %}
-
 {% endblock %}
 
 {% block table_and_graph_html %}
-
 	<div class="row" style="margin-top: 20px;">
 		<div class="col-md-8" style = "max-width: 535px">
 			<table class="table table-bordered table-condensed table-hover" style="margin: 20px 0px 0px 40px;">
 				<thead>
-
 					<th>Day</th>
 						<th>Walkbys</th>
 						<th>Captures</th>
 						<th>Bounces</th>
-
 						<th>Capture</th>
 						<th>Bounce</th>
 						<th>Duration</th>
@@ -39,7 +34,6 @@
 					{% endfor %}
 				</tbody>
 			</table>
-
 		</div>
 
 		<div class="col-md-4" style="margin: 20px 40px;">
