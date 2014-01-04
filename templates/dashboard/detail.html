@@ -30,15 +30,15 @@
 		</thead>
 
 		<tbody>
-			{% for hour in object_list %}
+			{% for object in object_list %}
 			<tr>
-					<td>{{hour.get_hour_string}}</td>				
-					<td>{{hour.no_of_walkbys}}</td>
-					<td>{{hour.no_of_entries}}</td>
-					<td>{{hour.no_of_bounces}}</td>
-					<td>{{hour.get_capture_rate}}%</td>
-					<td>{{hour.get_bounce_rate}}%</td>
-					<td>{{hour.get_avg_duration}}</td>
+					<td>{{object.describe}}</td>				
+					<td>{{object.no_of_walkbys}}</td>
+					<td>{{object.no_of_entries}}</td>
+					<td>{{object.no_of_bounces}}</td>
+					<td>{{object.get_capture_rate}}%</td>
+					<td>{{object.get_bounce_rate}}%</td>
+					<td>{{object.get_avg_duration}}</td>
 				<tr>
 			{% endfor %}
 		</tbody>

@@ -52,7 +52,7 @@ class Day(models.Model):
 	def day_no(self):
 		return int(self.day)
 
-	def get_day_string(self):
+	def describe(self):
 		d = datetime(self.year, self.month, self.day)
 		return d.strftime("%a %d %b")
 	
@@ -82,7 +82,7 @@ class Hour(models.Model):
 	no_of_bounces = models.IntegerField()
 	avg_duration = models.IntegerField()
 
-	def get_hour_string(self):
+	def describe(self):
 		d = datetime(self.day.year, self.day.month, self.day.day, self.hour)
 		return d.strftime("%H:%M") # prepend %A for day string
 

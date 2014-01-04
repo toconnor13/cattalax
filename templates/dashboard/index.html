@@ -26,15 +26,15 @@
 				</thead>
 
 				<tbody>
-					{% for day in object_list %}
+					{% for object in object_list %}
 						<tr>
-							<td><a href="/dashboard/{{day.id}}">{{day.get_day_string}}</a></td>
-								<td>{{day.no_of_walkbys}}</td>
-								<td>{{day.no_of_entries}}</td>
-								<td>{{day.no_of_bounces}}</td>
-								<td>{{day.get_capture_rate}}%</td>
-								<td>{{day.get_bounce_rate}}%</td>
-								<td>{{day.get_avg_duration}}</td>
+							<td><a href="/dashboard/{{object.id}}">{{object.describe}}</a></td>
+								<td>{{object.no_of_walkbys}}</td>
+								<td>{{object.no_of_entries}}</td>
+								<td>{{object.no_of_bounces}}</td>
+								<td>{{object.get_capture_rate}}%</td>
+								<td>{{object.get_bounce_rate}}%</td>
+								<td>{{object.get_avg_duration}}</td>
 						<tr>
 					{% endfor %}
 				</tbody>
