@@ -105,26 +105,7 @@ def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, level
 		}
 	return data
 
-@login_required
-def dashboard(request, levels=False):
-	if request.method=='POST':
-		start = request.POST['start']
-		end = request.POST['end']
-		pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
-	else:
-		start = '08/24/2015'
-		end = '08/30/2015'
-		pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
-#	days_to_graph = sorted(Day.objects.all(), key=Day.day_no)
-	vendor_username = request.user.username
-	outlet_list = Outlet.objects.filter(agent=vendor_username)
-	vendor = outlet_list[0]
-	days_to_graph = Day.objects.filter(vendor=vendor)
-	start_match = re.match(pattern, start)
-	end_match = re.match(pattern, end)
-	start_date = datetime.date(int(start_match.group(3)), int(start_match.group(1)), int(start_match.group(2)))
-	end_date = datetime.date(int(end_match.group(3)), int(end_match.group(1)), int(end_match.group(2)))
-
+def get_days_to_show(start_date, end_date, days_to_graph):
 	days_to_show = []
 	for date in perdelta(start_date, end_date, datetime.timedelta(days=1)):
 		try:
@@ -132,14 +113,47 @@ def dashboard(request, levels=False):
 			days_to_show.append(day)
 		except:
 			pass
-	
+	return days_to_show
+
+#	days_to_graph = sorted(Day.objects.all(), key=Day.day_no)
 #	days_to_show = sorted(days_to_show, key=lambda day: day.day_no)
-	xdata = map(lambda x: int(time.mktime(datetime.datetime(x.year, x.month, x.day, 12).timetuple())*1000), days_to_show)
-	data1 = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container1', levels, graph_no=1)
-	data2 = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container2', levels=True, graph_no=2)
+
+
+@login_required
+def dashboard(request):
+	vendor_username = request.user.username
+	outlet_list = Outlet.objects.filter(agent=vendor_username)
+	pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
+	if request.method=='POST':
+		start = request.POST['start']
+		end = request.POST['end']
+		focus = request.POST['focus']
+		shop_no = request.POST['shop_id']
+	else:
+		start = '08/24/2015'
+		end = '08/30/2015'
+		focus = "day"
+		shop_no = outlet_list[0].sensor_no
+	vendor = outlet_list.get(sensor_no=shop_no)   # outlet_list[shop_no]
+	days_to_graph = Day.objects.filter(vendor=vendor)
+
+	# Interpret the dates
+	start_match = re.match(pattern, start)
+	end_match = re.match(pattern, end)
+	start_date = datetime.date(int(start_match.group(3)), int(start_match.group(1)), int(start_match.group(2)))
+	end_date = datetime.date(int(end_match.group(3)), int(end_match.group(1)), int(end_match.group(2)))
+
+		
+	# Generate the graphs
+	if focus=="day":
+		days_to_show = get_days_to_show(start_date, end_date, days_to_graph)
+		xdata = map(lambda x: int(time.mktime(datetime.datetime(x.year, x.month, x.day, 12).timetuple())*1000), days_to_show)
+		data1 = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container1', levels=False, graph_no=1)
+		data2 = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container2', levels=True, graph_no=2)
+
+	# Gather the data and return it
 	data = dict(data1.items()+ data2.items() +[('start', start),('end', end), ('outlet_list', outlet_list)])
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
-
 
 def detail(request, day_id, levels=False):
 	start = '08/24/2015'
