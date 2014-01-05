@@ -128,13 +128,13 @@ def dashboard(request):
 		start = request.POST['start']
 		end = request.POST['end']
 		focus = request.POST['focus']
-		shop_no = request.POST['shop_id']
+		shop_id = request.POST['shop_id']
 	else:
 		start = '08/24/2015'
 		end = '08/30/2015'
 		focus = "day"
-		shop_no = outlet_list[0].sensor_no
-	vendor = outlet_list.get(sensor_no=shop_no)   # outlet_list[shop_no]
+		shop_id = outlet_list[0].sensor_no
+	vendor = outlet_list.get(sensor_no=shop_id) 
 	days_to_graph = Day.objects.filter(vendor=vendor)
 
 	# Interpret the dates
@@ -152,7 +152,13 @@ def dashboard(request):
 		data2 = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container2', levels=True, graph_no=2)
 
 	# Gather the data and return it
-	data = dict(data1.items()+ data2.items() +[('start', start),('end', end), ('outlet_list', outlet_list)])
+	data = dict(data1.items()+ data2.items() +[('outlet_list', outlet_list)])
+
+	# Set the session data so the information will be carried to the form
+	request.session['start'] = start
+	request.session['end'] = end
+	request.session['focus'] = focus
+	request.session['shop_id'] = shop_id
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
 
 def detail(request, day_id, levels=False):
@@ -163,7 +169,7 @@ def detail(request, day_id, levels=False):
 	xdata = map(lambda h: str(h.hour), hours_to_show)
 	chartdata1 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
 	chartdata2 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
-	data = dict( chartdata1.items() + chartdata2.items() + [('day',d), ('start', start), ('end',end)])
+	data = dict( chartdata1.items() + chartdata2.items() + [('end',end)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
