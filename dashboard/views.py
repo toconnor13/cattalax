@@ -162,6 +162,8 @@ def dashboard(request):
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
 
 def detail(request, day_id, levels=False):
+	vendor_username = request.user.username
+	outlet_list = Outlet.objects.filter(agent=vendor_username)
 	start = '08/24/2015'
 	end = '08/30/2015'
 	d = get_object_or_404(Day, pk=day_id)
@@ -169,7 +171,7 @@ def detail(request, day_id, levels=False):
 	xdata = map(lambda h: str(h.hour), hours_to_show)
 	chartdata1 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
 	chartdata2 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
-	data = dict( chartdata1.items() + chartdata2.items() + [('end',end)])
+	data = dict( chartdata1.items() + chartdata2.items() + [('end',end), ('day', d), ('outlet_list', outlet_list)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
