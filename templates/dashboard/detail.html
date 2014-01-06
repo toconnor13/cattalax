@@ -7,8 +7,17 @@
 {% endblock %}
 
 {% block table_and_graph_html %}
-	<div class="container text-center" style="margin-top: 30px;">
-		<h2 style="text-align:center; margin: 0px 0px 15px 0px;">{{day.describe}} <a href="/dashboard/">{{day.year}}</a> </h2>
+	<div class="container text-center" style="margin: 20px 0px;">
+		<div class="row">
+			<div class="col-md-6">
+				<h2 style="text-align:center; marin: 0px 0px 0px 0px;">{{day.describe}} -- <a href="/dashboard/">{{day.print_month}}</a> </h2>
+			</div>
+			<div class="col-md-6">
+				<ul class="pager">
+					<li><a href="#"> Previous Day </a>  </li>
+					<li><a href="#"> Next Day </a> </li>
+				</ul>
+			</div>
 	</div>
 
 	<div class="row" style = "">

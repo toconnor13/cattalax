@@ -54,7 +54,11 @@ class Day(models.Model):
 
 	def describe(self):
 		d = datetime(self.year, self.month, self.day)
-		return d.strftime("%a %d %b")
+		return d.strftime("%a %d")
+
+	def print_month(self):
+		d = datetime(self.year, self.month, self.day)
+		return d.strftime("%B %Y")
 	
 	def get_capture_rate(self):
 		rate =  float(self.no_of_entries)*100/float(self.no_of_walkbys)
