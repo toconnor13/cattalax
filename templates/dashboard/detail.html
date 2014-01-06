@@ -10,7 +10,7 @@
 	<div class="container text-center" style="margin: 20px 0px;">
 		<div class="row">
 			<div class="col-md-6">
-				<h2 style="text-align:center; marin: 0px 0px 0px 0px;">{{day.describe}} -- <a href="/dashboard/">{{day.print_month}}</a> </h2>
+				<h2 style="text-align:center; marin: 0px 0px 0px 0px;">{{day.print_day}} -- <a href="/dashboard/">{{day.print_month}}</a> </h2>
 			</div>
 			<div class="col-md-6">
 				<ul class="pager">
@@ -37,15 +37,24 @@
 			<tbody>
 				{% for object in object_list %}
 				<tr>
-						<td>{{object.describe}}</td>				
-						<td>{{object.no_of_walkbys}}</td>
-						<td>{{object.no_of_entries}}</td>
-						<td>{{object.no_of_bounces}}</td>
-						<td>{{object.get_capture_rate}}%</td>
-						<td>{{object.get_bounce_rate}}%</td>
-						<td>{{object.get_avg_duration}}</td>
-					<tr>
+					<td>{{object.describe}}</td>				
+					<td>{{object.no_of_walkbys}}</td>
+					<td>{{object.no_of_entries}}</td>
+					<td>{{object.no_of_bounces}}</td>
+					<td>{{object.get_capture_rate}}%</td>
+					<td>{{object.get_bounce_rate}}%</td>
+					<td>{{object.get_avg_duration}}</td>
+				<tr>
 				{% endfor %}
+				<tr class="success">
+					<td>Overall</td>				
+					<td>{{day.no_of_walkbys}}</td>
+					<td>{{day.no_of_entries}}</td>
+					<td>{{day.no_of_bounces}}</td>
+					<td>{{day.get_capture_rate}}%</td>
+					<td>{{day.get_bounce_rate}}%</td>
+					<td>{{day.get_avg_duration}}</td>
+				<tr>
 			</tbody>
 		</table>
 	</div>
