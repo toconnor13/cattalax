@@ -178,6 +178,11 @@ def contact(request):
 	path = request.path
 	return render_to_response('contact.html', {'path':path}, context_instance=RequestContext(request))
 
+def data(request):
+	path = request.path
+	return render_to_response('data.html', {'path':path}, context_instance=RequestContext(request))
+
+
 def opt_out(request):
 	message = "The MAC Address has successfully been submitted."
 	mac_addr_submitted = False

@@ -28,5 +28,6 @@ urlpatterns = patterns('',
 	url(r'^password_reset_confirm', 'auth.views.password_reset_confirm'),
 	url(r'^logout', 'auth.views.logout'),
 	url(r'^optout', 'dashboard.views.opt_out'),
+	url(r'^data', 'dashboard.views.data'),
 	url(r'accounts/', include('registration.backends.default.urls')),
 )
