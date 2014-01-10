@@ -19,48 +19,55 @@
 {% block content %}
 
 <div class="container">
-	<div class="navbar navbar-default" style="margin: 10px auto -15px auto; padding: 0px; max-width:855px; " role="navigation">
-		<div class="collapse navbar-collapse">
+	<div class="row">
+		<div class="col-md-9">
+			<div class="navbar navbar-default pull-left" style="margin: 10px auto -15px auto; padding: 0px; max-width:855px " role="navigation">
+				<div class="collapse navbar-collapse">
 
-			<form method="POST" id="sandbox-container" action="/dashboard/" class="navbar-form navbar-right" role="search" style="">
-				{% csrf_token %}
-				
-				<div class="input-daterange" id="datepicker">
-					<div class="form-group" style="margin: 0px 15px;">
-						<div class="input-group">
-						<select name="shop_id" class="form-control" style="width: 150px;">
-							{% for outlet in outlet_list %}
-							<option {% if request.session.shop_id == outlet.sensor_no %} selected="selected"{% endif %} value={{outlet.sensor_no}}>{{outlet.name}}</option>
-							{% endfor %}
-						</select>
+					<form method="POST" id="sandbox-container" action="/dashboard/" class="navbar-form navbar-right" role="search" style="">
+						{% csrf_token %}
+						
+						<div class="input-daterange" id="datepicker">
+							<div class="form-group" style="margin: 0px 15px;">
+								<div class="input-group">
+								<select name="shop_id" class="form-control" style="width: 150px;">
+									{% for outlet in outlet_list %}
+									<option {% if request.session.shop_id == outlet.sensor_no %} selected="selected"{% endif %} value={{outlet.sensor_no}}>{{outlet.name}}</option>
+									{% endfor %}
+								</select>
+								</div>
+							</div>
+							<div class="form-group" style="margin-right: 15px;">
+								<div class="input-group">
+									<select name="focus" class="form-control">
+										<option {% if request.session.focus == "day" %}selected="selected"{% endif%} value="day">Daily</option>
+										<option {% if request.session.focus == "week" %}selected="selected"{% endif%}value="week">Weekly</option>
+										<option {% if request.session.focus == "month"%}selected="selected"{% endif%}value="month">Monthly</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group" style="margin-right: 15px;">
+								<div class="input-group" style="width: 200px;">
+									<span class="input-group-addon">From:</span>
+									<input type="text" class="form-control input-small" name="start" value="{{ request.session.start }}" />
+								</div>
+							</div> 
+							<div class="form-group" style="margin-right: 15px;">
+								<div class="input-group" style="width: 190px;">
+									<span class="input-group-addon">To:</span>
+									<input type="text" class="form-control input-small" name="end" value="{{ request.session.end }}"/>
+								</div>
+							</div>
+								<button class="btn btn-default" type="submit" value="Show Dates" style="margin-right: 15px;">Show</button>
 						</div>
-					</div>
-					<div class="form-group" style="margin-right: 15px;">
-						<div class="input-group">
-							<select name="focus" class="form-control">
-								<option {% if request.session.focus == "day" %}selected="selected"{% endif%} value="day">Daily</option>
-								<option {% if request.session.focus == "week" %}selected="selected"{% endif%}value="week">Weekly</option>
-								<option {% if request.session.focus == "month"%}selected="selected"{% endif%}value="month">Monthly</option>
-							</select>
-						</div>
-					</div>
-					<div class="form-group" style="margin-right: 15px;">
-						<div class="input-group" style="width: 200px;">
-							<span class="input-group-addon">From:</span>
-							<input type="text" class="form-control input-small" name="start" value="{{ request.session.start }}" />
-						</div>
-					</div> 
-					<div class="form-group" style="margin-right: 15px;">
-						<div class="input-group" style="width: 190px;">
-							<span class="input-group-addon">To:</span>
-							<input type="text" class="form-control input-small" name="end" value="{{ request.session.end }}"/>
-						</div>
-					</div>
-						<button class="btn btn-default" type="submit" value="Show Dates" style="margin-right: 15px;">Show</button>
+					</form>
 				</div>
-			</form>
+				</div>
+			</div>
+				<div class="col-md-2" style="margin: 13px 0px 0px 0px;">
+					<button type="button" class="btn btn-primary btn-lg">Add an Event +</button>
+				</div>
 		</div>
-	</div>
 
 	{% block table_and_graph_html %}{% endblock %}	
 
