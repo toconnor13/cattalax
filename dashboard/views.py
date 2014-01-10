@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext, Context
 from dashboard.models import Day, Hour, Outlet
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 import datetime
 import re
 import time
@@ -161,12 +162,15 @@ def dashboard(request):
 	request.session['shop_id'] = shop_id
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
 
+@login_required
 def detail(request, day_id, levels=False):
 	vendor_username = request.user.username
 	outlet_list = Outlet.objects.filter(agent=vendor_username)
+	d = get_object_or_404(Day, pk=day_id)
+	if d.vendor not in outlet_list:
+		return HttpResponseRedirect('/dashboard')
 	start = '08/24/2015'
 	end = '08/30/2015'
-	d = get_object_or_404(Day, pk=day_id)
 	hours_to_show = [h for h in d.hour_set.all() if h.hour>6 and h.hour<20]
 	xdata = map(lambda h: str(h.hour), hours_to_show)
 	chartdata1 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
