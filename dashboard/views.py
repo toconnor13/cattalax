@@ -195,3 +195,6 @@ def opt_out(request):
 		mac_addr_submitted = True
 		print mac_addr
 	return render_to_response('opt-out.html', {'message': message, 'submitted': mac_addr_submitted}, context_instance=RequestContext(request))
+
+def event(request):
+	return render_to_response('dashboard/event.html', context_instance=RequestContext(request))
