@@ -12,10 +12,12 @@ emailusernames: This app enables the website to take email addresses as username
 
 Features to consider:
 
-1. Uploading a dependent variable, and translating this into some sort of model.
+1. Uploading a dependent variable, and translating this into some sort of model. Where to show this information.
 
 2. Where to put the MAC addresses.
 
 3. More information on privacy.
 
 4. What is done with the data, and who else it is supplied to, what form it is so done and why.
+
+
