@@ -48,18 +48,18 @@
 
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="{% active path "$^" %}"><a href="/">Home</a></li>
+						<li class="{% active path "^/home" %}"><a href="/">Home</a></li>
 						{% if user.is_authenticated %}
-						<li class="{% active path "^/dashboard/$" %}"><a href="/dashboard/">Dashboard</a></li>
+						<li class="{% active path "^$" %}"><a href="/dashboard/">Dashboard</a></li>
 						{% endif %}
 
-						<li class="{% active path "^/dashboard/contact/" %}"><a href="/dashboard/contact/">Contact</a></li>
+						<li class="{% active path "^/contact/" %}"><a href="/contact/">Contact</a></li>
 											</ul>
 					
 
 					<ul class="nav navbar-nav navbar-right">
 						<li style="padding: 15px 10px 0px 10px;">
-							<p style="color: #B0B0B0;">{% if user.is_authenticated %}Welcome, {{user.username}}, you are logged in.{% else %}You are not logged in.{% endif %} </p>
+						<p style="color: #B0B0B0;">{% if user.is_authenticated %}Welcome, {{user.username}}, you are logged in.{% else %}You are not logged in.{% endif %} </p>
 						</li>
 						<li>
 						{% if user.is_authenticated %}

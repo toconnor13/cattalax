@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
+from django.core.urlresolvers import reverse_lazy
 from emailusernames.forms import EmailAuthenticationForm
 # from django.core.urlresolvers import reverse_lazy
 
@@ -18,7 +19,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-	url(r'^$', 'cattalax.views.index'),
+	url(r'^$', RedirectView.as_view(url=reverse_lazy('homepage'))),
+	url(r'^home/', 'cattalax.views.index', name="homepage"),
 	url(r'^dashboard/', include('dashboard.urls')),
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^login/$', 'auth.views.login', 
@@ -28,6 +30,7 @@ urlpatterns = patterns('',
 	url(r'^password_reset_confirm', 'auth.views.password_reset_confirm'),
 	url(r'^logout', 'auth.views.logout'),
 	url(r'^optout', 'dashboard.views.opt_out'),
+	url(r'^contact', 'dashboard.views.contact', name="contact_page"),
 	url(r'^data', 'dashboard.views.data'),
 	url(r'accounts/', include('registration.backends.default.urls')),
 )
