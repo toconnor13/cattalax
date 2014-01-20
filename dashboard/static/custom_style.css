@@ -35,3 +35,12 @@
 	margin: 20px 0px 0px 250px;
 	display: block;
 }
+
+.vert-col {
+	  background-color: #F7F7F7;
+	  border: 1px solid #DDD;
+	  margin: -7px 45px 10px -3px;
+	  padding-bottom: 10px;
+	  width: 13%;
+	  height: 700px;
+	  }
