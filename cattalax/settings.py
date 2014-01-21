@@ -47,6 +47,7 @@ BOWER_INSTALLED_APPS = (
 	'd3',
 	'nvd3',
 	'bootstrap3-datepicker',
+	'smalot-bootstrap-datetimepicker',
 )
 
 # Local time zone for this installation. Choices can be found here:
