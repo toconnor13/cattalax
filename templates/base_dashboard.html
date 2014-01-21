@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "vert_nav.html" %}
 
 {% load nvd3_tags %}
 
@@ -16,18 +16,8 @@
 	{% block graphs %}{% endblock %}
 {% endblock %}
 
-{% block content %}
+{% block column %}
 
-<div class="container" style="margin-top:7px;">
-	<div class="row">
-		<div class="col-md-2 vert-col">
-			<ul class="nav nav-pills nav-stacked" style="padding: 0px 5px 0px 0px;">
-				<li class="active"><a href="#" style="margin: 10px 0px;">Dashboard</a></li>
-				<li><a href="#">Campaigns</a></li>
-			</ul>
-		</div>
-		
-		<div class="col-md-10" >
 			<div class="row">
 				<div class="navbar navbar-default pull-left" style="margin: 0px 0px 0px 15px; max-width:855px " role="navigation">
 					<div class="collapse navbar-collapse">
