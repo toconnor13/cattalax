@@ -199,5 +199,8 @@ def opt_out(request):
 def campaigns(request):
 	return render_to_response('dashboard/campaigns.html', context_instance=RequestContext(request))
 
+def campaign_form(request):
+	return render_to_response('dashboard/campaign_form.html', context_instance=RequestContext(request))
+
 def event(request):
 	return render_to_response('dashboard/event.html', context_instance=RequestContext(request))
