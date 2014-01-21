@@ -5,4 +5,5 @@ urlpatterns = patterns('',
 #		url(r'^contact/', 'dashboard.views.contact', name="contact_page"),
 		url(r'^event/', 'dashboard.views.event'),
 		url(r'^(?P<day_id>\d+)/$', 'dashboard.views.detail'),
+		url(r'^campaigns/', 'dashboard.views.campaigns'),
 		)

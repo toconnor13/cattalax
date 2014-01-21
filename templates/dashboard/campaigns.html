@@ -1,0 +1,27 @@
+{% extends "vert_nav.html" %}
+
+{% block column %}
+
+<div class="row">
+	<table class="table table-bordered table-condensed table-hover" style="max-width: 600px">
+		<thead>
+			<th>Name</th>
+			<th>Start</th>
+			<th>End</th>
+		</thead>
+
+		<tbody>
+			{% for object in object_list %}
+			<tr>
+				<td>{{object.name}}</td>
+				<td>{{object.start}}</td>
+				<td>{{object.end}}</td>
+			<tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}
+
+
