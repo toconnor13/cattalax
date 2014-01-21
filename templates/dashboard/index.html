@@ -12,24 +12,24 @@
 			<table class="table table-bordered table-condensed table-hover" style="margin: 20px 0px 0px 0px;">
 				<thead>
 					<th>Day</th>
-						<th>Walkbys</th>
-						<th>Captures</th>
-						<th>Bounces</th>
-						<th>Capture</th>
-						<th>Bounce</th>
-						<th>Duration</th>
+					<th>Walkbys</th>
+					<th>Captures</th>
+					<th>Bounces</th>
+					<th>Capture</th>
+					<th>Bounce</th>
+					<th>Duration</th>
 				</thead>
 
 				<tbody>
 					{% for object in object_list %}
 						<tr>
 							<td><a href="/dashboard/{{object.id}}">{{object.describe}}</a></td>
-								<td>{{object.no_of_walkbys}}</td>
-								<td>{{object.no_of_entries}}</td>
-								<td>{{object.no_of_bounces}}</td>
-								<td>{{object.get_capture_rate}}%</td>
-								<td>{{object.get_bounce_rate}}%</td>
-								<td>{{object.get_avg_duration}}</td>
+							<td>{{object.no_of_walkbys}}</td>
+							<td>{{object.no_of_entries}}</td>
+							<td>{{object.no_of_bounces}}</td>
+							<td>{{object.get_capture_rate}}%</td>
+							<td>{{object.get_bounce_rate}}%</td>
+							<td>{{object.get_avg_duration}}</td>
 						<tr>
 					{% endfor %}
 				</tbody>
