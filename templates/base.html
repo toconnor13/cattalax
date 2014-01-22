@@ -12,6 +12,8 @@
 		<script src="{% static "bower_components/bootstrap/dist/js/bootstrap.js" %}"></script>
 		<script src="{{STATIC_URL}}bootstrap-datetimepicker.min.js"></script>
 		<script src="{% static "bower_components/bootstrap3-datepicker/js/bootstrap-datepicker.js" %}"></script>
+		<script src="{% static "bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" %}"></script>
+
 
 		<link rel="stylesheet" href="{% static "bower_components/bootstrap/dist/css/bootstrap.css" %}"  />
 
@@ -94,6 +96,12 @@
 				e.stopPropagation();
 			  });
 			});
+		</script>
+
+		<script type="text/javascript">
+			$('#datetimepicker').datetimepicker({
+					format: 'yyyy-mm-dd hh:ii'					
+			})
 		</script>
 
 	</body>
