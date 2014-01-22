@@ -1,7 +1,7 @@
 {% extends "vert_nav.html" %}
 
 {% block column %}
-	<form method="POST" id="sandbox-container" class="form-horizontal" role="form">
+	<form method="POST" id="sandbox-container" class="form-horizontal" role="form" style="width: 110%;" >
 		{% csrf_token %}
 		<div class="form-group">
 			<label for="event_name" class="col-sm-2 control-label">Name</label>
@@ -10,26 +10,23 @@
 			</div>
 		</div>
 
-		<div class="input-daterange" id="datepicker">
-
-			<div class="form-group">
-				<label for="start" class="col-sm-2 control-label">Start Date</label>
-				<div class="col-sm-2 input-group">
-					<input type="text" class="form-control input-small" name="start">
-				</div>
+		<div class="form-group">
+			<label for="start" class="col-sm-2 control-label">Start Date</label>
+			<div class="controls col-sm-2">
+				<input type="text" class="form-control input-small" name="start" id="datetimepicker1" value="2014-01-22 09:00">
 			</div>
+		</div>
 
-			<div class="form-group">
-				<label for="end" class="col-sm-2 control-label">End Date</label>
-				<div class="col-sm-2 input-group">
-					<input type="text" class="form-control input-small" name="end">
-				</div>
+		<div class="form-group">
+			<label for="end" class="col-sm-2 control-label">End Date</label>
+			<div class="controls col-sm-2">
+				<input type="text" class="form-control input-small" name="end" id="datetimepicker2" value="2014-01-22 18:00">
 			</div>
-			
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-default" type="submit">Create</button>
-				</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-default" type="submit">Create</button>
 			</div>
 		</div>
 	</form>
