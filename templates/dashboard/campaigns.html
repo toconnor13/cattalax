@@ -3,23 +3,34 @@
 {% block column %}
 
 <div class="row">
-	<table class="table table-bordered table-condensed table-hover" style="max-width: 600px">
-		<thead>
-			<th>Name</th>
-			<th>Start</th>
-			<th>End</th>
-		</thead>
+	<div class="page-header">
+		<h2>Campaigns</h2>
+	</div>
+</div>
 
-		<tbody>
-			{% for object in object_list %}
-			<tr>
-				<td>{{object.name}}</td>
-				<td>{{object.start}}</td>
-				<td>{{object.end}}</td>
-			<tr>
-			{% endfor %}
-		</tbody>
-	</table>
+<div class="row">
+	<div class="col-md-10">
+		<table class="table table-bordered table-condensed table-hover" style="max-width: 600px">
+			<thead>
+				<th>Name</th>
+				<th>Start</th>
+				<th>End</th>
+			</thead>
+
+			<tbody>
+				{% for object in object_list %}
+				<tr>
+					<td>{{object.name}}</td>
+					<td>{{object.start}}</td>
+					<td>{{object.end}}</td>
+				<tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-2">
+		<a class="btn btn-primary pull-right" href="/dashboard/add">Create a Campaign</a>
+	</div>
 </div>
 
 {% endblock %}
