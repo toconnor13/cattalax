@@ -7,4 +7,5 @@ urlpatterns = patterns('',
 		url(r'^(?P<day_id>\d+)/$', 'dashboard.views.detail'),
 		url(r'^campaigns/', 'dashboard.views.campaigns'),
 		url(r'^add/', 'dashboard.views.campaign_form'),
+		url(r'^details/', 'dashboard.views.details'),
 		)
