@@ -1,0 +1,36 @@
+{% extends "vert_nav.html" %}
+
+{% block column %}
+	<div class="page-header">
+		<h2>User Details </h2>
+	</div>
+
+	<form method="POST" class="form-horizontal" role="form" style="width: 110%">
+		{% csrf_token %}
+		
+		<div class="form-group">
+			<label for="user_name" class="col-sm-2 control-label">Name</label>
+			<div class="col-sm-3">
+				<input type="text" class="form-control" id="user_name" placeholder="User name">
+			</div>
+		</div>
+
+
+		<div class="form-group">
+			<label for="store_name" class="col-sm-2 control-label">Store Name</label>
+			<div class="col-sm-3">
+				<input type="text" class="form-control" id="store_name" placeholder="Store name">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-3">
+				<a href="/password/change/">Change Password</a>
+			</div>
+		</div>
+
+
+
+
+	</form>
+{% endblock %}
