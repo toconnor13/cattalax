@@ -1,6 +1,6 @@
 import os, sys
 
-path='/home/sheefrex/code/cattalax/site'
+path='/home/sheefrex/code/cattalax/site' # ntc
 if path not in sys.path:
 	sys.path.append(path)
 
@@ -14,8 +14,6 @@ setup_environ(settings)
 
 #import MySQLdb
 from duration import *
-
-
 
 # DJANGO_SETTINGS_MODULE = cattalax.settings
 #settings.configure(
@@ -35,14 +33,11 @@ from duration import *
 
 # cur.execute("SELECT id FROM enters WHERE obs>2 INTO OUTFILE '/tmp/enter2.csv' fields terminated by ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'")
 
-
-
 file_of_addrs = open("/tmp/enter2.csv")
 addrs = file_of_addrs.read().split()
 
 count0 = 0
 for addr in addrs:
-
 	if len(Customer.objects.filter(mac_addr=eval(addr)))==0:
 		c = Customer(mac_addr=eval(addr))
 		c.save()
@@ -69,5 +64,4 @@ for addr in addrs:
 		count += 4
 
 #	con.commit()
-	
-#os.remove('tmp/cattalax/enter2.csv')
+# 	os.remove('tmp/cattalax/enter2.csv')	
