@@ -1,0 +1,8 @@
+TACHES POUR LE PROCHAINE SEMAINE - LUNDI JANVIER 27 2014
+
+1.  Premierement, il faut que je finirai le site web.  Tout les boutons doit se
+sélectionner quand le page, correspondant a leur function, est selectionné.
+
+2. Deuxiémement, c'est un object de trés haute importance que la méthodes pour
+la manipulation de données sera concever en total.  Dans ce domaine:
+	a. Remainier/récrire les variables de temps utilisées dans les modéles  
