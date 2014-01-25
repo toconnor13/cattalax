@@ -28,7 +28,6 @@ class Visit(models.Model):
 	def get_hour(self):
 		t = datetime.fromtimestamp(self.arrival_time)
 		return t.hour
-	
 
 class Walkby(models.Model):
 	vendor = models.ForeignKey(Outlet)
@@ -37,7 +36,6 @@ class Walkby(models.Model):
 	def get_hour(self):
 		t = datetime.fromtimestamp(self.time)
 		return t.hour
-
 
 class Day(models.Model):
 	vendor = models.ForeignKey(Outlet)
@@ -59,7 +57,6 @@ class Day(models.Model):
 	def print_day(self):
 		d = datetime(self.year, self.month, self.day)
 		return d.strftime("%a %d")
-
 
 	def print_month(self):
 		d = datetime(self.year, self.month, self.day)
