@@ -122,6 +122,8 @@ def get_days_to_show(start_date, end_date, days_to_graph):
 
 @login_required
 def dashboard(request):
+	nav="dashboard"
+	request.session['nav']= nav
 	vendor_username = request.user.username
 	outlet_list = Outlet.objects.filter(agent=vendor_username)
 	pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
@@ -197,12 +199,14 @@ def opt_out(request):
 	return render_to_response('opt-out.html', {'message': message, 'submitted': mac_addr_submitted}, context_instance=RequestContext(request))
 
 def campaigns(request):
+	request.session['nav']="campaigns"
 	return render_to_response('dashboard/campaigns.html', context_instance=RequestContext(request))
 
 def campaign_form(request):
 	return render_to_response('dashboard/campaign_form.html', context_instance=RequestContext(request))
 
 def details(request):
+	request.session['nav']="details"
 	return render_to_response('dashboard/user_details.html', context_instance=RequestContext(request))
 
 def event(request):
