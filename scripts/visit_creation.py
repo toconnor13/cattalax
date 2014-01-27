@@ -20,7 +20,7 @@ from duration import *
 #	DATABASE_ENGINE='mysql',
 #	DATABASE_NAME='cat_dashboard',
 #	DATABASE_USER='root',
-#	DATABASE_PASSWORD='the power to do what is right'
+#	DATABASE_PASSWORD='the power to do what is right',
 #	DATABASE_HOST='localhost',
 #	)
 # HOST="localhost"
@@ -60,7 +60,6 @@ for addr in addrs:
 		print v.arrival_time
 		print v.duration
 		v.save()
-
 		count += 4
 
 #	con.commit()
