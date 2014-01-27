@@ -8,13 +8,16 @@ TEMPLATE_DEBUG = DEBUG
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 if os.environ['MACHINE_ID']=='cattalax_0':
-	db_host='10.24.18.6'
-	user='bismere0'
+#	db_host='10.24.18.6'
+#	user='bismere0'
 	root_dir='/root'
 else:
-	db_host = 'localhost'
-	user = 'root'
+#	db_host = 'localhost'
+#	user = 'root'
 	root_dir = '/home/sheefrex'
+
+db_host='10.24.18.1'
+user='root'
 
 ADMINS = (
      ('Tony O\'Connor', 'toconnor13@gmail.com'),
