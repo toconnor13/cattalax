@@ -125,7 +125,7 @@ def dashboard(request):
 	nav="dashboard"
 	request.session['nav']= nav
 	vendor_username = request.user.username
-	outlet_list = Outlet.objects.filter(agent=vendor_username)
+	outlet_list = Outlet.objects.all() # filter(agent=vendor_username)
 	pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
 	if request.method=='POST':
 		start = request.POST['start']
@@ -167,7 +167,8 @@ def dashboard(request):
 @login_required
 def detail(request, day_id, levels=False):
 	vendor_username = request.user.username
-	outlet_list = Outlet.objects.filter(agent=vendor_username)
+#	outlet_list = Outlet.objects.filter(agent=vendor_username)
+	outlet_list = Outlet.objects.all()
 	d = get_object_or_404(Day, pk=day_id)
 	if d.vendor not in outlet_list:
 		return HttpResponseRedirect('/dashboard')
