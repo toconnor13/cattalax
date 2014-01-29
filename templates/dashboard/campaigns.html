@@ -13,11 +13,68 @@
 		<table class="table table-bordered table-condensed table-hover" style="max-width: 600px">
 			<thead>
 				<th>Name</th>
-				<th>Start</th>
-				<th>End</th>
+				<th>Time Period</th>
+				<th>
+					<a href="#" data-toggle="tooltip" class="tooltip1" title="The percentage change in the capture rate in the period.">Capture</a>
+				</th>
+
+				<th>
+					<a href="#" data-toggle="tooltip" class="tooltip1" title="The percentage increase in the bouce rate in the period.">Bounce</a>
+				</th>
+
+				<th><a href="#" data-toggle="tooltip" class="tooltip1" title="This is the change in the average duration during the period.">Duration</a>
+				</th>
+				<th>
+					<a href="#" data-toggle="tooltip" class="tooltip1" title="This is the percentage of new customers who come during this period who return again outside the period.">Frequency</a>
+				</th>
 			</thead>
 
 			<tbody>
+				<tr>
+					<td>Winter Sale</td>
+					<td>26/12 - 31/1</td>
+					<td>+13%</td>
+					<td>-20%</td>
+					<td>+70s</td>
+					<td>3%</td>
+				<tr>
+
+				<tr>
+					<td>Irish Times Ad</td>
+					<td>13/2 - 20/2</td>
+					<td>+0%</td>
+					<td>+1%</td>
+					<td>+5s</td>
+					<td>23%</td>
+				<tr>
+
+				<tr>
+					<td>Spring Campaign</td>
+					<td>11/4 - 20/4</td>
+					<td>+2%</td>
+					<td>-5%</td>
+					<td>-30s</td>
+					<td>9%</td>
+				<tr>
+
+				<tr>
+					<td>Bus Advertisement</td>
+					<td>01/5 - 14/5</td>
+					<td>+10%</td>
+					<td>-2%</td>
+					<td>+25s</td>
+					<td>15%</td>
+				<tr>
+
+				<tr>
+					<td>Human Advertisement</td>
+					<td>01/6 - 07/6</td>
+					<td>+16%</td>
+					<td>+5%</td>
+					<td>+32s</td>
+					<td>1%</td>
+				<tr>
+
 				{% for object in object_list %}
 				<tr>
 					<td>{{object.name}}</td>
@@ -34,3 +91,4 @@
 </div>
 
 {% endblock %}
+
