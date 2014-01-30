@@ -9,6 +9,6 @@ class DayAdmin(admin.ModelAdmin):
 		(None, {'fields': ['day']}),
 	]
 	inlines=[HourInline]
-	list_display = ('day', 'month', 'year')
+	list_display = ('day', 'month', 'year', 'vendor')
 
 admin.site.register(Day, DayAdmin)
