@@ -1,20 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container" style="margin-top: 7px">
-	<div class="row">
-		<div class="col-md-2 vert-col">
-			<ul class="nav nav-pills nav-stacked" style="padding: 0px 5px 0px 0px;">
-				<li {% if request.session.nav == "dashboard" %}class="active"{% endif %}><a href="/dashboard/" style="margin: 20px 0px"><strong>Dashboard</strong></a></li>
-				<li {% if request.session.nav == "campaigns" %}class="active"{% endif %}><a href="/dashboard/campaigns/" style="margin: 0px 0px 20px 0px"><strong>Campaigns</strong></a></li>
-				<li {% if request.session.nav == "details" %}class="active"{% endif %}><a href="/dashboard/details/" style="margin: 0px 0px 20px 0px"><strong>User Details</strong></a></li>
-			</ul>
-		</div>
 
-		<div class="col-md-10">
-			{% block column %}
-			{% endblock %}
-		</div>
-	</div>
+<div class="container">
+	{% block column %}
+	{% endblock %}
 </div>
 {% endblock %}
+
