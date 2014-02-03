@@ -17,8 +17,8 @@
 {% endblock %}
 
 {% block content %}
-	<div class="container">
-			<div class="row" style="margin: 10px 0px;">
+	<div class="container" style="margin: 10px 60px; max-width: 1100px;">
+			<div class="row">
 				<div class="navbar navbar-default" role="navigation">
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav">
@@ -38,7 +38,7 @@
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog" style="width: 300px;">
+	<div class="modal-dialog" style="width: 275px;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -80,7 +80,6 @@
 								<input type="text" class="form-control input-small" name="end" value="{{ request.session.end }}"/>
 							</div>
 						</div>
-							<button class="btn btn-default" type="submit" value="Show Dates">Show</button>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -92,8 +91,8 @@
 	</div>
 </div>
 
-<hr style="margin: 30px 0px;">
-<div class="footer">
+<div class="footer" style="margin: 10px 30px;">
+<hr >
 	<p>&copy; <a href="mailto:toconnor13@gmail.com">Allamew Analytics</a></p>
 </div>
 </div> <!-- ends container -->
