@@ -13,7 +13,7 @@ if os.environ['MACHINE_ID']=='cattalax_0':
 #	user='bismere0'
 	root_dir='/root'
 else:
-#	db_host = 'localhost'
+	db_host = 'localhost'
 #	user = 'root'
 	root_dir = '/home/sheefrex'
 
