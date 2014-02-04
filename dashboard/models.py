@@ -19,32 +19,6 @@ class Outlet(models.Model):
 	def __unicode__(self):
 		return self.name
 
-class Visit(models.Model):
-	patron = models.ForeignKey(Customer)
-	vendor = models.ForeignKey(Outlet)
-	duration = models.IntegerField()
-	arrival_time = models.IntegerField()
-	# A field is need here to attach the visit to an hour or day.  Preferably hour, but day will need to count the visits over all its children.
-	# arrival_time datetime field
-	# day foreign key field
-	# week foreign key field
-	# month foreign key field
-
-	def get_hour(self):
-		t = datetime.fromtimestamp(self.arrival_time)
-		return t.hour
-
-class Walkby(models.Model):
-	vendor = models.ForeignKey(Outlet)
-	time = models.IntegerField()
-	# time datetime field
-	# day foreign key field
-	# week foreign key field
-	# month foreign key field
-	
-	def get_hour(self):
-		t = datetime.fromtimestamp(self.time)
-		return t.hour
 
 # class Month:
 	
@@ -111,4 +85,40 @@ class Hour(TimeUnit):
 	def describe(self):
 		d = datetime(self.day.year, self.day.month, self.day.day, self.hour)
 		return d.strftime("%H:%M") # prepend %A for day string
+
+class Encounter(models.Model):
+	vendor = models.ForeignKey(Outlet)
+	timestamp = models.IntegerField()
+	day = models.ForeignKey(Day)
+#	week = models.ForeignKey(Week)
+#	month = models.ForeignKey(Month)
+	class Meta:
+		abstract=True
+
+class Visit(models.Model):
+	patron = models.ForeignKey(Customer)
+	vendor = models.ForeignKey(Outlet)
+	duration = models.IntegerField()
+	arrival_time = models.IntegerField()
+	# A field is need here to attach the visit to an hour or day.  Preferably hour, but day will need to count the visits over all its children.
+	# arrival_time datetime field
+	# day foreign key field
+	# week foreign key field
+	# month foreign key field
+
+	def get_hour(self):
+		t = datetime.fromtimestamp(self.arrival_time)
+		return t.hour
+
+class Walkby(models.Model):
+	vendor = models.ForeignKey(Outlet)
+	time = models.IntegerField()
+	# time datetime field
+	# day foreign key field
+	# week foreign key field
+	# month foreign key field
+	
+	def get_hour(self):
+		t = datetime.fromtimestamp(self.time)
+		return t.hour
 
