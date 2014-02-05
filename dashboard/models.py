@@ -30,7 +30,8 @@ class TimeUnit(models.Model):
 	no_of_entries = models.IntegerField()
 	no_of_bounces = models.IntegerField()
 	avg_duration = models.IntegerField()
-	# some datetime object?	
+	datetime = models.DateTimeField()
+
 	class Meta:
 		abstract = True
 
@@ -67,24 +68,20 @@ class Day(TimeUnit):
 		return int(self.day)
 
 	def describe(self):
-		d = datetime(self.year, self.month, self.day)
-		return d.strftime("%a %d %b")
+		return self.datetime.strftime("%a %d %b")
 
 	def print_day(self):
-		d = datetime(self.year, self.month, self.day)
-		return d.strftime("%a %d")
+		return self.datetime.strftime("%a %d")
 
 	def print_month(self):
-		d = datetime(self.year, self.month, self.day)
-		return d.strftime("%B %Y")
+		return self.datetime.strftime("%B %Y")
 	
 class Hour(TimeUnit):
 	hour = models.IntegerField()
 	day = models.ForeignKey(Day)
 
 	def describe(self):
-		d = datetime(self.day.year, self.day.month, self.day.day, self.hour)
-		return d.strftime("%H:%M") # prepend %A for day string
+		return datetime.strftime("%H:%M") # prepend %A for day string
 
 class Encounter(models.Model):
 	vendor = models.ForeignKey(Outlet)
