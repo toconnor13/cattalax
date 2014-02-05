@@ -88,18 +88,17 @@ class Hour(TimeUnit):
 
 class Encounter(models.Model):
 	vendor = models.ForeignKey(Outlet)
-	timestamp = models.IntegerField()
-	day = models.ForeignKey(Day)
+	time = models.IntegerField()
+#	day = models.ForeignKey(Day)
+#	datetime = models.DateTimeField(null=True)
 #	week = models.ForeignKey(Week)
 #	month = models.ForeignKey(Month)
 	class Meta:
 		abstract=True
 
-class Visit(models.Model):
+class Visit(Encounter):
 	patron = models.ForeignKey(Customer)
-	vendor = models.ForeignKey(Outlet)
 	duration = models.IntegerField()
-	arrival_time = models.IntegerField()
 	# A field is need here to attach the visit to an hour or day.  Preferably hour, but day will need to count the visits over all its children.
 	# arrival_time datetime field
 	# day foreign key field
@@ -110,9 +109,7 @@ class Visit(models.Model):
 		t = datetime.fromtimestamp(self.arrival_time)
 		return t.hour
 
-class Walkby(models.Model):
-	vendor = models.ForeignKey(Outlet)
-	time = models.IntegerField()
+class Walkby(Encounter):
 	# time datetime field
 	# day foreign key field
 	# week foreign key field
