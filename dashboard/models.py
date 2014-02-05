@@ -20,17 +20,12 @@ class Outlet(models.Model):
 		return self.name
 
 
-# class Month:
-	
-
-#class Week (models.Model):
 class TimeUnit(models.Model):
 	vendor = models.ForeignKey(Outlet)
 	no_of_walkbys = models.IntegerField()
 	no_of_entries = models.IntegerField()
 	no_of_bounces = models.IntegerField()
 	avg_duration = models.IntegerField()
-	datetime = models.DateTimeField()
 
 	class Meta:
 		abstract = True
@@ -57,12 +52,22 @@ class TimeUnit(models.Model):
 		else:
 			seconds = str(secs)
 		return str(mins) + ':' + seconds
+
+class Month(TimeUnit):
+	year = models.IntegerField()
+	month_no = models.IntegerField()
+
+class Week(TimeUnit):
+	year = models.IntegerField()
+	week_no = models.IntegerField()
+#	start_datetime = models.DateTimeField()
+#	end_datetime = models.DateTimeField()
 	
 class Day(TimeUnit):
 	day = models.IntegerField()
 	month = models.IntegerField()
 	year = models.IntegerField()
-	# a datetime object could combine the above three
+	datetime = models.DateTimeField()
 
 	def day_no(self):
 		return int(self.day)
@@ -79,6 +84,7 @@ class Day(TimeUnit):
 class Hour(TimeUnit):
 	hour = models.IntegerField()
 	day = models.ForeignKey(Day)
+	datetime = models.DateTimeField()
 
 	def describe(self):
 		return datetime.strftime("%H:%M") # prepend %A for day string
