@@ -96,17 +96,14 @@ class Encounter(models.Model):
 	class Meta:
 		abstract=True
 
+	def get_hour(self):
+		return datetime.hour
+
 class Visit(Encounter):
 	patron = models.ForeignKey(Customer)
 	duration = models.IntegerField()
 
-	def get_hour(self):
-		t = datetime.fromtimestamp(self.arrival_time)
-		return t.hour
 
 class Walkby(Encounter):
-	
-	def get_hour(self):
-		t = datetime.fromtimestamp(self.time)
-		return t.hour
+	"Nothing here."	
 
