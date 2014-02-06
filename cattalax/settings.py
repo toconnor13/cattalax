@@ -23,6 +23,12 @@ ADMINS = (
      ('Tony O\'Connor', 'toconnor13@gmail.com'),
 )
 
+ALLOWED_HOSTS = [
+	'www.cattalax.com',
+	'46.22.132.57',
+	'46.22.132.57:80'
+		]
+
 AUTHENTICATION_BACKENDS = (
 		'emailusernames.backends.EmailAuthBackend',
 		'django.contrib.auth.backends.ModelBackend')
