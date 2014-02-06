@@ -89,7 +89,7 @@ class Hour(TimeUnit):
 	datetime = models.DateTimeField()
 
 	def describe(self):
-		return datetime.strftime("%H:%M") # prepend %A for day string
+		return self.datetime.strftime("%H:%M") # prepend %A for day string
 
 class Encounter(models.Model):
 	vendor = models.ForeignKey(Outlet)
