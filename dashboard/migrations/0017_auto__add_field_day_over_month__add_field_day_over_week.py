@@ -1,38 +1,31 @@
 # -*- coding: utf-8 -*-
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
 
-class Migration(DataMigration):
+
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-#		list_of_months = Month.objects.all()
-#		list_of_weeks = Week.objects.all()
-		for d in orm.Day.objects.all():
-			try:
-				orm.Month.objects.get(year=d.year, month_no=d.month)
-			except (ValueError, ObjectDoesNotExist):
-				m = orm.Month(year=d.year, month_no=d.month, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0, vendor=d.vendor)
-				m.save()
-			d.month = m
-			d.save()
-		for d in orm.Day.objects.all():
-			try:
-				orm.Week.objects.get(year=d.year, week_no=d.datetime.isocalendar()[1])
-			except (ValueError, ObjectDoesNotExist):
-				w = orm.Week(year=d.year, week_no=d.datetime.isocalendar()[1], no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0, vendor=d.vendor)
-				w.save()
-			d.week = w
-			d.save()
-	
-        # Note: Don't use "from appname.models import ModelName". 
-        # Use orm.ModelName to refer to models in this application,
-        # and orm['appname.ModelName'] for models in other applications.
+        # Adding field 'Day.over_month'
+        db.add_column(u'dashboard_day', 'over_month',
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['dashboard.Month']),
+                      keep_default=False)
+
+        # Adding field 'Day.over_week'
+        db.add_column(u'dashboard_day', 'over_week',
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['dashboard.Week']),
+                      keep_default=False)
+
 
     def backwards(self, orm):
-		raise RuntimeError("Cannot reverse this migration.")
+        # Deleting field 'Day.over_month'
+        db.delete_column(u'dashboard_day', 'over_month_id')
+
+        # Deleting field 'Day.over_week'
+        db.delete_column(u'dashboard_day', 'over_week_id')
+
 
     models = {
         u'dashboard.customer': {
@@ -50,6 +43,8 @@ class Migration(DataMigration):
             'no_of_bounces': ('django.db.models.fields.IntegerField', [], {}),
             'no_of_entries': ('django.db.models.fields.IntegerField', [], {}),
             'no_of_walkbys': ('django.db.models.fields.IntegerField', [], {}),
+            'over_month': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.Month']"}),
+            'over_week': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.Week']"}),
             'vendor': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.Outlet']"}),
             'year': ('django.db.models.fields.IntegerField', [], {})
         },
@@ -116,4 +111,3 @@ class Migration(DataMigration):
     }
 
     complete_apps = ['dashboard']
-    symmetrical = True

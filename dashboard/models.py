@@ -68,6 +68,8 @@ class Day(TimeUnit):
 	month = models.IntegerField()
 	year = models.IntegerField()
 	datetime = models.DateTimeField()
+	over_month = models.ForeignKey(Month)
+	over_week = models.ForeignKey(Week)
 
 	def day_no(self):
 		return int(self.day)
