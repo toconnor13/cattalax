@@ -119,7 +119,6 @@ def get_days_to_show(start_date, end_date, days_to_graph):
 #	days_to_graph = sorted(Day.objects.all(), key=Day.day_no)
 #	days_to_show = sorted(days_to_show, key=lambda day: day.day_no)
 
-
 @login_required
 def dashboard(request):
 	nav="dashboard"
@@ -145,14 +144,20 @@ def dashboard(request):
 	end_match = re.match(pattern, end)
 	start_date = datetime.date(int(start_match.group(3)), int(start_match.group(1)), int(start_match.group(2)))
 	end_date = datetime.date(int(end_match.group(3)), int(end_match.group(1)), int(end_match.group(2)))
-
 		
 	# Generate the graphs
 	if focus=="day":
-		days_to_show = get_days_to_show(start_date, end_date, days_to_graph)
-		xdata = map(lambda x: int(time.mktime(datetime.datetime(x.year, x.month, x.day, 12).timetuple())*1000), days_to_show)
-		data1 = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container1', levels=False, graph_no=1)
-		data2 = create_graph(xdata, days_to_show, 'lineChart', 'linechart_container2', levels=True, graph_no=2)
+		objects_to_show = get_days_to_show(start_date, end_date, days_to_graph)
+		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
+	elif focus=="week":
+		objects_to_show = Week.objects.all()
+		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
+	else:
+		objects_to_show = Month.objects.all()
+		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
+	data1 = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container1', levels=False, graph_no=1)
+	data2 = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container2', levels=True, graph_no=2)
+
 
 	# Gather the data and return it
 	data = dict(data1.items()+ data2.items() +[('outlet_list', outlet_list)])
