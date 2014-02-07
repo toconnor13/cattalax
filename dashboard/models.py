@@ -26,6 +26,7 @@ class TimeUnit(models.Model):
 	no_of_entries = models.IntegerField()
 	no_of_bounces = models.IntegerField()
 	avg_duration = models.IntegerField()
+	datetime = models.DateTimeField()
 
 	class Meta:
 		abstract = True
@@ -67,7 +68,6 @@ class Day(TimeUnit):
 	day = models.IntegerField()
 	month = models.IntegerField()
 	year = models.IntegerField()
-	datetime = models.DateTimeField()
 	over_month = models.ForeignKey(Month)
 	over_week = models.ForeignKey(Week)
 
@@ -86,7 +86,6 @@ class Day(TimeUnit):
 class Hour(TimeUnit):
 	hour = models.IntegerField()
 	day = models.ForeignKey(Day)
-	datetime = models.DateTimeField()
 
 	def describe(self):
 		return self.datetime.strftime("%H:%M") # prepend %A for day string

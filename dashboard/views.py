@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 #from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, Context
-from dashboard.models import Day, Hour, Outlet
+from dashboard.models import Month, Week, Day, Hour, Outlet
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 import datetime
