@@ -11,7 +11,11 @@
 		<div class="col-md-8" style = "max-width: 535px">
 			<table class="table table-bordered table-condensed table-hover" style="margin: 20px 0px 0px 0px;">
 				<thead>
-					<th>Day</th>
+					<th>
+						{% if request.session.focus == "day" %}Day{% endif %}
+						{% if request.session.focus == "week" %}Week of:{% endif %}
+						{% if request.session.focus == "month" %}Month{% endif %}
+					</th>
 					<th>
 						<a href="" data-toggle="tooptip" class="tooltip1" title="The number of people who walkby the store">Walkbys</a>
 					</th>
