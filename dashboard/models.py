@@ -57,13 +57,21 @@ class TimeUnit(models.Model):
 class Month(TimeUnit):
 	year = models.IntegerField()
 	month_no = models.IntegerField()
+	
+	def describe(self):
+		return self.datetime.strftime("%B %Y")
+
+from datetime import timedelta
 
 class Week(TimeUnit):
 	year = models.IntegerField()
 	week_no = models.IntegerField()
 #	start_datetime = models.DateTimeField()
 #	end_datetime = models.DateTimeField()
-	
+	def describe(self):
+		date_to_describe = self.datetime - timedelta(days=5) 
+		return date_to_describe.strftime("%a %d %b")
+
 class Day(TimeUnit):
 	day = models.IntegerField()
 	month = models.IntegerField()
