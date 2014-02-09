@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import datetime
 
-# Create your models here.
 class Customer(models.Model):
 	mac_addr = models.CharField(max_length=300)
 
@@ -66,8 +65,6 @@ from datetime import timedelta
 class Week(TimeUnit):
 	year = models.IntegerField()
 	week_no = models.IntegerField()
-#	start_datetime = models.DateTimeField()
-#	end_datetime = models.DateTimeField()
 	def describe(self):
 		date_to_describe = self.datetime - timedelta(days=5) 
 		return date_to_describe.strftime("%a %d %b")
@@ -102,9 +99,7 @@ class Encounter(models.Model):
 	vendor = models.ForeignKey(Outlet)
 	time = models.IntegerField()
 	datetime = models.DateTimeField()
-#	day = models.ForeignKey(Day)
-#	week = models.ForeignKey(Week)
-#	month = models.ForeignKey(Month)
+
 	class Meta:
 		abstract=True
 
@@ -114,7 +109,6 @@ class Encounter(models.Model):
 class Visit(Encounter):
 	patron = models.ForeignKey(Customer)
 	duration = models.IntegerField()
-
 
 class Walkby(Encounter):
 	"Nothing here."	
