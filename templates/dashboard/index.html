@@ -44,7 +44,7 @@
 				<tbody>
 					{% for object in object_list %}
 						<tr>
-							<td><a href="/dashboard/{{object.id}}">{{object.describe}}</a></td>
+							<td><a href="/dashboard/{{request.session.focus}}/{{object.id}}">{{object.describe}}</a></td>
 							<td>{{object.no_of_walkbys}}</td>
 							<td>{{object.no_of_entries}}</td>
 							<td>{{object.no_of_bounces}}</td>

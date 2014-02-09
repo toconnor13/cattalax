@@ -16,13 +16,13 @@ def perdelta(start, end, delta):
 		yield cur
 		cur += delta
 
-def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph):
+def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph, y_start="", y_end="%"):
 	tooltip_date = "%A %d %b"
 	no_of_vars = len(vars_to_graph)
 	chartdata = {'x': x_axis_data,}
 	
 	extra_serie = {
-		"tooltip": {"y_start": "Visits: ", "y_end": ""},
+		"tooltip": {"y_start": y_start, "y_end": y_end},
 		"date_format": tooltip_date
 	}
 
@@ -74,14 +74,14 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph):
 
 
 
-def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, levels=False, graph_no=1, x_is_date=True, x_format='%d %b', non_level=False, var_list=[]):
+def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, levels=False, graph_no=1, x_is_date=True, x_format='%d %b', non_level=False, var_list=[], y_start="", y_end="%"):
 	if non_level==False:
 		if levels==False:
-			chartdata = get_chartdata(x_axis_data, objects_to_graph, [4,5])	
+			chartdata = get_chartdata(x_axis_data, objects_to_graph, [4,5], y_start, y_end)	
 		else:
-			chartdata = get_chartdata(x_axis_data, objects_to_graph, [1,2,3])
+			chartdata = get_chartdata(x_axis_data, objects_to_graph, [1,2,3], y_start, y_end)
 	else:
-		chartdata = get_chartdata(x_axis_data, objects_to_graph, var_list)
+		chartdata = get_chartdata(x_axis_data, objects_to_graph, var_list, y_start, y_end=" seconds")
 	dict_items = ['charttype', 'chartdata', 'chartcontainer']
 	var_names = [i + str(graph_no) for i in dict_items]
 	if graph_no==1:
@@ -170,20 +170,32 @@ def dashboard(request):
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
 
 @login_required
-def detail(request, day_id, levels=False):
+def detail(request, time_unit, object_id, levels=False):
 	vendor_username = request.user.username
-#	outlet_list = Outlet.objects.filter(agent=vendor_username)
-	outlet_list = Outlet.objects.all()
-	d = get_object_or_404(Day, pk=day_id)
-	if d.vendor not in outlet_list:
+	outlet_list = Outlet.objects.filter(agent=vendor_username)
+	
+	focus = request.session['focus']
+	if focus=="day":
+		time = get_object_or_404(Day, pk=object_id)
+		times_to_show = [h for h in time.hour_set.all() if h.hour>6 and h.hour<20]
+		xdata = map(lambda h: str(h.hour), times_to_show)
+	elif focus=="week":
+		time = get_object_or_404(Week, pk=object_id)
+		times_to_show = time.day_set.all()
+		xdata = map(lambda h: str(h.datetime.strftime("%d %b")), times_to_show)
+	else:
+		time = get_object_or_404(Month, pk=object_id)
+		times_to_show = time.day_set.all()
+		xdata = map(lambda h: str(h.datetime.strftime("%d %b")), times_to_show)
+
+
+	if time.vendor not in outlet_list:
 		return HttpResponseRedirect('/dashboard')
 	start = '08/24/2015'
 	end = '08/30/2015'
-	hours_to_show = [h for h in d.hour_set.all() if h.hour>6 and h.hour<20]
-	xdata = map(lambda h: str(h.hour), hours_to_show)
-	chartdata1 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
-	chartdata2 = create_graph(xdata, hours_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
-	data = dict( chartdata1.items() + chartdata2.items() + [('end',end), ('day', d), ('outlet_list', outlet_list)])
+	chartdata1 = create_graph(xdata, times_to_show, 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
+	chartdata2 = create_graph(xdata, times_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
+	data = dict( chartdata1.items() + chartdata2.items() + [('end',end), ('day', time), ('outlet_list', outlet_list)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
