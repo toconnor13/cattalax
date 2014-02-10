@@ -225,7 +225,12 @@ def campaign_form(request):
 
 def details(request):
 	request.session['nav']="details"
-	return render_to_response('dashboard/user_details.html', context_instance=RequestContext(request))
+	outlet_list = Outlet.objects.filter(agent=request.user.username)
+	data = {
+		'outlet_list': outlet_list,
+		'store': outlet_list[0],
+	}
+	return render_to_response('dashboard/user_details.html', data, context_instance=RequestContext(request))
 
 def event(request):
 	return render_to_response('dashboard/event.html', context_instance=RequestContext(request))
