@@ -116,6 +116,13 @@ def get_days_to_show(start_date, end_date, days_to_graph):
 			pass
 	return days_to_show
 
+
+def new_customers_percent(time_unit):
+	total_visiting_customers = len(set([v.patron for v in time_unit.visit_set.all()]))
+	total_new_visiting_customers = len(set([v.patron for v in time_unit.visit_set.all() if v.first_visit==True]))
+	percent = float(total_visiting_customers)*100/float(total_new_visiting_customers)
+	return percent
+
 #	days_to_graph = sorted(Day.objects.all(), key=Day.day_no)
 #	days_to_show = sorted(days_to_show, key=lambda day: day.day_no)
 
