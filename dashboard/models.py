@@ -109,6 +109,7 @@ class Encounter(models.Model):
 class Visit(Encounter):
 	patron = models.ForeignKey(Customer)
 	duration = models.IntegerField()
+	first_visit = models.BooleanField()
 
 class Walkby(Encounter):
 	"Nothing here."	
