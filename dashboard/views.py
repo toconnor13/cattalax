@@ -51,13 +51,13 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph, y_start="",
 			}
 		elif i==4:
 			new_dict = {
-				dict_names[0]: 'Capture Rate',
+				dict_names[0]: 'Capture %',
 				dict_names[1]: [float(v.get_capture_rate()) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
 		elif i==5:
 			new_dict = {
-				dict_names[0]: 'Bounce Rate',
+				dict_names[0]: 'Bounce %',
 				dict_names[1]: [float(v.get_bounce_rate()) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
@@ -69,8 +69,8 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph, y_start="",
 			}
 		elif i==7:
 			new_dict = {
-				dict_names[0]: 'Duration',
-				dict_names[1]: [float(v.percent_of_new_customers()) for v in time_periods_to_graph],
+				dict_names[0]: 'New Customers',
+				dict_names[1]: [int(v.percent_of_new_customers()) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
 		chartdata = dict(chartdata.items() + new_dict.items())	
@@ -79,7 +79,7 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph, y_start="",
 def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, levels=False, graph_no=1, x_is_date=True, x_format='%d %b', non_level=False, var_list=[], y_start="", y_end="%"):
 	if non_level==False:
 		if levels==False:
-			chartdata = get_chartdata(x_axis_data, objects_to_graph, [4,5], y_start, y_end)	
+			chartdata = get_chartdata(x_axis_data, objects_to_graph, [4,5,7], y_start, y_end)	
 		else:
 			chartdata = get_chartdata(x_axis_data, objects_to_graph, [1,2,3], y_start, y_end)
 	else:
@@ -189,7 +189,6 @@ def detail(request, time_unit, object_id, levels=False):
 		time = get_object_or_404(Month, pk=object_id)
 		times_to_show = time.day_set.all()
 		xdata = map(lambda h: str(h.datetime.strftime("%d %b")), times_to_show)
-
 
 	if time.vendor not in outlet_list:
 		return HttpResponseRedirect('/dashboard')
