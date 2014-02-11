@@ -70,7 +70,7 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph, y_start="",
 		elif i==7:
 			new_dict = {
 				dict_names[0]: 'Duration',
-				dict_names[1]: [float(v.new_business()) for v in time_periods_to_graph],
+				dict_names[1]: [float(v.percent_of_new_customers()) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
 		chartdata = dict(chartdata.items() + new_dict.items())	
