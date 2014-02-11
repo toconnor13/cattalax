@@ -61,18 +61,20 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph, y_start="",
 				dict_names[1]: [float(v.get_bounce_rate()) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
-
 		elif i==6:
 			new_dict = {
 				dict_names[0]: 'Duration',
 				dict_names[1]: [float(v.avg_duration) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
-	
+		elif i==7:
+			new_dict = {
+				dict_names[0]: 'Duration',
+				dict_names[1]: [float(v.new_business()) for v in time_periods_to_graph],
+				dict_names[2]: extra_serie,
+			}
 		chartdata = dict(chartdata.items() + new_dict.items())	
 	return chartdata
-
-
 
 def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, levels=False, graph_no=1, x_is_date=True, x_format='%d %b', non_level=False, var_list=[], y_start="", y_end="%"):
 	if non_level==False:
@@ -115,13 +117,6 @@ def get_days_to_show(start_date, end_date, days_to_graph):
 		except:
 			pass
 	return days_to_show
-
-
-def new_customers_percent(time_unit):
-	total_visiting_customers = len(set([v.patron for v in time_unit.visit_set.all()]))
-	total_new_visiting_customers = len(set([v.patron for v in time_unit.visit_set.all() if v.first_visit==True]))
-	percent = float(total_visiting_customers)*100/float(total_new_visiting_customers)
-	return percent
 
 #	days_to_graph = sorted(Day.objects.all(), key=Day.day_no)
 #	days_to_show = sorted(days_to_show, key=lambda day: day.day_no)
