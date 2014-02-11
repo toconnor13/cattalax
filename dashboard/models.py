@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from datetime import timedelta
 
 class Customer(models.Model):
 	mac_addr = models.CharField(max_length=300)
@@ -60,7 +61,6 @@ class Month(TimeUnit):
 	def describe(self):
 		return self.datetime.strftime("%B %Y")
 
-from datetime import timedelta
 
 class Week(TimeUnit):
 	year = models.IntegerField()
@@ -108,6 +108,8 @@ class Encounter(models.Model):
 
 class Visit(Encounter):
 	patron = models.ForeignKey(Customer)
+	hour = models.ForeignKey(Hour)
+	day = models.ForeignKey(Day)
 	duration = models.IntegerField()
 	first_visit = models.BooleanField()
 
