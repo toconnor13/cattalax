@@ -54,6 +54,13 @@ class TimeUnit(models.Model):
 			seconds = str(secs)
 		return str(mins) + ':' + seconds
 
+	def percent_of_new_customers(self):
+		total_customers = len(set([v.patron for v in self.visit_set.all()]))
+		total_new_customers = len(set([v.patron for v in self.visit_set.all() if v.first_visit==True]))
+		percent = float(total_customers)*100/float(total_new_customers)
+		return percent
+
+
 class Month(TimeUnit):
 	year = models.IntegerField()
 	month_no = models.IntegerField()
