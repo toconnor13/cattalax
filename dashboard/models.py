@@ -70,6 +70,13 @@ class Month(TimeUnit):
 	def describe(self):
 		return self.datetime.strftime("%B %Y")
 
+	def print_self(self):
+		return self.datetime.strftime("%B")
+
+	def print_container(self):
+		return self.datetime.strftime("%Y")
+
+
 
 class Week(TimeUnit):
 	year = models.IntegerField()
@@ -77,6 +84,14 @@ class Week(TimeUnit):
 	def describe(self):
 		date_to_describe = self.datetime - timedelta(days=5) 
 		return date_to_describe.strftime("%a %d %b")
+
+	def print_self(self):
+		date = self.datetime.strftime("%A %d")
+		description = "Week of " + date
+		return description
+
+	def print_container(self):
+		return self.datetime.strftime("%B %Y")
 
 class Day(TimeUnit):
 	day = models.IntegerField()
@@ -91,10 +106,10 @@ class Day(TimeUnit):
 	def describe(self):
 		return self.datetime.strftime("%a %d %b")
 
-	def print_day(self):
+	def print_self(self):
 		return self.datetime.strftime("%a %d")
 
-	def print_month(self):
+	def print_container(self):
 		return self.datetime.strftime("%B %Y")
 	
 class Hour(TimeUnit):

@@ -282,7 +282,7 @@ def detail(request, time_unit, object_id, levels=False):
 	chartdata3 = customer_piechart(time)
 	chartdata4 = duration_bin(time)
 	chartdata5 = frequency_bin(time)
-	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('day', time), ('outlet_list', outlet_list)])
+	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('object', time), ('outlet_list', outlet_list)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):

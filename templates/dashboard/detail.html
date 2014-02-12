@@ -2,22 +2,22 @@
 
 {% load nvd3_tags %}
 {% block graphs %}
-	{% load_chart charttype1 chartdata1 chartcontainer1 extra  %}
-	{% load_chart charttype2 chartdata2 chartcontainer2 extra  %}
-	{% load_chart charttype3 chartdata3 chartcontainer3 extra  %}
-	{% load_chart charttype7 chartdata7 chartcontainer7 extra  %}
-	{% load_chart charttype8 chartdata8 chartcontainer8 extra  %}
+	{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
+	{% load_chart charttype2 chartdata2 chartcontainer2 extra %}
+	{% load_chart charttype3 chartdata3 chartcontainer3 extra %}
+	{% load_chart charttype7 chartdata7 chartcontainer7 extra %}
+	{% load_chart charttype8 chartdata8 chartcontainer8 extra %}
 {% endblock %}
 
 {% block table_and_graph_html %}
 		<div class="row">
 			<div class="col-md-6">
-				<h2 style="">{{day.print_day}}  |  <a href="/dashboard/">{{day.print_month}}</a> </h2>
+				<h2 style="">{{object.print_self}}  |  <a href="/dashboard/">{{object.print_container}}</a> </h2>
 			</div>
 			<div class="col-md-6">
 				<ul class="pager">
-					<li><a href="#">Previous Day</a>  </li>
-					<li><a href="#">Next Day</a> </li>
+					<li><a href="#">Previous {{request.session.focus}}</a>  </li>
+					<li><a href="#">Next {{request.session.focus}}</a> </li>
 				</ul>
 			</div>
 	</div>
@@ -50,17 +50,16 @@
 				{% endfor %}
 				<tr class="success">
 					<td>Overall</td>				
-					<td>{{day.no_of_walkbys}}</td>
-					<td>{{day.no_of_entries}}</td>
-					<td>{{day.no_of_bounces}}</td>
-					<td>{{day.get_capture_rate}}%</td>
-					<td>{{day.get_bounce_rate}}%</td>
-					<td>{{day.get_avg_duration}}</td>
+					<td>{{object.no_of_walkbys}}</td>
+					<td>{{object.no_of_entries}}</td>
+					<td>{{object.no_of_bounces}}</td>
+					<td>{{object.get_capture_rate}}%</td>
+					<td>{{object.get_bounce_rate}}%</td>
+					<td>{{object.get_avg_duration}}</td>
 				<tr>
 			</tbody>
 		</table>
 	</div>
-
 
 	<div class="col-md-4">
 		<div class="row">
