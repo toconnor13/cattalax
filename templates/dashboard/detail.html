@@ -6,6 +6,7 @@
 	{% load_chart charttype2 chartdata2 chartcontainer2 extra  %}
 	{% load_chart charttype3 chartdata3 chartcontainer3 extra  %}
 	{% load_chart charttype7 chartdata7 chartcontainer7 extra  %}
+	{% load_chart charttype8 chartdata8 chartcontainer8 extra  %}
 {% endblock %}
 
 {% block table_and_graph_html %}
@@ -84,7 +85,12 @@
 		</div>
 		<div class="row">
 			<div class="col-md-2 col-md-offset-1">
-				{% include_container chartcontainer7 360 300 %}
+				{% include_container chartcontainer7 300 400 %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 col-md-offset-1">
+				{% include_container chartcontainer8 300 400 %}
 			</div>
 		</div>
 	</div>

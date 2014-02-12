@@ -222,6 +222,38 @@ def duration_bin(time):
 		} 
 	return data
 
+def frequency_bin(time):
+	xdata = ["1", "2", "3", "4", "5", "6+"]
+	ydata = [0, 0, 0, 0, 0, 0]
+	visits = time.visit_set.all()
+	attendance = [v.patron.mac_addr for v in visits]
+	for customer in attendance:
+		if attendance.count(customer)==1:
+			ydata[0]+= 1
+		elif attendance.count(customer)==2:
+			ydata[1]+=1
+		elif attendance.count(customer)==3:
+			ydata[2]+=1
+		elif attendance.count(customer)==4:
+			ydata[3]+=1
+		elif attendance.count(customer)==5:
+			ydata[4]+=1
+		elif attendance.count(customer)>=6:
+			ydata[5]+=1
+	extra_serie1 = {"tooltip": {"y_start": "", "y_end": " visits"}}
+	chartdata = {
+		'x': xdata, 
+		'y1': ydata, 
+		'extra1': extra_serie1
+	}
+	charttype = "discreteBarChart"
+	data = {
+			'charttype8': charttype,
+			'chartdata8': chartdata,
+			'chartcontainer8': "frequency_hist_container"
+		} 
+	return data
+
 @login_required
 def detail(request, time_unit, object_id, levels=False):
 	vendor_username = request.user.username
@@ -249,7 +281,8 @@ def detail(request, time_unit, object_id, levels=False):
 	# Pie chart data
 	chartdata3 = customer_piechart(time)
 	chartdata4 = duration_bin(time)
-	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() +  [('end',end), ('day', time), ('outlet_list', outlet_list)])
+	chartdata5 = frequency_bin(time)
+	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('day', time), ('outlet_list', outlet_list)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
@@ -259,7 +292,6 @@ def contact(request):
 def data(request):
 	path = request.path
 	return render_to_response('data.html', {'path':path}, context_instance=RequestContext(request))
-
 
 def opt_out(request):
 	message = "The MAC Address has successfully been submitted."
