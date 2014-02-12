@@ -108,6 +108,9 @@ class Encounter(models.Model):
 	vendor = models.ForeignKey(Outlet)
 	time = models.IntegerField()
 	datetime = models.DateTimeField()
+	month = models.ForeignKey(Month)
+	week = models.ForeignKey(Week)
+	day = models.ForeignKey(Day)
 
 	class Meta:
 		abstract=True
@@ -118,7 +121,6 @@ class Encounter(models.Model):
 class Visit(Encounter):
 	patron = models.ForeignKey(Customer)
 	hour = models.ForeignKey(Hour)
-	day = models.ForeignKey(Day)
 	duration = models.IntegerField()
 	first_visit = models.BooleanField()
 
