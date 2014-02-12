@@ -171,11 +171,61 @@ def dashboard(request):
 	request.session['shop_id'] = shop_id
 	return render_to_response('dashboard/index.html', data, context_instance=RequestContext(request))
 
+def customer_piechart(time):
+	xdata3 = ["New", "Return"]
+	new_percent = int(time.percent_of_new_customers())
+	old_percent = 100-new_percent
+	ydata3 = [new_percent, old_percent]
+	extra_serie = {"tooltip": {"y_start": "", "y_end": "%"}}
+	chartdata = {
+			'x': xdata3,
+			'y1': ydata3,
+			'extra1': extra_serie
+		}
+	charttype="pieChart"
+	data = {
+		'charttype3': charttype,
+		'chartdata3': chartdata,
+		'chartcontainer3': "piechart_container"
+		}
+	return data
+
+def duration_bin(time):
+	xdata = ["0-5", "5-10", "10-20", "20-30", "30-60", "60+"]
+	ydata = [0, 0, 0, 0, 0, 0]
+	visits = time.visit_set.all()
+	duration_list = [v.duration for v in visits]
+	for duration in duration_list:
+		if duration < 300:
+			ydata[0]+= 1
+		elif duration>300 and duration<600:
+			ydata[1]+=1
+		elif duration>600 and duration<1200:
+			ydata[2]+=1
+		elif duration>1200 and duration<1800:
+			ydata[3]+=1
+		elif duration>1800 and duration<3600:
+			ydata[4]+=1
+		elif duration>3600:
+			ydata[5]+=1
+	extra_serie1 = {"tooltip": {"y_start": "", "y_end": " visits"}}
+	chartdata = {
+		'x': xdata, 
+		'y1': ydata, 
+		'extra1': extra_serie1
+	}
+	charttype = "discreteBarChart"
+	data = {
+			'charttype7': charttype,
+			'chartdata7': chartdata,
+			'chartcontainer7': "duration_hist_container"
+		} 
+	return data
+
 @login_required
 def detail(request, time_unit, object_id, levels=False):
 	vendor_username = request.user.username
 	outlet_list = Outlet.objects.filter(agent=vendor_username)
-	
 	focus = request.session['focus']
 	if focus=="day":
 		time = get_object_or_404(Day, pk=object_id)
@@ -196,25 +246,10 @@ def detail(request, time_unit, object_id, levels=False):
 	end = '08/30/2015' # ###
 	chartdata1 = create_graph(xdata, times_to_show, 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
 	chartdata2 = create_graph(xdata, times_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
-	
 	# Pie chart data
-	xdata3 = ["New", "Return"]
-	new_percent = int(time.percent_of_new_customers())
-	old_percent = 100-new_percent
-	ydata3 = [new_percent, old_percent]
-	extra_serie = {"tooltip": {"y_start": "", "y_end": "%"}}
-	chartdata = {
-			'x': xdata3,
-			'y1': ydata3,
-			'extra1': extra_serie
-		}
-	charttype="pieChart"
-	chartdata3 = {
-		'charttype3': charttype,
-		'chartdata3': chartdata,
-		'chartcontainer3': "piechart_container"
-		}
-	data = dict( chartdata1.items() + chartdata2.items() +chartdata3.items()+ [('end',end), ('day', time), ('outlet_list', outlet_list)])
+	chartdata3 = customer_piechart(time)
+	chartdata4 = duration_bin(time)
+	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() +  [('end',end), ('day', time), ('outlet_list', outlet_list)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
@@ -251,5 +286,3 @@ def details(request):
 	}
 	return render_to_response('dashboard/user_details.html', data, context_instance=RequestContext(request))
 
-def event(request):
-	return render_to_response('dashboard/event.html', context_instance=RequestContext(request))
