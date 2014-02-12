@@ -69,7 +69,7 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph, y_start="",
 			}
 		elif i==7:
 			new_dict = {
-				dict_names[0]: 'New Customers',
+				dict_names[0]: 'New Customers %',
 				dict_names[1]: [int(v.percent_of_new_customers()) for v in time_periods_to_graph],
 				dict_names[2]: extra_serie,
 			}
@@ -202,7 +202,7 @@ def detail(request, time_unit, object_id, levels=False):
 	new_percent = int(time.percent_of_new_customers())
 	old_percent = 100-new_percent
 	ydata3 = [new_percent, old_percent]
-	extra_serie = {"tooltip": {"y_start": "", "y_end": "_cal"}}
+	extra_serie = {"tooltip": {"y_start": "", "y_end": "%"}}
 	chartdata = {
 			'x': xdata3,
 			'y1': ydata3,
