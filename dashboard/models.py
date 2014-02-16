@@ -4,6 +4,7 @@ from datetime import timedelta
 
 class Customer(models.Model):
 	mac_addr = models.CharField(max_length=300)
+	tag = models.CharField(max_length=100)
 
 	def __unicode__(self):
 		return self.mac_addr
