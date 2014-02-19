@@ -307,17 +307,24 @@ def campaigns(request):
 	return render_to_response('dashboard/campaigns.html', context_instance=RequestContext(request))
 
 def campaign_form(request):
+	vendor_username = request.user.username
+	outlet_list = Outlet.objects.filter(agent=vendor_username)
 	if request.method=='POST':
 		name = request.POST['name']
 		end = request.POST['start']
 		start = request.POST['end']
 		category = request.POST['category']
+		shop_id = request.POST['outlet']
 		start_date = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M")
 		end_date = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M")
-		campaign = Campaign(name=name, start=start_date, end=end_date, category=category)
+		shop=Outlet.objects.get(pk=int(shop_id))
+		campaign = Campaign(outlet=shop, name=name, start=start_date, end=end_date, category=category)
 		campaign.save()
 		return render_to_response('dashboard/campaigns.html', context_instance=RequestContext(request))
-	return render_to_response('dashboard/campaign_form.html', context_instance=RequestContext(request))
+	data = {
+		'outlet_list': outlet_list,
+			}
+	return render_to_response('dashboard/campaign_form.html', data, context_instance=RequestContext(request))
 
 def details(request):
 	request.session['nav']="details"
