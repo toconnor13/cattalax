@@ -4,7 +4,7 @@
 	<div class="page-header">
 		<h2>Add a campaign</h2>	
 	</div>
-	<form method="POST" id="sandbox-container" class="form-horizontal" role="form" style="width: 110%;" >
+	<form method="POST" action="/dashboard/campaigns/add/" id="sandbox-container" class="form-horizontal" role="form" style="width: 110%;" >
 		{% csrf_token %}
 		<div class="form-group">
 			<label for="event_name" class="col-sm-2 control-label">Name</label>

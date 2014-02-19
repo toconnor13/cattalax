@@ -6,6 +6,6 @@ urlpatterns = patterns('',
 #		url(r'^event/', 'dashboard.views.event'),
 		url(r'^(?P<time_unit>\w+)/(?P<object_id>\d+)/$', 'dashboard.views.detail'),
 		url(r'^campaigns/', 'dashboard.views.campaigns'),
-		url(r'^add/', 'dashboard.views.campaign_form'),
+		url(r'^campaigns/add/', 'dashboard.views.campaign_form'),
 		url(r'^details/', 'dashboard.views.details'),
 		)
