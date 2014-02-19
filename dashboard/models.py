@@ -9,6 +9,12 @@ class Customer(models.Model):
 	def __unicode__(self):
 		return self.mac_addr
 
+class Campaign(models.Model):
+	name = models.CharField(max_length=300)
+	start = models.DateTimeField()
+	end = models.DateTimeField()
+	category = models.IntegerField()
+
 class Outlet(models.Model):
 	name    = models.CharField(max_length=100)
 	address = models.CharField(max_length=100)
