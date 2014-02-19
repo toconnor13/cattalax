@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 #from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, Context
-from dashboard.models import Month, Week, Day, Hour, Outlet
+from dashboard.models import Month, Week, Day, Hour, Outlet, Campaign
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 import datetime
@@ -307,6 +307,16 @@ def campaigns(request):
 	return render_to_response('dashboard/campaigns.html', context_instance=RequestContext(request))
 
 def campaign_form(request):
+	if request.method=='POST':
+		name = request.POST['name']
+		end = request.POST['start']
+		start = request.POST['end']
+		category = request.POST['category']
+		start_date = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M")
+		end_date = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M")
+		campaign = Campaign(name=name, start=start_date, end=end_date, category=category)
+		campaign.save()
+		return render_to_response('dashboard/campaigns.html', context_instance=RequestContext(request))
 	return render_to_response('dashboard/campaign_form.html', context_instance=RequestContext(request))
 
 def details(request):

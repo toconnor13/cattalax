@@ -7,9 +7,9 @@
 	<form method="POST" action="/dashboard/add/" id="sandbox-container" class="form-horizontal" role="form" style="width: 110%;" >
 		{% csrf_token %}
 		<div class="form-group">
-			<label for="event_name" class="col-sm-2 control-label">Name</label>
-			<div class="col-sm-3">
-				<input type="email" class="form-control" id="event_name" placeholder="Name">
+			<label for="name" class="col-sm-2 control-label">Name</label>
+			<div class="controls col-sm-3">
+				<input type="text" class="form-control" name="name" placeholder="Name">
 			</div>
 		</div>
 
@@ -31,9 +31,9 @@
 			<label for="category" class="control-label col-sm-2">Category</label>
 			<div class="col-sm-3">
 			<select name="category" class="col-sm-2 form-control ">
-				<option selected="selected">External Advertisement</option>
-				<option>In-store deal</option>
-				<option>Media advertisement</option>
+				<option selected="selected" value=1>External Advertisement</option>
+				<option value=2>In-store deal</option>
+				<option value=3>Media advertisement</option>
 			</select>
 			</div>
 		</div>
