@@ -12,7 +12,8 @@
 		<table class="table table-bordered table-condensed table-hover" style="max-width: 600px">
 			<thead>
 				<th>Name</th>
-				<th>Time Period</th>
+				<th>Start</th>
+				<th>End</th>
 				<th>
 					<a href="#" data-toggle="tooltip" class="tooltip1" title="The percentage change in the capture rate in the period.">Capture</a>
 				</th>
@@ -31,7 +32,8 @@
 			<tbody>
 				<tr>
 					<td>Winter Sale</td>
-					<td>26/12 - 31/01</td>
+					<td>26/12</td>
+					<td>31/01</td>
 					<td>+13%</td>
 					<td>-20%</td>
 					<td>+70s</td>
@@ -40,7 +42,8 @@
 
 				<tr>
 					<td>Irish Times Ad</td>
-					<td>13/02 - 20/02</td>
+					<td>13/02</td>
+					<td>30/02</td>
 					<td>+0%</td>
 					<td>+1%</td>
 					<td>+5s</td>
@@ -49,7 +52,8 @@
 
 				<tr>
 					<td>Spring Campaign</td>
-					<td>11/04 - 20/04</td>
+					<td>11/04</td>
+					<td>20/04</td>
 					<td>+2%</td>
 					<td>-5%</td>
 					<td>-30s</td>
@@ -58,7 +62,8 @@
 
 				<tr>
 					<td>Bus Advertisement</td>
-					<td>01/05 - 14/05</td>
+					<td>01/05</td> 
+					<td>14/05</td>
 					<td>+10%</td>
 					<td>-2%</td>
 					<td>+25s</td>
@@ -67,7 +72,8 @@
 
 				<tr>
 					<td>Human Advertisement</td>
-					<td>01/06 - 07/06</td>
+					<td>01/06</td>
+					<td>08/06</td>
 					<td>+16%</td>
 					<td>+5%</td>
 					<td>+32s</td>
@@ -79,6 +85,10 @@
 					<td>{{object.name}}</td>
 					<td>{{object.start}}</td>
 					<td>{{object.end}}</td>
+					<td>{{object.capture_rate_effect}}</td>
+					<td>{{object.bounce_rate_effect}}</td>
+					<td>{{object.duration_effect}}</td>
+					<td>{{object.frequency_effect}}</td>
 				<tr>
 				{% endfor %}
 			</tbody>

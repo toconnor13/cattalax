@@ -304,7 +304,11 @@ def opt_out(request):
 
 def campaigns(request):
 	request.session['nav']="campaigns"
-	return render_to_response('dashboard/campaigns.html', context_instance=RequestContext(request))
+	campaign_list = Campaign.objects.filter(outlet=Outlet.objects.get(pk=request.session['shop_id']))
+	data = {
+		'object_list': campaign_list,
+	}
+	return render_to_response('dashboard/campaigns.html', data, context_instance=RequestContext(request))
 
 def campaign_form(request):
 	vendor_username = request.user.username

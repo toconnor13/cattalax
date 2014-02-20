@@ -28,6 +28,14 @@ class Campaign(models.Model):
 	end = models.DateTimeField()
 	category = models.IntegerField()
 
+	def capture_rate_effect(self):
+		return "23"
+	def bounce_rate_effect(self):
+		return "24"
+	def duration_effect(self):
+		return "25"
+	def frequency_effect(self):
+		return "26"
 
 class TimeUnit(models.Model):
 	vendor = models.ForeignKey(Outlet)
