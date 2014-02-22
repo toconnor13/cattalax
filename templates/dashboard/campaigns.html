@@ -85,10 +85,10 @@
 					<td>{{object.name}}</td>
 					<td>{{object.start}}</td>
 					<td>{{object.end}}</td>
-					<td>{{object.capture_rate_effect}}</td>
-					<td>{{object.bounce_rate_effect}}</td>
-					<td>{{object.duration_effect}}</td>
-					<td>{{object.frequency_effect}}</td>
+					<td>{% if object.capture_rate_effect > 0 %}+{% endif %}{{object.capture_rate_effect}}%</td>
+					<td>{% if object.bounce_rate_effect > 0 %}+{% endif %}{{object.bounce_rate_effect}}%</td>
+					<td>{% if object.duration_effect > 0 %}+{% endif %}{{object.duration_effect}}m</td>
+					<td>{% if object.frequency_effect > 0 %}+{% endif %}{{object.frequency_effect}}%</td>
 				<tr>
 				{% endfor %}
 			</tbody>

@@ -29,13 +29,17 @@ class Campaign(models.Model):
 	category = models.IntegerField()
 
 	def capture_rate_effect(self):
-		return "23"
+		effect = 13
+		return effect
 	def bounce_rate_effect(self):
-		return "24"
+		effect = -9
+		return effect
 	def duration_effect(self):
-		return "25"
+		effect =134
+		return effect
 	def frequency_effect(self):
-		return "26"
+		effect = 2
+		return effect
 
 class TimeUnit(models.Model):
 	vendor = models.ForeignKey(Outlet)
