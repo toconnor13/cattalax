@@ -51,7 +51,7 @@
 					<div class="input-daterange" id="datepicker">
 						<div class="form-group">
 							<div class="input-group">
-							<select name="shop_id" class="form-control" style="width: 200px;">
+								<select name="shop_id" class="form-control" style="width: 200px;" {% if outlet_list|length < 2 %} disabled {% endif %}>
 								{% for outlet in outlet_list %}
 								<option {% if request.session.shop_id == outlet.sensor_no %} selected="selected"{% endif %} value={{outlet.sensor_no}}>{{outlet.name}}</option>
 								{% endfor %}
@@ -61,9 +61,9 @@
 						<div class="form-group">
 							<div class="input-group">
 								<select name="focus" class="form-control" style="width: 200px;">
-									<option {% if request.session.focus == "day" %}selected="selected"{% endif%} value="day">Daily</option>
-									<option {% if request.session.focus == "week" %}selected="selected"{% endif%}value="week">Weekly</option>
-									<option {% if request.session.focus == "month"%}selected="selected"{% endif%}value="month">Monthly</option>
+									<option {% if request.session.focus == "day" %}selected="selected"{% endif %} value="day">Daily</option>
+									<option {% if request.session.focus == "week" %}selected="selected"{% endif %}value="week">Weekly</option>
+									<option {% if request.session.focus == "month"%}selected="selected"{% endif %}value="month">Monthly</option>
 								</select>
 							</div>
 						</div>
