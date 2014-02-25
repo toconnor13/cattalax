@@ -51,7 +51,7 @@
 					<div class="input-daterange" id="datepicker">
 						<div class="form-group">
 							<div class="input-group">
-								<select name="shop_id" class="form-control" style="width: 200px;" {% if outlet_list|length < 2 %} disabled {% endif %}>
+								<select name="shop_id" class="form-control" style="width: 200px;">
 								{% for outlet in outlet_list %}
 								<option {% if request.session.shop_id == outlet.sensor_no %} selected="selected"{% endif %} value={{outlet.sensor_no}}>{{outlet.name}}</option>
 								{% endfor %}
