@@ -254,35 +254,49 @@ def frequency_bin(time):
 		} 
 	return data
 
+def add_months(sourcedate, months):
+	month = sourcedate.month -1 + months
+	year = sourcedate.year + month/12
+	month = month%12 + 1
+	day = mon(sourcedate.day, calendar.monthrange(year, month)[1])
+	return datetime.date(year, month, day)
+
 @login_required
 def detail(request, time_unit, object_id, levels=False):
 	vendor_username = request.user.username
 	outlet_list = Outlet.objects.filter(agent=vendor_username)
+	outlet = outlet_list.get(pk=request.session['shop_id'])
 	focus = request.session['focus']
 	if focus=="day":
 		time = get_object_or_404(Day, pk=object_id)
+		next_time = Day.objects.filter(vendor=outlet, datetime= time.datetime + datetime.timedelta(days=1))
+		previous_time = Day.objects.filter(vendor=outlet, datetime= time.datetime + datetime.timedelta(days=-1))
 		times_to_show = [h for h in time.hour_set.all() if h.hour>6 and h.hour<20]
 		xdata = map(lambda h: str(h.hour), times_to_show)
 	elif focus=="week":
 		time = get_object_or_404(Week, pk=object_id)
+		next_time = Week.objects.filter(vendor=outlet, week_no = time.datetime.isocalendar()[1]+1 )
+		previous_time = Week.objects.filter(vendor=outlet, week_no = time.datetime.isocalendar()[1]-1)
 		times_to_show = time.day_set.all()
 		xdata = map(lambda h: str(h.datetime.strftime("%d %b")), times_to_show)
 	else:
 		time = get_object_or_404(Month, pk=object_id)
+		next_time = Month.objects.filter(vendor=outlet, month_no = add_months(datetime, 1).month )
+		previous_time = Month.objects.filter(vendor=outlet, month_no = add_months(datetime, -1).month )
 		times_to_show = time.day_set.all()
 		xdata = map(lambda h: str(h.datetime.strftime("%d %b")), times_to_show)
 
 	if time.vendor not in outlet_list:
 		return HttpResponseRedirect('/dashboard')
 	start = '08/24/2015' # what are these necessary for?
-	end = '08/30/2015' # ###
+	end = '08/30/2015' # 
 	chartdata1 = create_graph(xdata, times_to_show, 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
 	chartdata2 = create_graph(xdata, times_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
 	# Pie chart data
 	chartdata3 = customer_piechart(time)
 	chartdata4 = duration_bin(time)
 	chartdata5 = frequency_bin(time)
-	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('object', time), ('outlet_list', outlet_list)])
+	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):

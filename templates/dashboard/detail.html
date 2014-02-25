@@ -16,8 +16,8 @@
 			</div>
 			<div class="col-md-6">
 				<ul class="pager">
-					<li><a href="#">Previous {{request.session.focus}}</a>  </li>
-					<li><a href="#">Next {{request.session.focus}}</a> </li>
+					<li><a href="/dashboard/{{request.session.focus}}/{{previous_time.0.id}}">Previous {{request.session.focus}}</a></li>
+					<li><a href="/dashboard/{{request.session.focus}}/{{next_time.0.id}}">Next {{request.session.focus}}</a></li>
 				</ul>
 			</div>
 	</div>
@@ -67,28 +67,30 @@
 
 			<h3 class="text-center">Duration of Visit</h3>
 			<div class="col-md-2 col-md-offset-1">
-				{% include_container chartcontainer7 250 400 %}
+				{% include_container chartcontainer7 250 450 %}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-2 col-md-offset-1">
-				{% include_container chartcontainer8 250 400 %}
+				{% include_container chartcontainer8 250 450 %}
 			</div>
 		</div>
-
+		
+		<!--
 		<div class="row">
 			<div class="col-md-2 col-md-offset-1">
-				{% include_container chartcontainer3 500 400 %}
+				{% include_container chartcontainer3 500 450 %}
 			</div>
 		</div>
+		-->
 	</div>
 
 	<div class="col-md-5">
 		<div class="row">
 			<div class="col-md-2 col-md-offset-1">
 				<div class="svg_container">
-				{% include_container chartcontainer1 250 400 %}
+				{% include_container chartcontainer1 300 450 %}
 				</div>
 			</div>
 		</div>
@@ -96,7 +98,7 @@
 		<div class="row">
 			<div class="col-md-2 col-md-offset-1">
 				<div class="svg_container">
-				{% include_container chartcontainer2 250 400 %}
+				{% include_container chartcontainer2 300 450 %}
 				</div>
 			</div>
 		</div>
