@@ -296,7 +296,13 @@ def detail(request, time_unit, object_id, levels=False):
 	chartdata3 = customer_piechart(time)
 	chartdata4 = duration_bin(time)
 	chartdata5 = frequency_bin(time)
-	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time)])
+
+	d_capture = float(time.get_capture_rate()) - float(previous_time[0].get_capture_rate())
+	d_bounce = float(time.get_bounce_rate()) - float(previous_time[0].get_capture_rate())
+	d_new_custom = float(time.percent_of_new_customers()) - float(previous_time[0].percent_of_new_customers())
+	d_avg_duration = time.avg_duration - previous_time[0].avg_duration
+
+	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
