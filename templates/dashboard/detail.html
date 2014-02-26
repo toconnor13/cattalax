@@ -35,27 +35,48 @@
 				<tbody>
 					<tr>
 						<td>Capture</td>
-						<td>{{object.get_capture_rate}}</td>
-						<td>{{previous_time.0.get_capture_rate}}</td>
-						<td>{{ d_capture }}
+						<td>{{object.get_capture_rate}} %</td>
+						<td>{{previous_time.0.get_capture_rate}}%</td>
+						{% if d_capture > 0 %}
+						<td style="color: #009900;">+
+						{% else %}
+						<td	style="color: #FF0000;">
+						{% endif %}
+						{{ d_capture }}% </td>
 					<tr>
 					<tr>
 						<td>Bounce</td>
-						<td>{{object.get_bounce_rate}}</td>
-						<td>{{previous_time.0.get_bounce_rate}}
-						<td>{{ d_bounce }}</td>
+						<td>{{object.get_bounce_rate}}% </td>
+						<td>{{previous_time.0.get_bounce_rate}}% </td>
+						{% if d_bounce > 0 %}
+						<td style="color: #009900;">+
+						{% else %}
+						<td style="color: #FF0000;">
+						{% endif %}
+						{{ d_bounce }}% </td>
 					<tr>
 					<tr>
 						<td>Duration</td>
-						<td>{{object.get_avg_duration}}</td>
-						<td>{{previous_time.0.get_avg_duration}}</td>
-						<td> {{ d_avg_duration }}  </td>
+						<td>{{object.get_avg_duration}} min</td>
+						<td>{{previous_time.0.get_avg_duration}} min</td>
+						{% if d_avg_duration > 0 %}
+						<td style="color: #009900;">+
+						{% else %}
+						<td style="color: #FF0000;">
+						{% endif %}
+						{{ d_avg_duration }} secs </td>
 					<tr>
 					<tr>
 						<td>New Customers</td>
-						<td>{{object.percent_of_new_customers|floatformat}}</td>
-						<td>{{previous_time.0.percent_of_new_customers|floatformat}}</td>
-						<td>{{ d_new_custom|floatformat }} secs</td>
+						<td>{{object.percent_of_new_customers|floatformat}}% </td>
+						<td>{{previous_time.0.percent_of_new_customers|floatformat}}% </td>
+						{% if d_new_custom > 0 %}
+						<td style="color: #009900;">+
+						{% else %}
+						<td style="color: #FF0000;">
+						{% endif %}
+						{{ d_new_custom|floatformat }}%</td>
+						
 					<tr>
 				</tbody>
 			</table>
