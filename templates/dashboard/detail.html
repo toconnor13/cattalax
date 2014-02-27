@@ -16,14 +16,19 @@
 			</div>
 			<div class="col-md-6">
 				<ul class="pager">
-					<li><a href="/dashboard/{{request.session.focus}}/{{previous_time.0.id}}">Previous {{request.session.focus|title}}</a></li>
-					<li><a href="/dashboard/{{request.session.focus}}/{{next_time.0.id}}">Next {{request.session.focus|title}}</a></li>
+					{% if previous_time %}
+					<li><a href="/dashboard/{{request.session.focus}}/{{previous_time.id}}">Previous {{request.session.focus|title}}</a></li>
+					{% endif %}
+					{% if next_time %}
+					<li><a href="/dashboard/{{request.session.focus}}/{{next_time.id}}">Next {{request.session.focus|title}}</a></li>
+					{% endif %}
 				</ul>
 			</div>
 	</div>
 
 	<div class="row" style = "">
 		<div class="col-md-8" style="max-width: 535px;">
+			{% if previous_time %}
 			<table class="table table-bordered table-condensed">
 				<thead>
 					<th>Metric</th>
@@ -36,7 +41,7 @@
 					<tr>
 						<td>Capture</td>
 						<td>{{object.get_capture_rate}} %</td>
-						<td>{{previous_time.0.get_capture_rate}}%</td>
+						<td>{{previous_time.get_capture_rate}}%</td>
 						{% if d_capture > 0 %}
 						<td style="color: #009900;">+
 						{% else %}
@@ -47,7 +52,7 @@
 					<tr>
 						<td>Bounce</td>
 						<td>{{object.get_bounce_rate}}% </td>
-						<td>{{previous_time.0.get_bounce_rate}}% </td>
+						<td>{{previous_time.get_bounce_rate}}% </td>
 						{% if d_bounce > 0 %}
 						<td style="color: #009900;">+
 						{% else %}
@@ -58,7 +63,7 @@
 					<tr>
 						<td>Duration</td>
 						<td>{{object.get_avg_duration}} min</td>
-						<td>{{previous_time.0.get_avg_duration}} min</td>
+						<td>{{previous_time.get_avg_duration}} min</td>
 						{% if d_avg_duration > 0 %}
 						<td style="color: #009900;">+
 						{% else %}
@@ -69,7 +74,7 @@
 					<tr>
 						<td>New Customers</td>
 						<td>{{object.percent_of_new_customers|floatformat}}% </td>
-						<td>{{previous_time.0.percent_of_new_customers|floatformat}}% </td>
+						<td>{{previous_time.percent_of_new_customers|floatformat}}% </td>
 						{% if d_new_custom > 0 %}
 						<td style="color: #009900;">+
 						{% else %}
@@ -80,44 +85,33 @@
 					<tr>
 				</tbody>
 			</table>
-		<!--
-		<table class="table table-bordered table-condensed">
-			<thead>
-				<th>Time</th>
-					<th>Walkbys</th>
-					<th>Entries</th>
-					<th>Bounces</th>
-					<th>Capture</th>
-					<th>Bounce</th>
-					<th>Duration</th>
+			{% else %}
+			<table class="table table-bordered table-condensed">
+				<thead>
+					<th>Metric</th>
+					<th>Current {{request.session.focus|title}}</th>
+				</thead>
 
-			</thead>
-
-			<tbody>
-				{% for object in object_list %}
-				<tr>
-					<td>{{object.describe}}</td>				
-					<td>{{object.no_of_walkbys}}</td>
-					<td>{{object.no_of_entries}}</td>
-					<td>{{object.no_of_bounces}}</td>
-					<td>{{object.get_capture_rate}}%</td>
-					<td>{{object.get_bounce_rate}}%</td>
-					<td>{{object.get_avg_duration}}</td>
-				<tr>
-				{% endfor %}
-				<tr class="success">
-					<td>Overall</td>				
-					<td>{{object.no_of_walkbys}}</td>
-					<td>{{object.no_of_entries}}</td>
-					<td>{{object.no_of_bounces}}</td>
-					<td>{{object.get_capture_rate}}%</td>
-					<td>{{object.get_bounce_rate}}%</td>
-					<td>{{object.get_avg_duration}}</td>
-				<tr>
-			</tbody>
-		</table>
-		-->
-		
+				<tbody>
+					<tr>
+						<td>Capture</td>
+						<td>{{object.get_capture_rate}} %</td>
+					<tr>
+					<tr>
+						<td>Bounce</td>
+						<td>{{object.get_bounce_rate}}% </td>
+					<tr>
+					<tr>
+						<td>Duration</td>
+						<td>{{object.get_avg_duration}} min</td>
+					<tr>
+					<tr>
+						<td>New Customers</td>
+						<td>{{object.percent_of_new_customers|floatformat}}% </td>
+					<tr>
+				</tbody>
+			</table>
+			{% endif %}
 
 		<div class="row">
 
