@@ -5,6 +5,7 @@ from django.template import RequestContext, Context
 from dashboard.models import Month, Week, Day, Hour, Outlet, Campaign
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
 import datetime
 import re
 import time
@@ -254,11 +255,13 @@ def frequency_bin(time):
 		} 
 	return data
 
+import calendar
+
 def add_months(sourcedate, months):
 	month = sourcedate.month -1 + months
 	year = sourcedate.year + month/12
 	month = month%12 + 1
-	day = mon(sourcedate.day, calendar.monthrange(year, month)[1])
+	day = min(sourcedate.day, calendar.monthrange(year, month)[1])
 	return datetime.date(year, month, day)
 
 @login_required
@@ -267,22 +270,42 @@ def detail(request, time_unit, object_id, levels=False):
 	outlet_list = Outlet.objects.filter(agent=vendor_username)
 	outlet = outlet_list.get(pk=request.session['shop_id'])
 	focus = request.session['focus']
+	previous_time=False
+	next_time=False
 	if focus=="day":
 		time = get_object_or_404(Day, pk=object_id)
-		next_time = Day.objects.filter(vendor=outlet, datetime= time.datetime + datetime.timedelta(days=1))
-		previous_time = Day.objects.filter(vendor=outlet, datetime= time.datetime + datetime.timedelta(days=-1))
+		try:
+			next_time = Day.objects.get(vendor=outlet, datetime= time.datetime + datetime.timedelta(days=1))
+		except (ValueError, ObjectDoesNotExist):
+			pass
+		try:
+			previous_time = Day.objects.get(vendor=outlet, datetime= time.datetime + datetime.timedelta(days=-1))
+		except (ValueError, ObjectDoesNotExist):
+			pass
 		times_to_show = [h for h in time.hour_set.all() if h.hour>6 and h.hour<20]
 		xdata = map(lambda h: str(h.hour), times_to_show)
 	elif focus=="week":
 		time = get_object_or_404(Week, pk=object_id)
-		next_time = Week.objects.filter(vendor=outlet, week_no = time.datetime.isocalendar()[1]+1 )
-		previous_time = Week.objects.filter(vendor=outlet, week_no = time.datetime.isocalendar()[1]-1)
+		try: 
+			next_time = Week.objects.get(vendor=outlet, week_no = time.datetime.isocalendar()[1]+1 )
+		except (ValueError, ObjectDoesNotExist):
+			pass
+		try:
+			previous_time = Week.objects.get(vendor=outlet, week_no = time.datetime.isocalendar()[1]-1)
+		except (ValueError, ObjectDoesNotExist):
+			pass
 		times_to_show = time.day_set.all()
 		xdata = map(lambda h: str(h.datetime.strftime("%d %b")), times_to_show)
 	else:
 		time = get_object_or_404(Month, pk=object_id)
-		next_time = Month.objects.filter(vendor=outlet, month_no = add_months(datetime, 1).month )
-		previous_time = Month.objects.filter(vendor=outlet, month_no = add_months(datetime, -1).month )
+		try:
+			next_time = Month.objects.get(vendor=outlet, month_no = add_months(time.datetime, 1).month )
+		except (ValueError, ObjectDoesNotExist):
+			pass
+		try:
+			previous_time = Month.objects.get(vendor=outlet, month_no = add_months(time.datetime, -1).month )
+		except (ValueError, ObjectDoesNotExist):
+			pass
 		times_to_show = time.day_set.all()
 		xdata = map(lambda h: str(h.datetime.strftime("%d %b")), times_to_show)
 
@@ -297,10 +320,16 @@ def detail(request, time_unit, object_id, levels=False):
 	chartdata4 = duration_bin(time)
 	chartdata5 = frequency_bin(time)
 
-	d_capture = float(time.get_capture_rate()) - float(previous_time[0].get_capture_rate())
-	d_bounce = float(time.get_bounce_rate()) - float(previous_time[0].get_capture_rate())
-	d_new_custom = float(time.percent_of_new_customers()) - float(previous_time[0].percent_of_new_customers())
-	d_avg_duration = time.avg_duration - previous_time[0].avg_duration
+	if previous_time:
+		d_capture = float(time.get_capture_rate()) - float(previous_time.get_capture_rate())
+		d_bounce = float(time.get_bounce_rate()) - float(previous_time.get_capture_rate())
+		d_new_custom = float(time.percent_of_new_customers()) - float(previous_time.percent_of_new_customers())
+		d_avg_duration = time.avg_duration - previous_time.avg_duration
+	else:
+		d_capture = "N/A"
+		d_bounce = "N/A"
+		d_new_custom = "N/A"
+		d_avg_duration = "N/A"
 
 	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
