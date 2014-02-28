@@ -27,7 +27,7 @@
 	</div>
 
 	<div class="row" style = "">
-		<div class="col-md-8" style="max-width: 535px;">
+		<div class="col-md-6" style="max-width: 535px;">
 			{% if previous_time %}
 			<table class="table table-bordered table-condensed">
 				<thead>
@@ -38,6 +38,18 @@
 				</thead>
 
 				<tbody>
+					<tr>
+						<td>No. of Visitors</td>
+						<td>{{object.no_of_entries}} </td>
+						<td>{{previous_time.no_of_entries}} </td>
+						{% if d_entries > 0 %}
+						<td style="color: #009900;">+
+						{% else %}
+						<td	style="color: #FF0000;">
+						{% endif %}
+						{{ d_entries }}% </td>
+
+					<tr>
 					<tr>
 						<td>Capture</td>
 						<td>{{object.get_capture_rate}} %</td>
@@ -94,6 +106,10 @@
 
 				<tbody>
 					<tr>
+						<td>No. of Visitors</td>
+						<td>{{object.no_of_entries}} </td>
+					<tr>
+					<tr>
 						<td>Capture</td>
 						<td>{{object.get_capture_rate}} %</td>
 					<tr>
@@ -114,14 +130,14 @@
 			{% endif %}
 
 		<div class="row">
-
-			<h3 class="text-center">Duration of Visit</h3>
+			<h4 data-toggle="tooptip" class="text-center tooltip1" title="How many visits last for 0-5 mins, 5-10 mins, etc.">Duration of Visits</h4>
 			<div class="col-md-2 col-md-offset-1">
 				{% include_container chartcontainer7 250 450 %}
 			</div>
 		</div>
 
 		<div class="row">
+			<h4 data-toggle="tooptip" class="text-center tooltip1" title="How many people visit once, twice, etc.">Frequency of Visits</h4>
 			<div class="col-md-2 col-md-offset-1">
 				{% include_container chartcontainer8 250 450 %}
 			</div>
@@ -136,8 +152,9 @@
 		-->
 	</div>
 
-	<div class="col-md-5">
+	<div class="col-md-6">
 		<div class="row">
+			<h4 data-toggle="tooptip" class="text-center tooltip1" title="The rates throughout the time period">{{request.session.focus|title}} Breakdown</h4>
 			<div class="col-md-2 col-md-offset-1">
 				<div class="svg_container">
 				{% include_container chartcontainer1 300 450 %}
@@ -146,9 +163,10 @@
 		</div>
 
 		<div class="row">
+			<h4 data-toggle="tooptip" class="text-center tooltip1" title="Average duration throughout the time period">Average Duration Breakdown</h4>
 			<div class="col-md-2 col-md-offset-1">
 				<div class="svg_container">
-				{% include_container chartcontainer2 300 450 %}
+				{% include_container chartcontainer2 250 450 %}
 				</div>
 			</div>
 		</div>

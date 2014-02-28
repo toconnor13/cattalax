@@ -241,17 +241,24 @@ def frequency_bin(time):
 			ydata[4]+=1
 		elif attendance.count(customer)>=6:
 			ydata[5]+=1
-	extra_serie1 = {"tooltip": {"y_start": "", "y_end": " visits"}}
+	extra_serie1 = {"tooltip": {
+#		"x_start": "",
+#		"x_end": ".00",
+		"y_start": "", 
+		"y_end": " visits",
+		}
+	}
 	chartdata = {
 		'x': xdata, 
 		'y1': ydata, 
-		'extra1': extra_serie1
+		'extra1': extra_serie1,
+		'name1': 'Frequency'
 	}
 	charttype = "discreteBarChart"
 	data = {
 			'charttype8': charttype,
 			'chartdata8': chartdata,
-			'chartcontainer8': "frequency_hist_container"
+			'chartcontainer8': "frequency_hist_container",
 		} 
 	return data
 
@@ -325,13 +332,15 @@ def detail(request, time_unit, object_id, levels=False):
 		d_bounce = float(time.get_bounce_rate()) - float(previous_time.get_capture_rate())
 		d_new_custom = float(time.percent_of_new_customers()) - float(previous_time.percent_of_new_customers())
 		d_avg_duration = time.avg_duration - previous_time.avg_duration
+		d_entries = float(time.no_of_entries*100/previous_time.no_of_entries-100)
 	else:
 		d_capture = "N/A"
 		d_bounce = "N/A"
 		d_new_custom = "N/A"
 		d_avg_duration = "N/A"
+		d_entries = "N/A"
 
-	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration)])
+	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration), ('d_entries', d_entries)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
