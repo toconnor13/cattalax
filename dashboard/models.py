@@ -147,7 +147,8 @@ class Encounter(models.Model):
 	month = models.ForeignKey(Month)
 	week = models.ForeignKey(Week)
 	day = models.ForeignKey(Day)
-
+	hour = models.ForeignKey(Hour)
+	
 	class Meta:
 		abstract=True
 
@@ -156,7 +157,6 @@ class Encounter(models.Model):
 
 class Visit(Encounter):
 	patron = models.ForeignKey(Customer)
-	hour = models.ForeignKey(Hour)
 	duration = models.IntegerField()
 	first_visit = models.BooleanField()
 
