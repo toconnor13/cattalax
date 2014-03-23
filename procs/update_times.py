@@ -5,19 +5,11 @@ if path not in sys.path:
 	sys.path.append(path)
 
 os.environ["DJANGO_SETTINGS_MODULE"]="cattalax.settings"
-
-#from django.core.management import setup_environ
-#from cattalax import settings
-#from dashboard.models import Customer, Outlet, Visit, Walkby, Day, Hour
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cattalax.settings") 
 
-#setup_environ(settings)
 from django.utils import timezone
 from dashboard.models import *
 import datetime
-
-
 
 list_of_shops = [v for v in Outlet.objects.all()]
 
