@@ -16,13 +16,13 @@ USER="root"
 PW="the power to do what is right"
 DB="cattalax"
 con = MySQLdb.connect(HOST,USER,PW,DB)
-cur = con.cursor()
+cursor = con.cursor()
 
 
-shop_list = [shop.sensor_no for shop in Outlet.objects.all()]
+shop_list = [shop for shop in Outlet.objects.all()]
 
-for shop_no in shop_list:
-	view = "capture"+str(shop_no)
-	cursor.execute("CREATE OR REPLACE VIEW "+view+" AS SELECT id, count(id) AS obs FROM attendance WHERE sensor_id="+str(shop_no)+" GROUP BY id")
+for shop in shop_list:
+	view = "capture"+str(shop.sensor_no)
+	cursor.execute("CREATE OR REPLACE VIEW "+view+" AS SELECT id, timestamp, count(id) AS obs FROM attendance WHERE sensor_id="+str(shop.sensor_no)+" GROUP BY id")
 
 

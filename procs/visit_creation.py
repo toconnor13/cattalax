@@ -33,18 +33,20 @@ start_timestamp = calendar.timegm(start_dt.utctimetuple())
 def captures_in_shop(shop_no, cursor):
 	view = "capture"+str(shop_no) # Enter view name
 	# Get the shop enter view in csv form
-	cursor.execute("SELECT id FROM "+view+" WHERE obs>2 AND timestamp>"+str(start_timestamp)+"INTO OUTFILE '/tmp/id_list.csv' fields terminated by ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'")
+	stmt = "SELECT id FROM "+view+" WHERE obs>2 AND timestamp>"+str(start_timestamp)+" INTO OUTFILE '/tmp/id_list.csv' fields terminated by ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
+	print stmt 
+	cursor.execute(stmt)
 	# Get the list of addresses
 	file_of_addrs = open("/tmp/id_list.csv")
 	addrs = file_of_addrs.read().split()
-	os.remove('tmp/id_list.csv')
+	os.remove('/tmp/id_list.csv')
 	return addrs
 
 def walkbys_in_shop(shop_no, cursor):
-	cursor.execute("SELECT id, timestamp FROM attendance WHERE rssi<-70 AND sensor_id="+shop_no+" AND timestamp>"+start_timestamp+" GROUP BY id INTO OUTFILE '/tmp/walkbys.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'")
+	cursor.execute("SELECT id, timestamp FROM attendance WHERE rssi<-70 AND sensor_id="+str(shop_no)+" AND timestamp>"+str(start_timestamp)+" GROUP BY id INTO OUTFILE '/tmp/walkbys.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'")
 	file_of_walkbys = open("/tmp/walkbys.csv")
 	walkbys = file_of_walkbys.read().split()
-	os.remove('tmp/walkbys.csv')
+	os.remove('/tmp/walkbys.csv')
 	return walkbys
 
 def behaviour_summary(address, cursor):
