@@ -17,6 +17,8 @@ class Outlet(models.Model):
 	county  = models.CharField(max_length=20)
 	agent   = models.CharField(max_length=30)
 	sensor_no = models.IntegerField()
+	outer_bound = models.IntegerField()
+	inner_bound = models.IntegerField()
 
 	def __unicode__(self):
 		return self.name
