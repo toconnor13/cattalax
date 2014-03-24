@@ -150,7 +150,6 @@ class Encounter(models.Model):
 	week = models.ForeignKey(Week)
 	day = models.ForeignKey(Day)
 	hour = models.ForeignKey(Hour)
-	patron = models.ForeignKey(Customer)
 	
 	class Meta:
 		abstract=True
@@ -161,7 +160,8 @@ class Encounter(models.Model):
 class Visit(Encounter):
 	duration = models.IntegerField()
 	first_visit = models.BooleanField()
+	patron = models.ForeignKey(Customer)
 
 class Walkby(Encounter):
-	"Nothing here."	
+	addr = models.CharField(max_length=300)
 
