@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 import datetime as datetime2
 from duration import *
+import pytz
 
 # Connect to web database
 path='/root/.virtualenvs/cattalax/cattalax' 
@@ -82,8 +83,7 @@ def month_search(dt, outlet):
 	try:
 		m= Month.objects.get(vendor=outlet, month_no=dt.month, year=dt.year)
 	except (ValueError, ObjectDoesNotExist):
-		mdate=datetime(dt.year, dt.month, 1)
-		m = Month(year=dt.year, month_no=dt.month, vendor=outlet, datetime=mdate, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
+		m = Month(year=dt.year, month_no=dt.month, vendor=outlet, datetime=dt, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
 		m.save()
 	return m
 
@@ -131,7 +131,7 @@ for shop_no in shop_list:
 		entry = walkby.split(',')
 		timestamp = int(eval(entry[1]))
 		addr = entry[0]
-		dt = datetime.fromtimestamp(timestamp)
+		dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
 		time_tuple = time_list(dt, outlet)
 		w = Walkby(addr=eval(addr), vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
 		w.save()
@@ -143,7 +143,7 @@ for shop_no in shop_list:
 		g_d = behaviour_summary(addr, cur)
 		visits = len(g_d)/4
 		timestamp=int(g_d[count+1])
-		dt = datetime.fromtimestamp(timestamp)
+		dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
 		time_tuple = time_list(dt, outlet)
 		count = 0
 		for i in range(visits):
