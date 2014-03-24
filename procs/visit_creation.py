@@ -3,6 +3,7 @@ import MySQLdb
 import calendar
 from datetime import datetime, date
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 import datetime as datetime2
 from duration import *
 
@@ -27,12 +28,16 @@ cur = con.cursor()
 shop_list = [shop.sensor_no for shop in Outlet.objects.all()]
 
 dt = date.today()
-start_dt = datetime(dt.year, dt.month, dt.day)
+start_dt = datetime(dt.year, dt.month, dt.day-7)
 start_timestamp = calendar.timegm(start_dt.utctimetuple())
 
+def calculate_view(shop_no, start_time, cursor):
+	view_name = "capture"+str(shop_no)
+	cursor.execute("CREATE OR REPLACE VIEW "+view_name+" AS SELECT DISTINCT id, timestamp, count(id) AS obs FROM attendance WHERE sensor_id="+str(shop_no)+" AND timestamp>"+str(start_time)+" GROUP BY id")
+	return view_name
+
 def captures_in_shop(shop_no, cursor):
-	view = "capture"+str(shop_no) # Enter view name
-	# Get the shop enter view in csv form
+	view = calculate_view(shop_no, start_timestamp, cursor)
 	stmt = "SELECT id FROM "+view+" WHERE obs>2 AND timestamp>"+str(start_timestamp)+" INTO OUTFILE '/tmp/id_list.csv' fields terminated by ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
 	print stmt 
 	cursor.execute(stmt)
@@ -51,10 +56,11 @@ def walkbys_in_shop(shop_no, cursor):
 
 def behaviour_summary(address, cursor):
 	filename = '/tmp/detail.csv'
-	sql_command = "SELECT DISTINCT * FROM attendance WHERE id="+addr+" AND timestamp>"+start_timestamp+" ORDER BY timestamp, -rssi INTO OUTFILE '"+filename+"' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
+	sql_command = "SELECT * FROM attendance WHERE id="+addr+" AND timestamp>"+str(start_timestamp)+" ORDER BY timestamp, -rssi INTO OUTFILE '"+filename+"' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
 	cursor.execute(sql_command)
 	print "Getting duration, and inserting to customer_log table."
 	g_d = robjects.r('get_duration(\"' + filename + '\")')
+	os.remove('/tmp/detail.csv')
 	return g_d
 
 def customer_info(mac_addr, outlet):
@@ -76,15 +82,16 @@ def month_search(dt, outlet):
 	try:
 		m= Month.objects.get(vendor=outlet, month_no=dt.month, year=dt.year)
 	except (ValueError, ObjectDoesNotExist):
-		m = Month(year=dt.year, month_no=dt.month, vendor=outlet, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
+		mdate=datetime(dt.year, dt.month, 1)
+		m = Month(year=dt.year, month_no=dt.month, vendor=outlet, datetime=mdate, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
 		m.save()
 	return m
 
 def week_search(dt, outlet):
 	try:
-		w= Week.objects.get(vendor=outlet, week_no=dt.isocalender()[1], year=dt.year)
+		w= Week.objects.get(vendor=outlet, week_no=dt.isocalendar()[1], year=dt.year)
 	except (ValueError, ObjectDoesNotExist):
-		w = Week(year=dt.year, week_no=dt.isocalender()[1], vendor=outlet, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
+		w = Week(datetime=dt, year=dt.year, week_no=dt.isocalendar()[1], vendor=outlet, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
 		w.save()
 	return w
 
@@ -100,11 +107,11 @@ def hour_search(dt, day):
 	try:
 		h = Hour.objects.get(vendor=outlet, day=day, hour=dt.hour)
 	except (ValueError, ObjectDoesNotExist):
-		h = Hour(vendor=outlet, day=day, hour=dt.hour, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
+		h = Hour(datetime=dt, vendor=outlet, day=day, hour=dt.hour, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
 		h.save()
 	return h
 
-def time_tuple(dt, outlet):
+def time_list(dt, outlet):
 	month = month_search(dt, outlet)
 	week = week_search(dt, outlet)
 	day = day_search(dt, outlet, week, month)
@@ -117,25 +124,28 @@ for shop_no in shop_list:
 	outlet = Outlet.objects.get(sensor_no=shop_no)
 	captures = captures_in_shop(shop_no, cur)
 	walkbys = walkbys_in_shop(shop_no, cur)
+
 	for walkby in walkbys:
 		entry = walkby.split(',')
 		timestamp = int(eval(entry[1]))
 		addr = entry[0]
 		dt = datetime.fromtimestamp(timestamp)
-		time_tuple = time_tuple(dt, outlet)
+		time_tuple = time_list(dt, outlet)
 		w = Walkby(vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
 		w.save()
+		print "Walkby " + str(w.id) + " saved"
 
 	for addr in captures:
-		customer_info = customer_info(addr)
+		count=0
+		c_info = customer_info(addr, outlet)
 		g_d = behaviour_summary(addr, cur)
 		visits = len(g_d)/4
 		timestamp=int(g_d[count+1])
 		dt = datetime.fromtimestamp(timestamp)
-		time_tuple = time_tuple(dt, outlet)
+		time_tuple = time_list(dt, outlet)
 		count = 0
 		for i in range(visits):
-			v = Visit(patron=customer_info[0], vendor=outlet, duration=int(g_d[count+2]), first_visit=customer_info[1], month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
+			v = Visit(patron=c_info[0], vendor=outlet, duration=int(g_d[count+2]), first_visit=c_info[1], month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
 			v.save()
 			count += 4
 
