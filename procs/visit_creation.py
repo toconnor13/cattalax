@@ -124,14 +124,16 @@ for shop_no in shop_list:
 	outlet = Outlet.objects.get(sensor_no=shop_no)
 	captures = captures_in_shop(shop_no, cur)
 	walkbys = walkbys_in_shop(shop_no, cur)
-
+	Walkby.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=outlet).delete()
+	Visit.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=outlet).delete()
+	
 	for walkby in walkbys:
 		entry = walkby.split(',')
 		timestamp = int(eval(entry[1]))
 		addr = entry[0]
 		dt = datetime.fromtimestamp(timestamp)
 		time_tuple = time_list(dt, outlet)
-		w = Walkby(vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
+		w = Walkby(addr=eval(addr), vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
 		w.save()
 		print "Walkby " + str(w.id) + " saved"
 
