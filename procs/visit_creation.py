@@ -30,6 +30,7 @@ shop_list = [shop for shop in Outlet.objects.all()]
 
 dt = date.today()
 start_dt = datetime(dt.year, dt.month, dt.day-17)
+end_dt = timezone.now()
 start_timestamp = calendar.timegm(start_dt.utctimetuple())
 
 def calculate_view(shop, start_time, cursor):
@@ -118,6 +119,20 @@ def time_list(dt, outlet):
 	times = (month, week, day, hour)
 	return times
 
+def compute(time):
+	list_of_visits = [v for v in time.visit_set.all()]
+	time.no_of_entries = len(list_of_visits)
+
+	list_of_walkbys = [w for w in time.walkby_set.all()]
+	time.no_of_walkbys = len(list_of_walkbys)
+
+	list_of_bounces = [v for v in list_of_visits if v.duration<60]
+	time.no_of_bounces = len(list_of_bounces)
+
+	if time.no_of_entries>0:
+		time.avg_duration = sum([int(v.duration) for v in list_of_visits])/time.no_of_entries
+	time.save()
+	print "Updating time"+str(time.id)
 
 for shop in shop_list:
 	captures = captures_in_shop(shop, cur)
@@ -149,6 +164,22 @@ for shop in shop_list:
 			v.save()
 			print "A visit "+str(v.id)+" saved"
 			count += 4
+	from_dt = datetime.fromtimestamp(start_timestamp, tz=pytz.utc)
+	end_dt = timezone.now()
+	months_to_update = shop.month_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
+	weeks_to_update = shop.week_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
+	days_to_update = shop.day_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
+
+	for month in months_to_update:
+		compute(month)
+	for week in weeks_to_update:
+		compute(week)
+	for day in days_to_update:
+		compute(day)
+		for hour in day.hour_set.all():
+			compute(hour)
+
+
 
 
 
