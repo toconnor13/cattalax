@@ -26,20 +26,20 @@ con = MySQLdb.connect(HOST,USER,PW,DB)
 cur = con.cursor()
 
 
-shop_list = [shop.sensor_no for shop in Outlet.objects.all()]
+shop_list = [shop for shop in Outlet.objects.all()]
 
 dt = date.today()
-start_dt = datetime(dt.year, dt.month, dt.day-7)
+start_dt = datetime(dt.year, dt.month, dt.day-17)
 start_timestamp = calendar.timegm(start_dt.utctimetuple())
 
-def calculate_view(shop_no, start_time, cursor):
-	view_name = "capture"+str(shop_no)
-	cursor.execute("CREATE OR REPLACE VIEW "+view_name+" AS SELECT DISTINCT id, timestamp, count(id) AS obs FROM attendance WHERE sensor_id="+str(shop_no)+" AND timestamp>"+str(start_time)+" GROUP BY id")
+def calculate_view(shop, start_time, cursor):
+	view_name = "capture"+str(shop.sensor_no)
+	cursor.execute("CREATE OR REPLACE VIEW "+view_name+" AS SELECT DISTINCT id, timestamp, count(id) AS obs FROM attendance WHERE sensor_id="+str(shop.sensor_no)+" AND timestamp>"+str(start_time)+" AND rssi>"+str(shop.inner_bound)+" GROUP BY id")
 	return view_name
 
-def captures_in_shop(shop_no, cursor):
-	view = calculate_view(shop_no, start_timestamp, cursor)
-	stmt = "SELECT id FROM "+view+" WHERE obs>2 AND timestamp>"+str(start_timestamp)+" INTO OUTFILE '/tmp/id_list.csv' fields terminated by ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
+def captures_in_shop(shop, cursor):
+	view = calculate_view(shop, start_timestamp, cursor)
+	stmt = "SELECT id FROM "+view+" WHERE timestamp>"+str(start_timestamp)+" INTO OUTFILE '/tmp/id_list.csv' fields terminated by ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
 	print stmt 
 	cursor.execute(stmt)
 	# Get the list of addresses
@@ -48,19 +48,18 @@ def captures_in_shop(shop_no, cursor):
 	os.remove('/tmp/id_list.csv')
 	return addrs
 
-def walkbys_in_shop(shop_no, cursor):
-	cursor.execute("SELECT id, timestamp FROM attendance WHERE rssi<-70 AND sensor_id="+str(shop_no)+" AND timestamp>"+str(start_timestamp)+" GROUP BY id INTO OUTFILE '/tmp/walkbys.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'")
+def walkbys_in_shop(shop, cursor):
+	cursor.execute("SELECT id, timestamp FROM attendance WHERE rssi>"+str(shop.outer_bound)+" AND sensor_id="+str(shop.sensor_no)+" AND timestamp>"+str(start_timestamp)+" GROUP BY id INTO OUTFILE '/tmp/walkbys.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'")
 	file_of_walkbys = open("/tmp/walkbys.csv")
 	walkbys = file_of_walkbys.read().split()
 	os.remove('/tmp/walkbys.csv')
 	return walkbys
 
-def behaviour_summary(address, cursor):
+def behaviour_summary(address, cursor, outlet):
 	filename = '/tmp/detail.csv'
 	sql_command = "SELECT * FROM attendance WHERE id="+addr+" AND timestamp>"+str(start_timestamp)+" ORDER BY timestamp, -rssi INTO OUTFILE '"+filename+"' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
 	cursor.execute(sql_command)
-	print "Getting duration, and inserting to customer_log table."
-	g_d = robjects.r('get_duration(\"' + filename + '\")')
+	g_d = robjects.r('get_duration(\"' + filename + '\",'+str(outlet.inner_bound)+')')
 	os.remove('/tmp/detail.csv')
 	return g_d
 
@@ -105,7 +104,7 @@ def day_search(dt, outlet, week, month):
 
 def hour_search(dt, day):
 	try:
-		h = Hour.objects.get(vendor=outlet, day=day, hour=dt.hour)
+		h = Hour.objects.get(day=day, hour=dt.hour)
 	except (ValueError, ObjectDoesNotExist):
 		h = Hour(datetime=dt, vendor=outlet, day=day, hour=dt.hour, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
 		h.save()
@@ -120,35 +119,35 @@ def time_list(dt, outlet):
 	return times
 
 
-for shop_no in shop_list:
-	outlet = Outlet.objects.get(sensor_no=shop_no)
-	captures = captures_in_shop(shop_no, cur)
-	walkbys = walkbys_in_shop(shop_no, cur)
-	Walkby.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=outlet).delete()
-	Visit.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=outlet).delete()
+for shop in shop_list:
+	captures = captures_in_shop(shop, cur)
+	walkbys = walkbys_in_shop(shop, cur)
+	Walkby.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=shop).delete()
+	Visit.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=shop).delete()
 	
 	for walkby in walkbys:
 		entry = walkby.split(',')
 		timestamp = int(eval(entry[1]))
 		addr = entry[0]
 		dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
-		time_tuple = time_list(dt, outlet)
+		time_tuple = time_list(dt, shop)
 		w = Walkby(addr=eval(addr), vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
 		w.save()
 		print "Walkby " + str(w.id) + " saved"
 
 	for addr in captures:
 		count=0
-		c_info = customer_info(addr, outlet)
-		g_d = behaviour_summary(addr, cur)
+		c_info = customer_info(addr, shop)
+		g_d = behaviour_summary(addr, cur, shop)
 		visits = len(g_d)/4
 		timestamp=int(g_d[count+1])
 		dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
-		time_tuple = time_list(dt, outlet)
+		time_tuple = time_list(dt, shop)
 		count = 0
 		for i in range(visits):
-			v = Visit(patron=c_info[0], vendor=outlet, duration=int(g_d[count+2]), first_visit=c_info[1], month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
+			v = Visit(patron=c_info[0], vendor=shop, duration=int(g_d[count+2]), first_visit=c_info[1], month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
 			v.save()
+			print "A visit "+str(v.id)+" saved"
 			count += 4
 
 

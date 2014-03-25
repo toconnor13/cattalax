@@ -1,14 +1,14 @@
 import rpy2.robjects as robjects
 
 robjects.r('''
-	get_duration <- function(customer_probereq_file){
+	get_duration <- function(customer_probereq_file, inner_bound){
 		data = read.csv(customer_probereq_file)
 		data[4] <- NULL
 		colnames(data) <- c('id', 'timestamp', 'rssi')
 
 		# **** IN_OUT CALCULATION ****
 			data$in_out <- 0
-			data$in_out[data$rssi > -70] <- 1
+			data$in_out[data$rssi > inner_bound] <- 1
 			N <- length(data$in_out)
 
 			# This code is designed to let the strongest signal dominate in the calculations.
