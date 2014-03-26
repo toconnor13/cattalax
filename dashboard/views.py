@@ -274,8 +274,8 @@ def add_months(sourcedate, months):
 @login_required
 def detail(request, time_unit, object_id, levels=False):
 	vendor_username = request.user.username
-	outlet_list = Outlet.objects.filter(agent=vendor_username)
-	outlet = outlet_list.get(pk=request.session['shop_id'])
+	outlet_list = Outlet.objects.all()
+	outlet = outlet_list.get(sensor_no=request.session['shop_id'])
 	focus = request.session['focus']
 	previous_time=False
 	next_time=False
