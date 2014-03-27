@@ -1,12 +1,12 @@
 import os, sys
 import MySQLdb
 import calendar
-from datetime import datetime, date
+import pytz
+import datetime as datetime2
+from datetime import datetime, date, timedelta
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
-import datetime as datetime2
 from duration import *
-import pytz
 
 # Connect to web database
 path='/root/.virtualenvs/cattalax/cattalax' 
@@ -28,9 +28,8 @@ cur = con.cursor()
 
 shop_list = [shop for shop in Outlet.objects.all()]
 
-dt = date.today()
-start_dt = datetime(dt.year, dt.month, dt.day-18)
 end_dt = timezone.now()
+start_dt = end_dt - timedelta(days=10)
 start_timestamp = calendar.timegm(start_dt.utctimetuple())
 
 def calculate_view(shop, start_time, cursor):
@@ -103,7 +102,7 @@ def day_search(dt, outlet, week, month):
 		d.save()
 	return d
 
-def hour_search(dt, day):
+def hour_search(dt, day, outlet):
 	try:
 		h = Hour.objects.get(day=day, hour=dt.hour)
 	except (ValueError, ObjectDoesNotExist):
@@ -115,7 +114,7 @@ def time_list(dt, outlet):
 	month = month_search(dt, outlet)
 	week = week_search(dt, outlet)
 	day = day_search(dt, outlet, week, month)
-	hour = hour_search(dt, day)
+	hour = hour_search(dt, day, outlet)
 	times = (month, week, day, hour)
 	return times
 
@@ -132,7 +131,7 @@ def compute(time):
 	if time.no_of_entries>0:
 		time.avg_duration = sum([int(v.duration) for v in list_of_visits])/time.no_of_entries
 	time.save()
-	print "Updating time"+str(time.id)
+	print "Updating "+str(time.datetime)
 
 for shop in shop_list:
 	captures = captures_in_shop(shop, cur)
@@ -162,10 +161,13 @@ for shop in shop_list:
 		for i in range(visits):
 			v = Visit(patron=c_info[0], vendor=shop, duration=int(g_d[count+2]), first_visit=c_info[1], month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
 			v.save()
-			print "A visit "+str(v.id)+" saved"
+			print "A visit "+str(v.patron.mac_addr)+" saved"
 			count += 4
 	from_dt = datetime.fromtimestamp(start_timestamp, tz=pytz.utc)
 	end_dt = timezone.now()
+	print "Dates revised from "
+	print from_dt
+	print end_dt
 	months_to_update = shop.month_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
 	weeks_to_update = shop.week_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
 	days_to_update = shop.day_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
