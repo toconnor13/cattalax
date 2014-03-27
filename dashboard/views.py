@@ -153,10 +153,10 @@ def dashboard(request):
 		objects_to_show = get_days_to_show(start_date, end_date, days_to_graph)
 		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
 	elif focus=="week":
-		objects_to_show = Week.objects.all()
+		objects_to_show = Week.objects.filter(vendor__sensor_no=13)
 		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
 	else:
-		objects_to_show = Month.objects.all()
+		objects_to_show = Month.objects.filter(vendor__sensor_no=int(request.session['shop_id']))
 		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
 	data1 = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container1', levels=False, graph_no=1)
 	data2 = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container2', levels=True, graph_no=2)
@@ -362,7 +362,7 @@ def opt_out(request):
 
 def campaigns(request):
 	request.session['nav']="campaigns"
-	campaign_list = Campaign.objects.filter(outlet=Outlet.objects.get(pk=request.session['shop_id']))
+	campaign_list = Campaign.objects.filter(outlet=Outlet.objects.get(sensor_no=int(request.session['shop_id'])))
 	data = {
 		'object_list': campaign_list,
 	}
