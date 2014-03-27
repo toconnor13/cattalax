@@ -29,7 +29,7 @@ cur = con.cursor()
 shop_list = [shop for shop in Outlet.objects.all()]
 
 dt = date.today()
-start_dt = datetime(dt.year, dt.month, dt.day-17)
+start_dt = datetime(dt.year, dt.month, dt.day-18)
 end_dt = timezone.now()
 start_timestamp = calendar.timegm(start_dt.utctimetuple())
 
@@ -73,7 +73,7 @@ def customer_info(mac_addr, outlet):
 		except (ValueError, ObjectDoesNotExist):
 			first_visit=True
 	except (ValueError, ObjectDoesNotExist):
-		c = Customer(mac_addr=mac_addr)
+		c = Customer(mac_addr=eval(mac_addr))
 		c.save()
 		first_visit=True
 	customer_info = (c, first_visit)
