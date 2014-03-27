@@ -2,9 +2,12 @@ import rpy2.robjects as robjects
 
 robjects.r('''
 	get_duration <- function(customer_probereq_file, inner_bound){
-		data = read.csv(customer_probereq_file)
+		data = read.csv(customer_probereq_file, header=FALSE)
 		data[4] <- NULL
 		colnames(data) <- c('id', 'timestamp', 'rssi')
+		if(nrow(data)<2){
+			data[2, 1:3] <- c(data[1:3])
+		}
 
 		# **** IN_OUT CALCULATION ****
 			data$in_out <- 0
