@@ -133,7 +133,7 @@ def dashboard(request):
 		start = request.POST['start']
 		end = request.POST['end']
 		focus = request.POST['focus']
-		shop_id = request.POST['shop_id']
+		shop_id = int(request.POST['shop_id'])
 	else:
 		start = '08/24/2015'
 		end = '08/30/2015'
