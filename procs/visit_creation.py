@@ -5,7 +5,7 @@ import pytz
 import datetime as datetime2
 from datetime import datetime, date, timedelta
 from django.utils import timezone
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from duration import *
 
 # Connect to web database
@@ -63,20 +63,13 @@ def behaviour_summary(address, cursor, outlet):
 	os.remove('/tmp/detail.csv')
 	return g_d
 
-def customer_info(mac_addr, outlet):
+def customer_info(mac_addr):
 	try:
 		c = Customer.objects.get(mac_addr=eval(addr))
-		try:
-			Visit.objects.get(patron=c, vendor=outlet)
-			first_visit=False
-		except (ValueError, ObjectDoesNotExist):
-			first_visit=True
 	except (ValueError, ObjectDoesNotExist):
 		c = Customer(mac_addr=eval(mac_addr))
 		c.save()
-		first_visit=True
-	customer_info = (c, first_visit)
-	return customer_info
+	return c
 
 def month_search(dt, outlet):
 	try:
@@ -133,6 +126,16 @@ def compute(time):
 	time.save()
 	print "Updating "+str(time.datetime)
 
+
+def is_first_visit(c, outlet):
+	vl = Visit.objects.filter(patron=c, vendor=outlet)
+	if len(vl)>0:
+		first_visit=False
+	else:
+		first_visit=True
+	return first_visit
+
+
 for shop in shop_list:
 	captures = captures_in_shop(shop, cur)
 	walkbys = walkbys_in_shop(shop, cur)
@@ -151,7 +154,7 @@ for shop in shop_list:
 
 	for addr in captures:
 		count=0
-		c_info = customer_info(addr, shop)
+		c_info = customer_info(addr)
 		g_d = behaviour_summary(addr, cur, shop)
 		visits = len(g_d)/4
 		timestamp=int(g_d[count+1])
@@ -159,15 +162,13 @@ for shop in shop_list:
 		time_tuple = time_list(dt, shop)
 		count = 0
 		for i in range(visits):
-			v = Visit(patron=c_info[0], vendor=shop, duration=int(g_d[count+2]), first_visit=c_info[1], month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
+			first_visit= is_first_visit(c_info, shop)
+			v = Visit(patron=c_info, vendor=shop, duration=int(g_d[count+2]), first_visit=first_visit, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
 			v.save()
 			print "A visit "+str(v.patron.mac_addr)+" saved"
 			count += 4
 	from_dt = datetime.fromtimestamp(start_timestamp, tz=pytz.utc)
 	end_dt = timezone.now()
-	print "Dates revised from "
-	print from_dt
-	print end_dt
 	months_to_update = shop.month_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
 	weeks_to_update = shop.week_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
 	days_to_update = shop.day_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
