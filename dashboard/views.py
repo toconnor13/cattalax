@@ -135,7 +135,7 @@ def dashboard(request):
 		focus = request.POST['focus']
 		shop_id = int(request.POST['shop_id'])
 	else:
-		start = '08/24/2015'
+		start = '02/24/2014'
 		end = '08/30/2015'
 		focus = "day"
 		shop_id = outlet_list[0].sensor_no
