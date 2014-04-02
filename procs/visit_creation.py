@@ -26,12 +26,6 @@ con = MySQLdb.connect(HOST,USER,PW,DB)
 cur = con.cursor()
 
 
-shop_list = [shop for shop in Outlet.objects.all()]
-
-end_dt = timezone.now()
-start_dt = end_dt - timedelta(days=10)
-start_timestamp = calendar.timegm(start_dt.utctimetuple())
-
 def calculate_view(shop, start_time, cursor):
 	view_name = "capture"+str(shop.sensor_no)
 	cursor.execute("CREATE OR REPLACE VIEW "+view_name+" AS SELECT DISTINCT id, timestamp, count(id) AS obs FROM attendance WHERE sensor_id="+str(shop.sensor_no)+" AND timestamp>"+str(start_time)+" AND rssi>"+str(shop.inner_bound)+" GROUP BY id")
@@ -136,37 +130,49 @@ def is_first_visit(c, outlet):
 	return first_visit
 
 
-for shop in shop_list:
-	captures = captures_in_shop(shop, cur)
-	walkbys = walkbys_in_shop(shop, cur)
+shop_list = [shop for shop in Outlet.objects.all()]
+end_dt = timezone.now()
+start_dt = end_dt - timedelta(days=10)
+start_timestamp = calendar.timegm(start_dt.utctimetuple())
+
+def record_walkby(walkby, shop):
+	entry = walkby.split(',')
+	timestamp = int(eval(entry[1]))
+	addr = entry[0]
+	dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
+	time_tuple = time_list(dt, shop)
+	w = Walkby(addr=eval(addr), vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
+	w.save()
+	print "Walkby " + str(w.id) + " saved"
+
+def record_capture(capture, shop):
+	count=0
+	c_info = customer_info(addr)
+	g_d = behaviour_summary(addr, cursor, shop)
+	visits = len(g_d)/4
+	timestamp=int(g_d[count+1])
+	dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
+	time_tuple = time_list(dt, shop)
+	count = 0
+	for i in range(visits):
+		first_visit= is_first_visit(c_info, shop)
+		v = Visit(patron=c_info, vendor=shop, duration=int(g_d[count+2]), first_visit=first_visit, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
+		v.save()
+		print "A visit "+str(v.patron.mac_addr)+" saved"
+		count += 4
+
+def analyse_shop(shop, cursor):
+	captures = captures_in_shop(shop, cursor)
+	walkbys = walkbys_in_shop(shop, cursor)
 	Walkby.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=shop).delete()
 	Visit.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=shop).delete()
 	
 	for walkby in walkbys:
-		entry = walkby.split(',')
-		timestamp = int(eval(entry[1]))
-		addr = entry[0]
-		dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
-		time_tuple = time_list(dt, shop)
-		w = Walkby(addr=eval(addr), vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
-		w.save()
-		print "Walkby " + str(w.id) + " saved"
-
+		record_walkby(walkby, shop)
+		
 	for addr in captures:
-		count=0
-		c_info = customer_info(addr)
-		g_d = behaviour_summary(addr, cur, shop)
-		visits = len(g_d)/4
-		timestamp=int(g_d[count+1])
-		dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
-		time_tuple = time_list(dt, shop)
-		count = 0
-		for i in range(visits):
-			first_visit= is_first_visit(c_info, shop)
-			v = Visit(patron=c_info, vendor=shop, duration=int(g_d[count+2]), first_visit=first_visit, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
-			v.save()
-			print "A visit "+str(v.patron.mac_addr)+" saved"
-			count += 4
+		record_capture(addr, shop)
+		
 	from_dt = datetime.fromtimestamp(start_timestamp, tz=pytz.utc)
 	end_dt = timezone.now()
 	months_to_update = shop.month_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
@@ -183,6 +189,8 @@ for shop in shop_list:
 			compute(hour)
 
 
+for shop in shop_list:
+	analyse_shop(shop, cur)
 
 
 
