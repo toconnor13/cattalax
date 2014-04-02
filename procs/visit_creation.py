@@ -49,7 +49,7 @@ def walkbys_in_shop(shop, cursor):
 	os.remove('/tmp/walkbys.csv')
 	return walkbys
 
-def behaviour_summary(address, cursor, outlet):
+def behaviour_summary(addr, cursor, outlet):
 	filename = '/tmp/detail.csv'
 	sql_command = "SELECT * FROM attendance WHERE id="+addr+" AND timestamp>"+str(start_timestamp)+" ORDER BY timestamp, -rssi INTO OUTFILE '"+filename+"' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
 	cursor.execute(sql_command)
@@ -59,7 +59,7 @@ def behaviour_summary(address, cursor, outlet):
 
 def customer_info(mac_addr):
 	try:
-		c = Customer.objects.get(mac_addr=eval(addr))
+		c = Customer.objects.get(mac_addr=eval(mac_addr))
 	except (ValueError, ObjectDoesNotExist):
 		c = Customer(mac_addr=eval(mac_addr))
 		c.save()
@@ -145,7 +145,7 @@ def record_walkby(walkby, shop):
 	w.save()
 	print "Walkby " + str(w.id) + " saved"
 
-def record_capture(capture, shop):
+def record_capture(addr, shop, cursor):
 	count=0
 	c_info = customer_info(addr)
 	g_d = behaviour_summary(addr, cursor, shop)
@@ -171,7 +171,7 @@ def analyse_shop(shop, cursor):
 		record_walkby(walkby, shop)
 		
 	for addr in captures:
-		record_capture(addr, shop)
+		record_capture(addr, shop, cursor)
 		
 	from_dt = datetime.fromtimestamp(start_timestamp, tz=pytz.utc)
 	end_dt = timezone.now()
