@@ -78,6 +78,7 @@ def get_chartdata(x_axis_data, time_periods_to_graph, vars_to_graph, y_start="",
 	return chartdata
 
 def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, levels=False, graph_no=1, x_is_date=True, x_format='%d %b', non_level=False, var_list=[], y_start="", y_end="%"):
+	objects_to_graph = sorted(objects_to_graph, key=lambda time: time.datetime)
 	if non_level==False:
 		if levels==False:
 			chartdata = get_chartdata(x_axis_data, objects_to_graph, [4,5,7], y_start, y_end)	
@@ -289,7 +290,7 @@ def detail(request, time_unit, object_id, levels=False):
 			previous_time = Day.objects.get(vendor=outlet, datetime= time.datetime + datetime.timedelta(days=-1))
 		except (ValueError, ObjectDoesNotExist):
 			pass
-		times_to_show = [h for h in time.hour_set.all() if h.hour>6 and h.hour<20]
+		times_to_show = time.hour_set.all().order_by('datetime')
 		xdata = map(lambda h: str(h.hour), times_to_show)
 	elif focus=="week":
 		time = get_object_or_404(Week, pk=object_id)
@@ -318,10 +319,8 @@ def detail(request, time_unit, object_id, levels=False):
 
 	if time.vendor not in outlet_list:
 		return HttpResponseRedirect('/dashboard')
-	start = '08/24/2015' # what are these necessary for?
-	end = '08/30/2015' # 
-	chartdata1 = create_graph(xdata, times_to_show, 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
-	chartdata2 = create_graph(xdata, times_to_show, 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
+	chartdata1 = create_graph(xdata, sorted(times_to_show, key=lambda t: t.datetime), 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
+	chartdata2 = create_graph(xdata, sorted(times_to_show, key=lambda t: t.datetime), 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
 	# Pie chart data
 	chartdata3 = customer_piechart(time)
 	chartdata4 = duration_bin(time)
@@ -340,7 +339,7 @@ def detail(request, time_unit, object_id, levels=False):
 		d_avg_duration = "N/A"
 		d_entries = "N/A"
 
-	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('end',end), ('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration), ('d_entries', d_entries)])
+	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration), ('d_entries', d_entries)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
