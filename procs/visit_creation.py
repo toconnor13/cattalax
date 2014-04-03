@@ -84,7 +84,7 @@ def week_search(dt, outlet):
 
 def day_search(dt, outlet, week, month):
 	try:
-		d = Day.objects.get(vendor=outlet, over_week=week, over_month=month)
+		d = Day.objects.get(vendor=outlet, over_week=week, over_month=month, day=dt.day)
 	except (ValueError, ObjectDoesNotExist):
 		d = Day(year=dt.year, month=dt.month, day=dt.day, datetime=dt, over_week=week, over_month=month, vendor=outlet, no_of_walkbys=0, no_of_bounces=0, no_of_entries=0, avg_duration=0)
 		d.save()
