@@ -31,9 +31,10 @@ def calculate_view(shop, start_time, cursor):
 	cursor.execute("CREATE OR REPLACE VIEW "+view_name+" AS SELECT DISTINCT id, timestamp, count(id) AS obs FROM attendance WHERE sensor_id="+str(shop.sensor_no)+" AND timestamp>"+str(start_time)+" AND rssi>"+str(shop.inner_bound)+" GROUP BY id")
 	return view_name
 
-def captures_in_shop(shop, cursor):
-	view = calculate_view(shop, start_timestamp, cursor)
-	stmt = "SELECT id FROM "+view+" WHERE timestamp>"+str(start_timestamp)+" INTO OUTFILE '/tmp/id_list.csv' fields terminated by ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
+def captures_in_shop(shop, cursor, t0_stamp, t1_stamp):
+	view = calculate_view(shop, t0_stamp, cursor)
+
+	stmt = "SELECT id FROM "+view+" WHERE timestamp>"+str(t0_stamp)+" AND timestamp<"+ str(t1_stamp)+" INTO OUTFILE '/tmp/id_list.csv' fields terminated by ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
 	print stmt 
 	cursor.execute(stmt)
 	# Get the list of addresses
@@ -42,16 +43,16 @@ def captures_in_shop(shop, cursor):
 	os.remove('/tmp/id_list.csv')
 	return addrs
 
-def walkbys_in_shop(shop, cursor):
-	cursor.execute("SELECT id, timestamp FROM attendance WHERE rssi>"+str(shop.outer_bound)+" AND sensor_id="+str(shop.sensor_no)+" AND timestamp>"+str(start_timestamp)+" GROUP BY id INTO OUTFILE '/tmp/walkbys.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'")
+def walkbys_in_shop(shop, cursor, t0_stamp, t1_stamp):
+	cursor.execute("SELECT id, timestamp FROM attendance WHERE rssi>"+str(shop.outer_bound)+" AND sensor_id="+str(shop.sensor_no)+" AND timestamp>"+str(t0_stamp)+" AND timestamp<"+str(t1_stamp)+" GROUP BY id INTO OUTFILE '/tmp/walkbys.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'")
 	file_of_walkbys = open("/tmp/walkbys.csv")
 	walkbys = file_of_walkbys.read().split()
 	os.remove('/tmp/walkbys.csv')
 	return walkbys
 
-def behaviour_summary(addr, cursor, outlet):
+def behaviour_summary(addr, cursor, outlet, t0_stamp, t1_stamp):
 	filename = '/tmp/detail.csv'
-	sql_command = "SELECT * FROM attendance WHERE id="+addr+" AND timestamp>"+str(start_timestamp)+" ORDER BY timestamp, -rssi INTO OUTFILE '"+filename+"' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
+	sql_command = "SELECT * FROM attendance WHERE id="+addr+" AND timestamp>"+str(t0_stamp)+" AND timestamp<"+str(t1_stamp)+" ORDER BY timestamp, -rssi INTO OUTFILE '"+filename+"' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
 	cursor.execute(sql_command)
 	g_d = robjects.r('get_duration(\"' + filename + '\",'+str(outlet.inner_bound)+')')
 	os.remove('/tmp/detail.csv')
@@ -129,12 +130,6 @@ def is_first_visit(c, outlet):
 		first_visit=True
 	return first_visit
 
-
-shop_list = [shop for shop in Outlet.objects.all()]
-end_dt = timezone.now()
-start_dt = end_dt - timedelta(days=10)
-start_timestamp = calendar.timegm(start_dt.utctimetuple())
-
 def record_walkby(walkby, shop):
 	entry = walkby.split(',')
 	timestamp = int(eval(entry[1]))
@@ -145,10 +140,10 @@ def record_walkby(walkby, shop):
 	w.save()
 	print "Walkby " + str(w.id) + " saved"
 
-def record_capture(addr, shop, cursor):
+def record_capture(addr, shop, cursor, t0_stamp, t1_stamp):
 	count=0
 	c_info = customer_info(addr)
-	g_d = behaviour_summary(addr, cursor, shop)
+	g_d = behaviour_summary(addr, cursor, shop, t0_stamp, t1_stamp)
 	visits = len(g_d)/4
 	timestamp=int(g_d[count+1])
 	dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
@@ -161,23 +156,23 @@ def record_capture(addr, shop, cursor):
 		print "A visit "+str(v.patron.mac_addr)+" saved"
 		count += 4
 
-def analyse_shop(shop, cursor):
-	captures = captures_in_shop(shop, cursor)
-	walkbys = walkbys_in_shop(shop, cursor)
-	Walkby.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=shop).delete()
-	Visit.objects.filter(time__gte=start_timestamp,time__lte=1400000000, vendor=shop).delete()
+def analyse_shop(shop, cursor, t0, t1):
+	t0_stamp = calendar.timegm(t0.utctimetuple())
+	t1_stamp = calendar.timegm(t1.utctimetuple())
+	captures = captures_in_shop(shop, cursor, t0_stamp, t1_stamp)
+	walkbys = walkbys_in_shop(shop, cursor, t0_stamp, t1_stamp)
+	Walkby.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
+	Visit.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
 	
 	for walkby in walkbys:
 		record_walkby(walkby, shop)
 		
 	for addr in captures:
-		record_capture(addr, shop, cursor)
+		record_capture(addr, shop, cursor, t0_stamp, t1_stamp)
 		
-	from_dt = datetime.fromtimestamp(start_timestamp, tz=pytz.utc)
-	end_dt = timezone.now()
-	months_to_update = shop.month_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
-	weeks_to_update = shop.week_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
-	days_to_update = shop.day_set.filter(datetime__gte=from_dt, datetime__lte=end_dt)
+	months_to_update = shop.month_set.filter(datetime__gte=t0, datetime__lte=t1)
+	weeks_to_update = shop.week_set.filter(datetime__gte=t0, datetime__lte=t1)
+	days_to_update = shop.day_set.filter(datetime__gte=t0, datetime__lte=t1)
 
 	for month in months_to_update:
 		compute(month)
@@ -188,9 +183,12 @@ def analyse_shop(shop, cursor):
 		for hour in day.hour_set.all():
 			compute(hour)
 
+shop_list = [shop for shop in Outlet.objects.all()]
+t1 = timezone.now()
+t0 = t1 - timedelta(days=30)
 
 for shop in shop_list:
-	analyse_shop(shop, cur)
+	analyse_shop(shop, cur, t0, t1)
 
 
 
