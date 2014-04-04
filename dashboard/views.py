@@ -120,9 +120,6 @@ def get_days_to_show(start_date, end_date, days_to_graph):
 			pass
 	return days_to_show
 
-#	days_to_graph = sorted(Day.objects.all(), key=Day.day_no)
-#	days_to_show = sorted(days_to_show, key=lambda day: day.day_no)
-
 @login_required
 def dashboard(request):
 	nav="dashboard"
@@ -130,11 +127,21 @@ def dashboard(request):
 	vendor_username = request.user.username
 	outlet_list = Outlet.objects.all() # filter(agent=vendor_username)
 	pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
+#	try:
+#		request.session['set']
+#	except:
+#		request.session['set']=False
 	if request.method=='POST':
 		start = request.POST['start']
 		end = request.POST['end']
 		focus = request.POST['focus']
 		shop_id = int(request.POST['shop_id'])
+		request.session['set']=True
+	elif request.session['set']:
+		start = request.session['start']
+		end = request.session['end']
+		focus = request.session['focus'] 
+		shop_id = request.session['shop_id']
 	else:
 		start = '02/24/2014'
 		end = '08/30/2015'
@@ -161,7 +168,6 @@ def dashboard(request):
 		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
 	data1 = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container1', levels=False, graph_no=1)
 	data2 = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container2', levels=True, graph_no=2)
-
 
 	# Gather the data and return it
 	data = dict(data1.items()+ data2.items() +[('outlet_list', outlet_list)])
