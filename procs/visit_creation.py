@@ -191,7 +191,6 @@ for i in range(12):
 	dt_to_add = dt -timedelta(days=i)
 	dt_list.append(dt_to_add)
 
-print dt_list
 for shop in shop_list:
 	analyse_shop(shop, cur, dt_list[0], t1)
 	for i in range(10):
