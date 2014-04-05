@@ -10,11 +10,12 @@ dashboard:  This is the main folder, containing the models.py and views.py that 
 
 emailusernames: This app enables the website to take email addresses as usernames.
 
+procs: Contains the file that processes the data from the pingsprings.
+
 Features to consider:
 
 2. Where to put the MAC addresses.
 
-3. More information on privacy.
 
 
 
