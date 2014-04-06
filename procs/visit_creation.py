@@ -168,7 +168,9 @@ def analyse_shop(shop, cursor, t0, t1):
 	for addr in captures:
 		record_capture(addr, shop, cursor, t0_stamp, t1_stamp)
 		
-	months_to_update = shop.month_set.filter(datetime__gte=t0, datetime__lte=t1)
+
+#	months_to_update = shop.month_set.filter(datetime__gte=t0, datetime__lte=t1)
+	months_to_update = shop.month_set.all()
 	weeks_to_update = shop.week_set.filter(datetime__gte=t0, datetime__lte=t1)
 	days_to_update = shop.day_set.filter(datetime__gte=t0, datetime__lte=t1)
 
