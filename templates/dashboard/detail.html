@@ -32,16 +32,16 @@
 			<table class="table table-bordered table-condensed">
 				<thead>
 					<th>Metric</th>
-					<th>Current {{request.session.focus|title}}</th>
 					<th>Previous {{request.session.focus|title}}</th>
+					<th>Current {{request.session.focus|title}}</th>
 					<th>Change</th>
 				</thead>
 
 				<tbody>
 					<tr>
 						<td>No. of Visitors</td>
-						<td>{{object.no_of_entries}} </td>
 						<td>{{previous_time.no_of_entries}} </td>
+						<td>{{object.no_of_entries}} </td>
 						{% if d_entries > 0 %}
 						<td style="color: #009900;">+
 						{% else %}
@@ -52,8 +52,8 @@
 					<tr>
 					<tr>
 						<td>Capture</td>
-						<td>{{object.get_capture_rate}} %</td>
 						<td>{{previous_time.get_capture_rate}}%</td>
+						<td>{{object.get_capture_rate}} %</td>
 						{% if d_capture > 0 %}
 						<td style="color: #009900;">+
 						{% else %}
@@ -63,8 +63,8 @@
 					<tr>
 					<tr>
 						<td>Bounce</td>
-						<td>{{object.get_bounce_rate}}% </td>
 						<td>{{previous_time.get_bounce_rate}}% </td>
+						<td>{{object.get_bounce_rate}}% </td>
 						{% if d_bounce > 0 %}
 						<td style="color: #009900;">+
 						{% else %}
@@ -74,8 +74,8 @@
 					<tr>
 					<tr>
 						<td>Duration</td>
-						<td>{{object.get_avg_duration}} min</td>
 						<td>{{previous_time.get_avg_duration}} min</td>
+						<td>{{object.get_avg_duration}} min</td>
 						{% if d_avg_duration > 0 %}
 						<td style="color: #009900;">+
 						{% else %}
@@ -85,8 +85,8 @@
 					<tr>
 					<tr>
 						<td>New Customers</td>
-						<td>{{object.percent_of_new_customers|floatformat}}% </td>
 						<td>{{previous_time.percent_of_new_customers|floatformat}}% </td>
+						<td>{{object.percent_of_new_customers|floatformat}}% </td>
 						{% if d_new_custom > 0 %}
 						<td style="color: #009900;">+
 						{% else %}
