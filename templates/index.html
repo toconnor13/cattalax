@@ -25,7 +25,7 @@
 			<div class="container">
 				<div class="carousel-caption">
 					<h1>Cheap and Easy to Install</h1>
-					<p>Simply connect our sensor to a wifi router.  The cost is €30 a month, with no minimum contract.</p>
+					<p>Simply connect our sensor to the internet.  The cost is €30 a month, and there is no minimum contract.</p>
 					<p><a class="btn btn-lg btn-primary" href="#" role="button">More information >></a></p>
 				</div>
 			</div>
@@ -36,9 +36,9 @@
 			
 			<div class="container">
 				<div class="carousel-caption">
-					<h1>A Secure Service that Respects Privacy</h1>
-					<p>Only anonymous data is collected.  This data is encrypted before transfer and irreversibly scrambled before processing.</p>
-					<p><a class="btn btn-lg btn-primary" href="#" role="button">More information</a></p>
+					<h1>How it Works </h1>
+					<p>Our sensor listens for pings which smartphones send out frequently when looking for wireless connection.  From these, we can estimate customer numbers and traffic patterns. </p>
+					<p><a class="btn btn-lg btn-primary" href="/data/" role="button">More information</a></p>
 				</div>
 			</div>
 		</div>
@@ -47,32 +47,87 @@
 	<a class="right carousel-control" href="#myCarousel" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"> </a>
 </div>
 
-<div class="container" style="max-width: 700px;">
+
+
+<!--
 	<div style="text-align: center; ">
 		<h1 style="font-size: 72px; line-height: 1.5; ">PlazaSight</h1>
 		<p class="lead">The objective of PlazaSight is to provide businesses with information on customer flows, such as the number of walkbys and store entries, how long customers stay for, and how many return.</p>
-</div>
+	</div>
+	-->
 
 <hr style="margin: 30px 0px;">
 
-<div class="row-fluid marketing" style="text-align: center; margin-top: 40px; max-width: 800px; ">
-<div class="span6" style="max-width: 310px;">
-	<h2>Privacy</h2>
-	<p>No data is collected that can identify persons; we collect only a phone or laptop's MAC address, wifi signal strength, and the timestamp of the signal. To understand more, <a href="/data/">go here.</a></p>
-	<p><a type="button" href="/optout/" class="btn btn-primary">Opt-out</a></p>
+<div class="container" style="max-width: 700px;">
 
+	<div class="row-fluid marketing" style="text-align: center; margin-top: 40px; max-width: 800px; ">
+		<div class="span6" style="max-width: 310px;">
+			<h2>Security and Privacy</h2>
+			<p>Only anonymous data is collected.  This data is encrypted before transfer and irreversibly scrambled before processing. To understand more, <a href="/data/">go here.</a></p>
+			<!--
+			<p><a type="button" href="/optout/" class="btn btn-primary">Opt-out</a></p>
+			-->
+		</div>
+
+		<div class="span6" style="max-width: 310px; float: right;">
+			<h2>Installation</h2>
+			<p>Only an existing internet router is needed. The actual sensor is palm-sized, and so can fit conveniently almost anywhere.</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<h3>Drop us a line!</h3>
+		<hr>
+		<div class="col-xs-4">
+			<address>
+				<strong>Email:</strong><a href="mailto:#"> plazasight@gmail.com</a><br><br>
+				<strong>Address:</strong>
+				<br>The Tower,
+				<br>Trinity Technology and Enterprise Campus,
+				<br>Pearse Street,
+				<br>Dublin 2.
+			</address>
+		</div>
+
+		<div class="col-xs-8">
+			<form id="contact" method="POST" class="form-horizontal" role="form">
+				<div class="form-group">
+					<label for="outlet" class="control-label col-sm-4">Full Name</label>
+					<div class="col-xs-6 col-md-6 form-group">
+						<input class="form-control" id="name" name="name" placeholder="Name" type="text" required autofocus />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="name" class="col-sm-4 control-label">Email</label>
+					<div class="col-xs-6 col-md-6 form-group">
+						<input class="form-control" id="email" name="email" placeholder="Email" type="email" required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="name" class="col-sm-4 control-label">Company</label>
+					<div class="col-xs-6 col-md-6 form-group">
+						<input class="form-control" id="company" name="company" placeholder="Company Name" type="text" required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="number" class="col-sm-4 control-label">Number</label>
+					<div class="col-xs-6 col-md-6 form-group">
+						<input class="form-control" id="number" name="number" placeholder="Email" type="number" required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-7 col-sm-10">
+						<button class="btn btn-primary" type="submit">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
-
-<div class="span6" style="max-width: 310px; float: right;">
-	<h2>Installation</h2>
-	<p>Installation is currently customised as per the store. However, an internet connection and a powerpoint are needed. The actual sensor is about 5cm squared, so can fit conveniently almost anywhere.</p>
-</div>
-
-</div>
-
-
-
-
 
 {% endblock %}
 
