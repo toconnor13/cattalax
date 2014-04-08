@@ -127,10 +127,10 @@ def dashboard(request):
 	vendor_username = request.user.username
 	outlet_list = Outlet.objects.all() # filter(agent=vendor_username)
 	pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
-#	try:
-#		request.session['set']
-#	except:
-#		request.session['set']=False
+	try:
+		request.session['set']
+	except:
+		request.session['set']=False
 	if request.method=='POST':
 		start = request.POST['start']
 		end = request.POST['end']
