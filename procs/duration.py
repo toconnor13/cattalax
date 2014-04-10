@@ -22,7 +22,7 @@ robjects.r('''
 		#  TIME SINCE LAST PROBE REQUEST -  if 1st PR, default val=72000
 
 			data$since_last_pr <- 0
-			data$since_last_pr[1] <- 76000
+			data$since_last_pr[1] <- 86400
 
 			for(i in 2:N){
 				data$since_last_pr[i] <- data$timestamp[i]-data$timestamp[i-1]
