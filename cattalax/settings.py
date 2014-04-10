@@ -2,9 +2,12 @@
 import os, sys
 db_pw = os.environ['CAT_PW']
 amw_email_pw = os.environ['AMW_EMAIL_PWD']
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
+DEBUG = True
+# DEBUG = False
+
+TEMPLATE_DEBUG = DEBUG
+#TEMPLATE_DEBUG = True
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 db_host='10.24.18.1'
