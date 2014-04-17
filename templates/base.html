@@ -13,11 +13,7 @@
 		<script src="{{STATIC_URL}}bootstrap-datetimepicker.min.js"></script>
 		<script src="{% static "bower_components/bootstrap3-datepicker/js/bootstrap-datepicker.js" %}"></script>
 		<script src="{% static "bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" %}"></script>
-
-
 		<link rel="stylesheet" href="{% static "bower_components/bootstrap/dist/css/bootstrap.css" %}"  />
-
-
 		<link rel="stylesheet" href="{{STATIC_URL}}custom_style.css"  />
 		<link rel="stylesheet" href="{{STATIC_URL}}carousel.css"  />
 		<link rel="stylesheet" href="{{STATIC_URL}}bootstrap-responsive.css"  />
@@ -56,10 +52,8 @@
 						{% if user.is_authenticated %}
 						<li class="{% active path "^$" %}"><a href="/dashboard/">Dashboard</a></li>
 						{% endif %}
-
-						<li class="{% active path "^/contact/" %}"><a href="/contact/">Contact</a></li>
-											</ul>
-					
+						<li class="{% active path "^/contact/" %}"><a href="#contact">Contact</a></li>
+					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
 						<li style="padding: 15px 10px 0px 10px;">
