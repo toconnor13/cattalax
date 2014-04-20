@@ -2,6 +2,14 @@
 
 {% block content %}
 
+{% if message %}
+<div class="alert alert-info" style="margin-top: 10px;">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+</div>
+{% endif %}
+
+
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
 	<ol class="carousel-indicators">
 		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -98,7 +106,8 @@
 		</div>
 
 		<div class="col-xs-8">
-			<form id="contact" method="POST" class="form-horizontal" action="/contact/send/" role="form">
+			<form id="contact" method="POST" class="form-horizontal" action="/contact/" role="form">
+				{% csrf_token %}
 				<div class="form-group">
 					<label for="outlet" class="control-label col-sm-4">Full Name</label>
 					<div class="col-xs-6 col-md-6 form-group">
