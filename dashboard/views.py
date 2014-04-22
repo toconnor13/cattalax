@@ -308,7 +308,7 @@ def detail(request, time_unit, object_id, levels=False):
 			previous_time = Week.objects.get(vendor=outlet, week_no = time.datetime.isocalendar()[1]-1)
 		except (ValueError, ObjectDoesNotExist):
 			pass
-		times_to_show = time.day_set.all()
+		times_to_show = time.day_set.all().order_by('datetime')
 		xdata = map(lambda h: str(h.datetime.strftime("%d %b")), times_to_show)
 	else:
 		time = get_object_or_404(Month, pk=object_id)
@@ -320,7 +320,7 @@ def detail(request, time_unit, object_id, levels=False):
 			previous_time = Month.objects.get(vendor=outlet, month_no = add_months(time.datetime, -1).month )
 		except (ValueError, ObjectDoesNotExist):
 			pass
-		times_to_show = time.day_set.all()
+		times_to_show = time.day_set.all().order_by('datetime')
 		xdata = map(lambda h: str(h.datetime.strftime("%d %b")), times_to_show)
 
 	if time.vendor not in outlet_list:
