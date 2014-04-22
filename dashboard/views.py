@@ -81,11 +81,11 @@ def create_graph(x_axis_data, objects_to_graph, charttype, chartcontainer, level
 	objects_to_graph = sorted(objects_to_graph, key=lambda time: time.datetime)
 	if non_level==False:
 		if levels==False:
-			chartdata = get_chartdata(x_axis_data, objects_to_graph, [4,5,7], y_start, y_end)	
+			chartdata = get_chartdata(x_axis_data, objects_to_graph, [4,5], y_start, y_end)	
 		else:
 			chartdata = get_chartdata(x_axis_data, objects_to_graph, [1,2,3], y_start, y_end)
 	else:
-		chartdata = get_chartdata(x_axis_data, objects_to_graph, var_list, y_start, y_end=" seconds")
+		chartdata = get_chartdata(x_axis_data, objects_to_graph, var_list, y_start, y_end)
 	dict_items = ['charttype', 'chartdata', 'chartcontainer']
 	var_names = [i + str(graph_no) for i in dict_items]
 	if graph_no==1:
@@ -288,12 +288,14 @@ def detail(request, time_unit, object_id, levels=False):
 	next_time=False
 	if focus=="day":
 		time = get_object_or_404(Day, pk=object_id)
+		next_day = time.datetime + datetime.timedelta(days=1)
+		previous_day = time.datetime + datetime.timedelta(days=-1)
 		try:
-			next_time = Day.objects.get(vendor=outlet, datetime= time.datetime + datetime.timedelta(days=1))
+			next_time = Day.objects.get(vendor=outlet, day=next_day.day, month=next_day.month, year=next_day.year)
 		except (ValueError, ObjectDoesNotExist):
 			pass
 		try:
-			previous_time = Day.objects.get(vendor=outlet, datetime= time.datetime + datetime.timedelta(days=-1))
+			previous_time = Day.objects.get(vendor=outlet, day=previous_day.day, month=previous_day.month, year=previous_day.year)
 		except (ValueError, ObjectDoesNotExist):
 			pass
 		times_to_show = time.hour_set.all().order_by('datetime')
@@ -326,11 +328,12 @@ def detail(request, time_unit, object_id, levels=False):
 	if time.vendor not in outlet_list:
 		return HttpResponseRedirect('/dashboard')
 	chartdata1 = create_graph(xdata, sorted(times_to_show, key=lambda t: t.datetime), 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
-	chartdata2 = create_graph(xdata, sorted(times_to_show, key=lambda t: t.datetime), 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6])
+	chartdata2 = create_graph(xdata, sorted(times_to_show, key=lambda t: t.datetime), 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6], y_end=" seconds")
 	# Pie chart data
 	chartdata3 = customer_piechart(time)
 	chartdata4 = duration_bin(time)
 	chartdata5 = frequency_bin(time)
+	chartdata6 = create_graph(xdata, sorted(times_to_show, key=lambda t: t.datetime), 'multiBarChart', 'multibarchart_container3', graph_no=3, non_level=True, var_list=[7], y_end="%")
 
 	if previous_time:
 		d_capture = float(time.get_capture_rate()) - float(previous_time.get_capture_rate())
@@ -345,7 +348,7 @@ def detail(request, time_unit, object_id, levels=False):
 		d_avg_duration = "N/A"
 		d_entries = "N/A"
 
-	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items() +  [('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration), ('d_entries', d_entries)])
+	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items()+ chartdata6.items() +  [('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration), ('d_entries', d_entries)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
