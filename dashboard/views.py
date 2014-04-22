@@ -125,7 +125,7 @@ def dashboard(request):
 	nav="dashboard"
 	request.session['nav']= nav
 	vendor_username = request.user.username
-	outlet_list = Outlet.objects.all() # filter(agent=vendor_username)
+	outlet_list = Outlet.objects.filter(agent=vendor_username)
 	pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
 	try:
 		request.session['set']
@@ -281,7 +281,7 @@ def add_months(sourcedate, months):
 @login_required
 def detail(request, time_unit, object_id, levels=False):
 	vendor_username = request.user.username
-	outlet_list = Outlet.objects.all()
+	outlet_list = Outlet.objects.filter(agent=vendor_username)
 	outlet = outlet_list.get(sensor_no=request.session['shop_id'])
 	focus = request.session['focus']
 	previous_time=False
@@ -340,7 +340,10 @@ def detail(request, time_unit, object_id, levels=False):
 		d_bounce = float(time.get_bounce_rate()) - float(previous_time.get_capture_rate())
 		d_new_custom = float(time.percent_of_new_customers()) - float(previous_time.percent_of_new_customers())
 		d_avg_duration = time.avg_duration - previous_time.avg_duration
-		d_entries = float(time.no_of_entries*100/previous_time.no_of_entries-100)
+		if previous_time.no_of_entries>0:
+			d_entries = float(time.no_of_entries*100/previous_time.no_of_entries-100)
+		else:
+			d_entries = "N/A"
 	else:
 		d_capture = "N/A"
 		d_bounce = "N/A"
