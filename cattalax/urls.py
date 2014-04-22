@@ -35,6 +35,6 @@ urlpatterns = patterns('',
 	url(r'^optout', 'dashboard.views.opt_out'),
 	url(r'^data', 'dashboard.views.data'),
 	url(r'accounts/', include('registration.backends.default.urls')),
-	url(r'auth/', include('registration.backends.default.urls')),
+	url(r'auth/', include('auth.urls')),
 
 )
