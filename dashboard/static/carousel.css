@@ -119,6 +119,7 @@ body {
     padding-right: 15px;
     padding-left:  15px;
   }
+
   .navbar-wrapper .navbar {
     padding-right: 0;
     padding-left:  0;
@@ -151,11 +152,52 @@ body {
 	body {
 		font-size: 6px;
 	}
+
+	.carousel-caption p {
+    	margin-bottom: 20px;
+ 	   	font-size: 21px;
+    	line-height: 1.4;
+  	}
+	
+	.carousel-caption h1 {
+    	margin-bottom: 20px;
+ 	   	font-size: 21px;
+    	line-height: 1.4;
+  	}
 }
 
 @media (max-width: @screen-sm) {
 	body {
-		font-size: 8px;
+		font-size: 6px;
 	}
+
+	.carousel-caption p {
+    	margin-bottom: 20px;
+ 	   	font-size: 21px;
+    	line-height: 1.4;
+  	}
+	
+	.carousel-caption h1 {
+    	margin-bottom: 20px;
+ 	   	font-size: 21px;
+    	line-height: 1.4;
+  	}
 }
 
+@media only screen and (max-device-width: 480px) {
+	body {
+		font-size: 6px;
+	}
+
+	.carousel-caption p {
+    	margin-bottom: 20px;
+ 	   	font-size: 21px;
+    	line-height: 1.4;
+  	}
+	
+	.carousel-caption h1 {
+    	margin-bottom: 20px;
+ 	   	font-size: 21px;
+    	line-height: 1.4;
+  	}
+}
