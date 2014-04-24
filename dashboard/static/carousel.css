@@ -146,24 +146,25 @@ body {
   .featurette-heading {
     margin-top: 120px;
   }
+  
+
 }
 
-@media (max-width: @screen-xs) {
-	body {
-		font-size: 6px;
-	}
+@media (max-width: 767px) {
 
 	.carousel-caption p {
-    	margin-bottom: 20px;
- 	   	font-size: 21px;
-    	line-height: 1.4;
+ 	   	font-size: 16px;
   	}
 	
 	.carousel-caption h1 {
-    	margin-bottom: 20px;
- 	   	font-size: 21px;
-    	line-height: 1.4;
+ 	   	font-size: 26px;
+		line-height: 1.4;
   	}
+
+	.btn-lg {
+		padding: 5px 8px;
+		font-size: 12px;
+	}
 }
 
 @media (max-width: @screen-sm) {
@@ -184,20 +185,24 @@ body {
   	}
 }
 
-@media only screen and (max-device-width: 480px) {
+@media (max-width: 480px) {
 	body {
 		font-size: 6px;
 	}
 
 	.carousel-caption p {
     	margin-bottom: 20px;
- 	   	font-size: 21px;
+ 	   	font-size: 12px;
     	line-height: 1.4;
   	}
 	
 	.carousel-caption h1 {
     	margin-bottom: 20px;
- 	   	font-size: 21px;
+ 	   	font-size: 20px;
     	line-height: 1.4;
   	}
+
+  	.carousel-caption {
+	  position: absolute !important;
+  }
 }
