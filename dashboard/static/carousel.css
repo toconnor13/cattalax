@@ -217,7 +217,7 @@ body {
 	}
 
 	.col-xs-7 {
-		width: 230px;;
+		width: 250px;
 	}
 	
 	.row-fluid [class*="offset"]:first-child {
