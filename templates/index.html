@@ -19,13 +19,11 @@
 	<div class="carousel-inner">
 		<div class="item active">
 			<img class="juboimage" src="/static/img1.jpg" alt="First slide">
-			<div class="container">
 				<div class="carousel-caption">
 					<h1>Fundamental Analytics for Physical Retailers</h1>
 					<p>Discover facts such as the percentage of people you capture off the street, how long they stay for, and whether they return.  View how these change by the hour, day, week and month.</p>
 					<p><a class="btn btn-lg btn-primary" href="#contact" role="button">Sign up now</a></p>
 				</div>
-			</div>
 		</div>
 
 		<div class="item">
@@ -91,58 +89,59 @@
 		</div>
 	</div>
 
-	<div class="row" id="#contact">
+	<div class="row-fluid text-center" id="#contact">
 		<h3>Drop us a line!</h3>
 		<hr>
 		
 
-		<div class="col-md-7">
-			<form id="contact" method="POST" class="form-horizontal" action="/contact/" role="form">
+		<div class="col-md-7 col-xs-12">
+			<form id="contact" method="POST" class="form-horizontal col-md-offset-0 col-xs-offset-2" action="/contact/" role="form">
 				{% csrf_token %}
 				<div class="form-group">
-					<label for="outlet" class="control-label col-xs-3">Full Name</label>
-					<div class="col-xs-5 form-group">
+					<label for="outlet" class="control-label col-xs-2">Name</label>
+					<div class="col-xs-7 form-group">
 						<input class="form-control" id="name" name="name" placeholder="Name" type="text" required />
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="name" class="col-xs-3 control-label">Email</label>
-					<div class="col-xs-5 form-group">
+					<label for="name" class="col-xs-2 control-label">Email</label>
+					<div class="col-xs-7 form-group">
 						<input class="form-control" id="email" name="email" placeholder="Email" type="email" required />
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="name" class="col-xs-3 control-label">Company</label>
-					<div class="col-xs-5 form-group">
+					<label for="name" class="col-xs-2 control-label">Of</label>
+					<div class="col-xs-7 form-group">
 						<input class="form-control" id="company" name="company" placeholder="Company Name" type="text" required />
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="number" class="col-xs-3 control-label">Number</label>
-					<div class="col-xs-5 form-group">
+					<label for="number" class="col-xs-2 control-label">Number</label>
+					<div class="col-xs-7 form-group">
 						<input class="form-control" id="number" name="number" placeholder="Phone Number" type="text" />
 					</div>
 				</div>
 
 				<div class="form-group">
-					<div class="col-xs-offset-6 col-xs-1">
-						<button class="btn btn-primary" type="submit">Submit</button>
+					<div class="col-xs-offset-2 col-xs-7">
+						<button class="btn btn-primary btn-block" type="submit" style="margin: 0px -15px">Submit</button>
 					</div>
 				</div>
 			</form>
 		</div>
 		
-		<div class="col-md-5" style="margin: 0 auto;">
+		<div class="col-md-4 address">
 			<address>
-				<strong>Email:</strong><a href="mailto:plazasight@gmail.com"> plazasight@gmail.com</a><br><br>
 				<strong>Address:</strong>
 				<br>The Tower,
 				<br>Trinity Technology and Enterprise Campus,
 				<br>Pearse Street,
 				<br>Dublin 2.
+				<br><br>
+				<strong>Email:</strong><a href="mailto:plazasight@gmail.com"> plazasight@gmail.com</a>
 			</address>
 		</div>
 	</div>

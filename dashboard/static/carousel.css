@@ -146,6 +146,8 @@ body {
   .featurette-heading {
     margin-top: 120px;
   }
+
+  
   
 
 }
@@ -164,6 +166,14 @@ body {
 	.btn-lg {
 		padding: 5px 8px;
 		font-size: 12px;
+	}
+	
+	.address {
+	  margin-top: 350px;
+  	}
+
+	.row-fluid [class*="offset"]:first-child {
+		margin-left: 16.666666666666664% !important;
 	}
 }
 
@@ -187,12 +197,12 @@ body {
 
 @media (max-width: 480px) {
 	body {
-		font-size: 6px;
+		font-size: 14px;
 	}
 
 	.carousel-caption p {
     	margin-bottom: 20px;
- 	   	font-size: 12px;
+ 	   	font-size: 18px;
     	line-height: 1.4;
   	}
 	
@@ -204,5 +214,13 @@ body {
 
   	.carousel-caption {
 	  position: absolute !important;
-  }
+	}
+
+	.col-xs-7 {
+		width: 230px;;
+	}
+	
+	.row-fluid [class*="offset"]:first-child {
+		margin-left: 0 !important;
+	}
 }
