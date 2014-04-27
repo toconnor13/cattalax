@@ -4,10 +4,11 @@
 {% block graphs %}
 	{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
 	{% load_chart charttype2 chartdata2 chartcontainer2 extra %}
+
 {% endblock %}
 
 {% block table_and_graph_html %}
-	<div class="row" style="margin-top: 30px;">
+	<div class="row dashboard-title-row">
 		<div class="col-md-8" style = "max-width: 535px">
 			<table class="table table-bordered table-condensed table-hover" style="margin: 20px 0px 0px 0px;">
 				<thead>
@@ -57,20 +58,30 @@
 			</table>
 		</div>
 
-		<div class="col-md-4" stle="margin: 20px 40px;">
+		<div class="col-md-4">
 			<div class="row">
 				<div class="col-md-2 col-md-offset-1" >
-					<div class="svg_container">
+					<div class="desktop-graph">
 						{% include_container chartcontainer1 250 400 %}
 					</div>
+					<!--				
+					<div class="mobile-graph">
+						{% include_container chartcontainer3 150 200 %}
+					</div>
+					-->
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-md-2 col-md-offset-1" >
-					<div class="svg_container">
+					<div class="desktop-graph">
 						{% include_container chartcontainer2 250 400 %}
 					</div>
+					<!--
+					<div class="mobile-graph">
+						{% include_container chartcontainer4 150 200 %}
+					</div>
+					-->
 				</div>
 			</div>
 		</div>

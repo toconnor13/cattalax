@@ -70,3 +70,41 @@ div.row.box {
 	font-variant: small-caps;
 	font-weight: bolder;
 }
+
+.dashboard-ctn {
+	margin: 10px 60px;
+	max-width: 1100px;
+}
+
+.dashboard-title-row {
+	margin-top: 0px;
+}
+
+@media (max-width: 797px){
+	.times-btn {
+		float: none !important;
+	}
+
+	.dashboard-ctn {
+		margin: 0px;
+		max-width: 9999px;
+	}
+	
+	.dashboard-title-row {
+		margin-top: 0px;
+		margin-bottom: -40px;
+		font-size: 50%;
+	}
+	
+	.dashboard-title-row h2 {
+		font-size: 20px;
+	}
+
+	.desktop-graph {
+		display: none !important;
+	}
+}
+
+@media (max-width: 480px){
+
+}
