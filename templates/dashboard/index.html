@@ -4,12 +4,14 @@
 {% block graphs %}
 	{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
 	{% load_chart charttype2 chartdata2 chartcontainer2 extra %}
+	{% load_chart charttype3 chartdata3 chartcontainer3 extra %}
+	{% load_chart charttype4 chartdata4 chartcontainer4 extra %}
 
 {% endblock %}
 
 {% block table_and_graph_html %}
-	<div class="row dashboard-title-row">
-		<div class="col-md-8" style = "max-width: 535px">
+	<div class="row">
+		<div class="col-md-8 desktop" style = "max-width: 535px">
 			<table class="table table-bordered table-condensed table-hover" style="margin: 20px 0px 0px 0px;">
 				<thead>
 					<th>
@@ -58,30 +60,66 @@
 			</table>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-xs-12 mobile" style = "max-with: 535px">
+			<table class="table table-bordered table-condensed table-hover index-table" >
+				<thead>
+					<th>
+						{% if request.session.focus == "day" %}Day{% endif %}
+						{% if request.session.focus == "week" %}Week of:{% endif %}
+						{% if request.session.focus == "month" %}Month{% endif %}
+					</th>
+										
+					<th>
+					<a data-toggle="tooptip" class="tooltip1" title="The number of people who have entered the store">	Visits</a>
+					</th>
+
+					<th>
+	<a data-toggle="tooptip" class="tooltip1" title="The percentage of people walking down the street who entered the store">					Capture</a>
+					</th>
+
+					<th>
+	<a data-toggle="tooptip" class="tooltip1" title="The percentage of those entered who left quickly">					Bounce</a>
+					</th>
+
+					<th>
+						<a data-toggle="tooptip" class="tooltip1" title="The average visit duration of those who entered">					Duration</a>
+					</th>
+				</thead>
+
+				<tbody>
+					{% for object in object_list %}
+						<tr>
+							<td><a href="/dashboard/{{request.session.focus}}/{{object.id}}">{{object.describe}}</a></td>
+							<td>{{object.no_of_entries}}</td>
+							<td>{{object.get_capture_rate}}%</td>
+							<td>{{object.get_bounce_rate}}%</td>
+							<td>{{object.get_avg_duration}}</td>
+						<tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-4 col-xs-12">
 			<div class="row">
-				<div class="col-md-2 col-md-offset-1" >
-					<div class="desktop-graph">
+				<div class="col-md-4 col-md-offset-1 col-xs-12 col-xs-offset-0">
+					<div class="desktop">
 						{% include_container chartcontainer1 250 400 %}
 					</div>
-					<!--				
-					<div class="mobile-graph">
-						{% include_container chartcontainer3 150 200 %}
+					<div class="mobile first-row-graph" style="margin-left: -30px">
+						{% include_container chartcontainer3 220 330 %}
 					</div>
-					-->
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-md-2 col-md-offset-1" >
-					<div class="desktop-graph">
+			<div class="row" style="margin-top: 20px;">
+				<div class="col-md-4 col-md-offset-1 col-xs-12 col-xs-offset-0">
+					<div class="desktop">
 						{% include_container chartcontainer2 250 400 %}
 					</div>
-					<!--
-					<div class="mobile-graph">
-						{% include_container chartcontainer4 150 200 %}
+					<div class="mobile" style="margin-left: -30px;">
+						{% include_container chartcontainer4 220 330 %}
 					</div>
-					-->
 				</div>
 			</div>
 		</div>

@@ -80,6 +80,13 @@ div.row.box {
 	margin-top: 0px;
 }
 
+.first-row-graph {
+	margin-top: 30px;
+}
+
+.index-table {
+	margin-top: -30px
+}
 @media (min-width: 797px){
 	.mobile {
 		display: none !important;	

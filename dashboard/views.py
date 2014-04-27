@@ -168,9 +168,11 @@ def dashboard(request):
 		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
 	data1 = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container1', levels=False, graph_no=1)
 	data2 = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container2', levels=True, graph_no=2)
+	data1m = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container3', levels=False, graph_no=3)
+	data2m = create_graph(xdata, objects_to_show, 'lineChart', 'linechart_container4', levels=True, graph_no=4)
 
 	# Gather the data and return it
-	data = dict(data1.items()+ data2.items() +[('outlet_list', outlet_list)])
+	data = dict(data1.items()+ data2.items() +data1m.items()+ data2m.items() +[('outlet_list', outlet_list)])
 
 	# Set the session data so the information will be carried to the form
 	request.session['start'] = start
