@@ -80,6 +80,12 @@ div.row.box {
 	margin-top: 0px;
 }
 
+@media (min-width: 797px){
+	.mobile {
+		display: none !important;	
+	}
+}
+
 @media (max-width: 797px){
 	.times-btn {
 		float: none !important;
@@ -100,7 +106,7 @@ div.row.box {
 		font-size: 20px;
 	}
 
-	.desktop-graph {
+	.desktop {
 		display: none !important;
 	}
 }
