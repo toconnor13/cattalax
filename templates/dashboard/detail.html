@@ -11,10 +11,10 @@
 
 {% block table_and_graph_html %}
 		<div class="row dashboard-title-row" >
-			<div class="col-md-6">
+			<div class="col-md-6 col-xs-6">
 				<h2 style="">{{object.print_self}}  |  <a href="/dashboard/">{{object.print_container}}</a> </h2>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-xs-6">
 				<ul class="pager pull-right">
 					{% if previous_time %}
 					<li><a href="/dashboard/{{request.session.focus}}/{{previous_time.id}}">Previous {{request.session.focus|title}}</a></li>
