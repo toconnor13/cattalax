@@ -1,5 +1,9 @@
 {% extends "base_dashboard.html" %}
 
+{% block container_classes %}
+"dashboard-ctn"
+{% endblock %}
+
 {% load nvd3_tags %}
 {% block graphs %}
 	{% load_chart charttype1 chartdata1 chartcontainer1 extra %}
@@ -9,9 +13,6 @@
 	{% load_chart charttype8 chartdata8 chartcontainer8 extra %}
 {% endblock %}
 
-{% block container_classes %}
-"dashboard-ctn"
-{% endblock %}
 
 {% block table_and_graph_html %}
 		<div class="row dashboard-title-row" >

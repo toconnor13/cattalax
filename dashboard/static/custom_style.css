@@ -90,6 +90,8 @@ div.row.box {
 
 .base-ctn {
 	padding: 50px 0px 10px 0px;
+	margin-top: 20px;
+	width: 100%;
 }
 
 @media (min-width: 797px){

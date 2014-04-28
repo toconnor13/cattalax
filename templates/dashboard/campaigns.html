@@ -1,5 +1,10 @@
 {% extends "base_dashboard.html" %}
+{% block container_classes %}
+"dashboard-ctn"
+{% endblock %}
+
 {% block table_and_graph_html %}
+
 
 <div class="row">
 	<div class="page-header">
@@ -8,7 +13,7 @@
 </div>
 
 <div class="row">
-	<div class="col-md-10">
+	<div class="col-md-8">
 		<table class="table table-bordered table-condensed table-hover" style="max-width: 800px">
 			<thead>
 				<th>Name</th>
@@ -94,7 +99,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-4">
 		<a class="btn btn-primary btn-lg pull-right" href="/dashboard/add/">Create a Campaign +</a>
 	</div>
 </div>
