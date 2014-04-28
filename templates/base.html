@@ -59,8 +59,8 @@
 								<li><a data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-search"></span> Change Times</a></li>
 								<li class="divider"></li>
 								<li class="dropdown-header">Other</li>
-								<li {% if request.session.nav == "campaigns" %}class="active"{% endif %}><a href="#">Campaigns</a></li>
-								<li {% if request.session.nav == "details" %}class="active"{% endif %}><a href="#">User Details</a></li>
+								<li {% if request.session.nav == "campaigns" %}class="active"{% endif %}><a href="/dashboard/campaigns/">Campaigns</a></li>
+								<li {% if request.session.nav == "details" %}class="active"{% endif %}><a href="/dashboard/details/">User Details</a></li>
 							</ul>
 						</li>
 						{% endif %}
