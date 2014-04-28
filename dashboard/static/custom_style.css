@@ -94,11 +94,14 @@ div.row.box {
 	width: 100%;
 }
 
+
+
 @media (min-width: 797px){
 	.mobile {
 		display: none !important;	
 	}
 }
+
 
 @media (max-width: 797px){
 	.times-btn {
@@ -138,6 +141,12 @@ div.row.box {
 
 	.desktop {
 		display: none !important;
+	}
+	
+	.times-list {
+		margin-top: 00px;
+		margin-left: 20px;
+
 	}
 }
 
