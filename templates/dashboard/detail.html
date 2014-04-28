@@ -9,6 +9,10 @@
 	{% load_chart charttype8 chartdata8 chartcontainer8 extra %}
 {% endblock %}
 
+{% block container_classes %}
+"dashboard-ctn"
+{% endblock %}
+
 {% block table_and_graph_html %}
 		<div class="row dashboard-title-row" >
 			<div class="col-md-6 col-xs-6">
@@ -132,7 +136,7 @@
 		<div class="row box" style="margin-top: 40px;">
 			<h4 data-toggle="tooptip" class="text-center tooltip1" title="How many visits last for 0-5 mins, 5-10 mins, etc.">Duration of Visits</h4>
 			<div class="col-md-2">
-					{% include_container chartcontainer7 250 450 %}
+					{% include_container chartcontainer7 250 400 %}
 					<p class="side_label">No. of People</p>
 			</div>
 		</div>
@@ -141,7 +145,7 @@
 		<div class="row box" style="margin-top: 40px;">
 			<h4 data-toggle="tooptip" class="text-center tooltip1" title="How many people visit once, twice, etc.">Visit Frequency</h4>
 			<div class="col-md-2">
-				{% include_container chartcontainer8 250 450 %}
+				{% include_container chartcontainer8 250 400 %}
 				<p class="side_label">No. of People</p>
 			</div>
 		</div>
@@ -152,7 +156,7 @@
 		<div class="row box" style="margin-top: 10px;">
 			<h4 data-toggle="tooptip" class="text-center tooltip1" title="The rates throughout the time period">{{request.session.focus|title}} Breakdown</h4>
 			<div class="col-md-2">
-				{% include_container chartcontainer1 300 450 %}
+				{% include_container chartcontainer1 300 400 %}
 			</div>
 		</div>
 		<p class="graph_bottom_label">Time of {{ request.session.focus|title }}</p>
@@ -160,7 +164,7 @@
 		<div class="row box" style="margin-top: 30px;">
 			<h4 data-toggle="tooptip" class="text-center tooltip1" title="Percentage of new customers throughout the time period">{{request.session.focus|title}} Breakdown</h4>
 			<div class="col-md-2">
-				{% include_container chartcontainer3 300 450 %}
+				{% include_container chartcontainer3 300 400 %}
 			</div>
 		</div>
 		<p class="graph_bottom_label">Time of {{ request.session.focus|title }}</p>
@@ -168,7 +172,7 @@
 		<div class="row box" style="margin-top: 30px;">
 			<h4 data-toggle="tooptip" class="text-center tooltip1" title="Average duration throughout the time period">Average Duration Breakdown</h4>
 			<div class="col-md-2">
-				{% include_container chartcontainer2 250 450 %}
+				{% include_container chartcontainer2 250 400 %}
 			</div>
 		</div>
 		<p class="graph_bottom_label">Time of {{ request.session.focus|title }}</p>

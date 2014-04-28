@@ -332,7 +332,7 @@ def detail(request, time_unit, object_id, levels=False):
 	chartdata1 = create_graph(xdata, sorted(times_to_show, key=lambda t: t.datetime), 'multiBarChart', 'multibarchart_container1', levels, graph_no=1, x_is_date=False, x_format='')
 	chartdata2 = create_graph(xdata, sorted(times_to_show, key=lambda t: t.datetime), 'multiBarChart', 'multibarchart_container2', graph_no=2, non_level=True, var_list=[6], y_end=" seconds")
 	# Pie chart data
-	chartdata3 = customer_piechart(time)
+#	chartdata3 = customer_piechart(time)
 	chartdata4 = duration_bin(time)
 	chartdata5 = frequency_bin(time)
 	chartdata6 = create_graph(xdata, sorted(times_to_show, key=lambda t: t.datetime), 'multiBarChart', 'multibarchart_container3', graph_no=3, non_level=True, var_list=[7], y_end="%")
@@ -353,7 +353,7 @@ def detail(request, time_unit, object_id, levels=False):
 		d_avg_duration = "N/A"
 		d_entries = "N/A"
 
-	data = dict(chartdata1.items() + chartdata2.items() + chartdata3.items() + chartdata4.items() + chartdata5.items()+ chartdata6.items() +  [('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration), ('d_entries', d_entries)])
+	data = dict(chartdata1.items() + chartdata2.items() + chartdata4.items() + chartdata5.items()+ chartdata6.items() +  [('object', time), ('outlet_list', outlet_list), ('previous_time', previous_time), ('next_time', next_time), ('d_capture',d_capture), ('d_bounce',d_bounce), ('d_new_custom', d_new_custom), ('d_avg_duration', d_avg_duration), ('d_entries', d_entries)])
 	return render_to_response('dashboard/detail.html', data, context_instance=RequestContext(request))
 
 def contact(request):
