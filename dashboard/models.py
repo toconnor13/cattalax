@@ -93,6 +93,7 @@ class Month(TimeUnit):
 	def describe(self):
 		return self.datetime.strftime("%B %Y")
 
+
 	def print_self(self):
 		return self.datetime.strftime("%B")
 
@@ -106,8 +107,9 @@ class Week(TimeUnit):
 	week_no = models.IntegerField()
 
 	def describe(self):
-		date_to_describe = self.datetime 
-		return date_to_describe.strftime("%a %d %b")
+		days_into_week = self.datetime.isocalendar()[2]
+		start_of_week = self.datetime - timedelta(days=days_into_week-1)
+		return start_of_week.strftime("%a %d %b")
 
 	def print_self(self):
 		date = self.datetime.strftime("%A %d")
