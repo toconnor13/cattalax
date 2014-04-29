@@ -162,6 +162,7 @@ def analyse_shop(shop, cursor, t0, t1):
 	walkbys = walkbys_in_shop(shop, cursor, t0_stamp, t1_stamp)
 	Walkby.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
 	Visit.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
+	Week.objects.filter(datetime__gte=t0, datetime__lte=t1, vendor=shop).delete()
 	
 	for walkby in walkbys:
 		record_walkby(walkby, shop)

@@ -31,7 +31,7 @@ robjects.r('''
 		# CALCULATING IF A NEW VISIT HAS OCCURRED
 			data$visit_no <- 1
 			for(i in 2:N){
-				if(data$since_last_pr[i]>3600){
+				if(data$since_last_pr[i]>10800){
 					data$visit_no[i] <-data$visit_no[i-1] + 1
 				}
 				else{
