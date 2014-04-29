@@ -104,8 +104,9 @@ class Month(TimeUnit):
 class Week(TimeUnit):
 	year = models.IntegerField()
 	week_no = models.IntegerField()
+
 	def describe(self):
-		date_to_describe = self.datetime - timedelta(days=5) 
+		date_to_describe = self.datetime 
 		return date_to_describe.strftime("%a %d %b")
 
 	def print_self(self):
