@@ -53,7 +53,10 @@ def behaviour_summary(addr, cursor, outlet, t0_stamp, t1_stamp):
 	filename = '/tmp/detail.csv'
 	sql_command = "SELECT * FROM attendance WHERE id="+addr+" AND timestamp>"+str(t0_stamp)+" AND timestamp<"+str(t1_stamp)+" ORDER BY timestamp, -rssi INTO OUTFILE '"+filename+"' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
 	cursor.execute(sql_command)
-	g_d = robjects.r('get_duration(\"' + filename + '\",'+str(outlet.inner_bound)+')')
+	if os.stat(filename).st_size<500000:
+		g_d = robjects.r('get_duration(\"' + filename + '\",'+str(outlet.inner_bound)+')')
+	else:
+		g_d = [0,0,0,0]
 	os.remove('/tmp/detail.csv')
 	return g_d
 
@@ -162,7 +165,7 @@ def analyse_shop(shop, cursor, t0, t1):
 	walkbys = walkbys_in_shop(shop, cursor, t0_stamp, t1_stamp)
 	Walkby.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
 	Visit.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
-	Week.objects.filter(datetime__gte=t0, datetime__lte=t1, vendor=shop).delete()
+#	Week.objects.filter(datetime__gte=t0, datetime__lte=t1, vendor=shop).delete()
 	
 	for walkby in walkbys:
 		record_walkby(walkby, shop)
@@ -186,17 +189,17 @@ def analyse_shop(shop, cursor, t0, t1):
 
 shop_list = [shop for shop in Outlet.objects.all()]
 t1 = timezone.now()
-t0 = t1 - timedelta(days=30)
+t0 = t1 - timedelta(days=3)
 dt = datetime(year=t1.year, month=t1.month, day=t1.day, tzinfo=pytz.utc)
 dt_list = []
 
-for i in range(12):
+for i in range(3):
 	dt_to_add = dt -timedelta(days=i)
 	dt_list.append(dt_to_add)
 
 for shop in shop_list:
 	analyse_shop(shop, cur, dt_list[0], t1)
-	for i in range(10):
+	for i in range(2):
 		analyse_shop(shop, cur, dt_list[i+1], dt_list[i])
 
 
