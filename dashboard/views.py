@@ -300,7 +300,7 @@ def detail(request, time_unit, object_id, levels=False):
 			previous_time = Day.objects.get(vendor=outlet, day=previous_day.day, month=previous_day.month, year=previous_day.year)
 		except (ValueError, ObjectDoesNotExist):
 			pass
-		times_to_show = time.hour_set.all().order_by('datetime')
+		times_to_show = time.hour_set.all().filter(hour__gte=7, hour__lte=19).order_by('datetime')
 		xdata = map(lambda h: str(h.hour), times_to_show)
 	elif focus=="week":
 		time = get_object_or_404(Week, pk=object_id)
