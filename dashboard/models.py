@@ -78,8 +78,9 @@ class TimeUnit(models.Model):
 		return str(mins) + ':' + seconds
 
 	def percent_of_new_customers(self):
-		total_customers = len(set([v.patron for v in self.visit_set.all()]))
-		total_new_customers = len(set([v.patron for v in self.visit_set.all() if v.first_visit==True]))
+		visit_list = self.visit_set.all().filter(hour__hour__gte=8, hour__hour__lte=20)
+		total_customers = len(set([v.patron for v in visit_list]))
+		total_new_customers = len(set([v.patron for v in visit_list if v.first_visit==True]))
 		if total_customers==0:
 			return 0
 		else:
