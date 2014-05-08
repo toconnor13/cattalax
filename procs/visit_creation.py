@@ -191,17 +191,17 @@ def analyse_shop(shop, cursor, t0, t1):
 
 shop_list = [shop for shop in Outlet.objects.all()]
 t1 = timezone.now()
-t0 = t1 - timedelta(days=3)
+t0 = t1 - timedelta(days=4)
 dt = datetime(year=t1.year, month=t1.month, day=t1.day, tzinfo=pytz.utc)
 dt_list = []
 
-for i in range(3):
+for i in range(4):
 	dt_to_add = dt -timedelta(days=i)
 	dt_list.append(dt_to_add)
 
 for shop in shop_list:
 	analyse_shop(shop, cur, dt_list[0], t1)
-	for i in range(2):
+	for i in range(3):
 		analyse_shop(shop, cur, dt_list[i+1], dt_list[i])
 
 
