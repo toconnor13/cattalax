@@ -369,8 +369,10 @@ def opt_out(request):
 	mac_addr_submitted = False
 	if request.method=='POST':
 		mac_addr = request.POST['mac_addr']
+		# This should really be wrote to a table in the database.
+		with open("/root/exclude.csv", "a") as myfile:
+			myfile.write(mac_addr)
 		mac_addr_submitted = True
-		print mac_addr
 	return render_to_response('opt-out.html', {'message': message, 'submitted': mac_addr_submitted}, context_instance=RequestContext(request))
 
 def campaigns(request):
