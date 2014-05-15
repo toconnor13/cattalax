@@ -162,7 +162,7 @@ def dashboard(request):
 		objects_to_show = get_days_to_show(start_date, end_date, days_to_graph)
 		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
 	elif focus=="week":
-		objects_to_show = Week.objects.filter(vendor__sensor_no=13)
+		objects_to_show = weeks_to_graph.filter(datetime__gte=start_date, datetime__lte=end_date).order_by('datetime')
 		xdata = map(lambda x: int(time.mktime(x.datetime.timetuple())*1000), objects_to_show)
 	else:
 		objects_to_show = Month.objects.filter(vendor__sensor_no=int(request.session['shop_id']))
