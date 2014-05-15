@@ -149,6 +149,7 @@ def dashboard(request):
 		shop_id = outlet_list[0].sensor_no
 	vendor = outlet_list.get(sensor_no=shop_id) 
 	days_to_graph = Day.objects.filter(vendor=vendor)
+	weeks_to_graph = Week.objects.filter(vendor=vendor)
 
 	# Interpret the dates
 	start_match = re.match(pattern, start)
