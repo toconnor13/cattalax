@@ -34,7 +34,7 @@ def captures_in_shop(shop, cursor, t0_stamp, t1_stamp):
 	view = calculate_view(shop, t0_stamp, cursor)
 
 	stmt = "SELECT id FROM "+view+" WHERE timestamp>"+str(t0_stamp)+" AND timestamp<"+ str(t1_stamp)+" INTO OUTFILE '/tmp/id_list.csv' fields terminated by ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
-	print stmt 
+#	print stmt 
 	cursor.execute(stmt)
 	# Get the list of addresses
 	file_of_addrs = open("/tmp/id_list.csv")
@@ -123,7 +123,7 @@ def compute(time):
 	else:
 		time.avg_duration=0
 	time.save()
-	print "Updating "+str(time.datetime)
+#	print "Updating "+str(time.datetime)
 
 
 def is_first_visit(c, outlet):
@@ -142,7 +142,7 @@ def record_walkby(walkby, shop):
 	time_tuple = time_list(dt, shop)
 	w = Walkby(addr=eval(addr), vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
 	w.save()
-	print "Walkby " + str(w.id) + " saved"
+#	print "Walkby " + str(w.id) + " saved"
 
 def record_capture(addr, shop, cursor, t0_stamp, t1_stamp):
 	count=0
@@ -157,7 +157,7 @@ def record_capture(addr, shop, cursor, t0_stamp, t1_stamp):
 		first_visit= is_first_visit(c_info, shop)
 		v = Visit(patron=c_info, vendor=shop, duration=int(g_d[count+2]), first_visit=first_visit, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3],time=timestamp, datetime=dt)
 		v.save()
-		print "A visit "+str(v.patron.mac_addr)+" saved"
+	#	print "A visit "+str(v.patron.mac_addr)+" saved"
 		count += 4
 
 def analyse_shop(shop, cursor, t0, t1):
@@ -191,17 +191,18 @@ def analyse_shop(shop, cursor, t0, t1):
 
 shop_list = [shop for shop in Outlet.objects.all()]
 t1 = timezone.now()
-t0 = t1 - timedelta(days=4)
+no_of_days=2
+t0 = t1 - timedelta(days=no_of_days)
 dt = datetime(year=t1.year, month=t1.month, day=t1.day, tzinfo=pytz.utc)
 dt_list = []
 
-for i in range(4):
+for i in range(no_of_days):
 	dt_to_add = dt -timedelta(days=i)
 	dt_list.append(dt_to_add)
 
 for shop in shop_list:
 	analyse_shop(shop, cur, dt_list[0], t1)
-	for i in range(3):
+	for i in range(no_of_days-1):
 		analyse_shop(shop, cur, dt_list[i+1], dt_list[i])
 
 
