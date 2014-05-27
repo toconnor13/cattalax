@@ -17,7 +17,7 @@ def contact(request):
 		company= request.POST['company']
 		number= request.POST['number']
 		details = name + ", " + email + ", " + company + ", " + number
-		msg=EmailMessage('Web contact Form', details, 'plazasight@gmail.com', ['plazasight@gmail.com'])
+		msg=EmailMessage('Web contact Form', details, 'plazasight@gmail.com', ['info@plazasight.com'])
 		msg.send()
 		message = "Your details have been submitted.  A response should be issued within 24 hours."
 	else:
