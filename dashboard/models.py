@@ -4,6 +4,7 @@ from datetime import timedelta
 
 class Customer(models.Model):
 	mac_addr = models.CharField(max_length=300)
+	hashed_mac_addr = models.CharField(max_length=100)
 	tag = models.CharField(max_length=100)
 
 	def __unicode__(self):
@@ -93,7 +94,6 @@ class Month(TimeUnit):
 	
 	def describe(self):
 		return self.datetime.strftime("%B %Y")
-
 
 	def print_self(self):
 		return self.datetime.strftime("%B")

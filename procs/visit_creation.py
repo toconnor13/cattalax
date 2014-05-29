@@ -2,6 +2,7 @@ import os, sys
 import MySQLdb
 import calendar
 import pytz
+import hashlib
 from datetime import datetime, date, timedelta
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
@@ -137,15 +138,17 @@ def is_first_visit(c, outlet):
 def record_walkby(walkby, shop):
 	entry = walkby.split(',')
 	timestamp = int(eval(entry[1]))
-	addr = entry[0]
+	addr = hashlib.sha224(eval(entry[0])).hexdigest() # Hash the address here
 	dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
 	time_tuple = time_list(dt, shop)
-	w = Walkby(addr=eval(addr), vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
+	w = Walkby(addr=addr, vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
 	w.save()
 #	print "Walkby " + str(w.id) + " saved"
 
 def record_capture(addr, shop, cursor, t0_stamp, t1_stamp):
 	count=0
+	# Hash the address here
+	addr = hashlib.sha224(addr).hexdigest()
 	c_info = customer_info(addr)
 	g_d = behaviour_summary(addr, cursor, shop, t0_stamp, t1_stamp)
 	visits = len(g_d)/4
@@ -165,8 +168,8 @@ def analyse_shop(shop, cursor, t0, t1):
 	t1_stamp = calendar.timegm(t1.utctimetuple())
 	captures = captures_in_shop(shop, cursor, t0_stamp, t1_stamp)
 	walkbys = walkbys_in_shop(shop, cursor, t0_stamp, t1_stamp)
-	Walkby.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
-	Visit.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
+#	Walkby.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
+#	Visit.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
 #	Week.objects.filter(datetime__gte=t0, datetime__lte=t1, vendor=shop).delete()
 	
 	for walkby in walkbys:
