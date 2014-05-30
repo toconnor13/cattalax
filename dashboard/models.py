@@ -4,12 +4,16 @@ from datetime import timedelta
 
 class Customer(models.Model):
 	mac_addr = models.CharField(max_length=300)
-	hashed_mac_addr = models.CharField(max_length=100)
 	tag = models.CharField(max_length=100)
 
 	def __unicode__(self):
 		return self.mac_addr
 
+class Opt_out(models.Model):
+	mac_addr = models.CharField(max_length=50)
+
+	def __unicode__(self):
+		return self.mac_addr
 
 class Outlet(models.Model):
 	name    = models.CharField(max_length=100)

@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 #from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, Context
-from dashboard.models import Month, Week, Day, Hour, Outlet, Campaign
+from dashboard.models import Month, Week, Day, Hour, Outlet, Campaign, Opt_out
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
@@ -370,9 +370,11 @@ def opt_out(request):
 	mac_addr_submitted = False
 	if request.method=='POST':
 		mac_addr = request.POST['mac_addr']
+		oo = Opt_out(mac_addr=mac_addr)
+		oo.save()
 		# This should really be wrote to a table in the database.
-		with open("/root/exclude.csv", "a") as myfile:
-			myfile.write(mac_addr)
+		#with open("/root/exclude.csv", "a") as myfile:
+		#	myfile.write(mac_addr)
 		mac_addr_submitted = True
 	return render_to_response('opt-out.html', {'message': message, 'submitted': mac_addr_submitted}, context_instance=RequestContext(request))
 

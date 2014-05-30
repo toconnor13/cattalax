@@ -53,6 +53,7 @@ def walkbys_in_shop(shop, cursor, t0_stamp, t1_stamp):
 def behaviour_summary(addr, cursor, outlet, t0_stamp, t1_stamp):
 	filename = '/tmp/detail.csv'
 	sql_command = "SELECT * FROM attendance WHERE id="+addr+" AND timestamp>"+str(t0_stamp)+" AND timestamp<"+str(t1_stamp)+" ORDER BY timestamp, -rssi INTO OUTFILE '"+filename+"' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n'"
+	print sql_command
 	cursor.execute(sql_command)
 	if os.stat(filename).st_size<500000:
 		g_d = robjects.r('get_duration(\"' + filename + '\",'+str(outlet.inner_bound)+')')
@@ -62,10 +63,12 @@ def behaviour_summary(addr, cursor, outlet, t0_stamp, t1_stamp):
 	return g_d
 
 def customer_info(mac_addr):
+
+	addr = hashlib.sha224(mac_addr).hexdigest()
 	try:
-		c = Customer.objects.get(mac_addr=eval(mac_addr))
+		c = Customer.objects.get(mac_addr=addr)
 	except (ValueError, ObjectDoesNotExist):
-		c = Customer(mac_addr=eval(mac_addr))
+		c = Customer(mac_addr=addr)
 		c.save()
 	return c
 
@@ -135,10 +138,10 @@ def is_first_visit(c, outlet):
 		first_visit=True
 	return first_visit
 
-def record_walkby(walkby, shop):
-	entry = walkby.split(',')
+def record_walkby(entry, shop):
 	timestamp = int(eval(entry[1]))
-	addr = hashlib.sha224(eval(entry[0])).hexdigest() # Hash the address here
+	mac_addr = eval(entry[0])
+	addr = hashlib.sha224(mac_addr).hexdigest()
 	dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
 	time_tuple = time_list(dt, shop)
 	w = Walkby(addr=addr, vendor=shop, time=timestamp, datetime=dt, month=time_tuple[0], week=time_tuple[1], day=time_tuple[2], hour=time_tuple[3])
@@ -148,7 +151,6 @@ def record_walkby(walkby, shop):
 def record_capture(addr, shop, cursor, t0_stamp, t1_stamp):
 	count=0
 	# Hash the address here
-	addr = hashlib.sha224(addr).hexdigest()
 	c_info = customer_info(addr)
 	g_d = behaviour_summary(addr, cursor, shop, t0_stamp, t1_stamp)
 	visits = len(g_d)/4
@@ -168,13 +170,22 @@ def analyse_shop(shop, cursor, t0, t1):
 	t1_stamp = calendar.timegm(t1.utctimetuple())
 	captures = captures_in_shop(shop, cursor, t0_stamp, t1_stamp)
 	walkbys = walkbys_in_shop(shop, cursor, t0_stamp, t1_stamp)
-#	Walkby.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
-#	Visit.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
+	Walkby.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
+	Visit.objects.filter(time__gte=t0_stamp, time__lte=t1_stamp, vendor=shop).delete()
 #	Week.objects.filter(datetime__gte=t0, datetime__lte=t1, vendor=shop).delete()
 	
+	opt_outs = [o.mac_addr for o in Opt_out.objects.all()]
 	for walkby in walkbys:
-		record_walkby(walkby, shop)
+		entry = walkby.split(',')
+		mac_addr = eval(entry[0])
+		if mac_addr in opt_outs:
+			continue
+		record_walkby(entry, shop)
+
 	for addr in captures:
+		print "Addr at analyse_shop: " + addr
+		if addr in opt_outs:
+			continue
 		record_capture(addr, shop, cursor, t0_stamp, t1_stamp)
 		
 
