@@ -2,13 +2,16 @@
 
 {% block content %}
 
-<div class="container" style="text-algn: center; max-width: 800px">
-	<h2>Why is this data collected?</h2>
+<div class="container" style="max-width: 800px;">
+	<h3>What data is collected?</h3>
+	Our sensor detects a special sort of signal which a smartpone sends out when looking for wifi networks.  This signal is called a probe request.  The sensor notes the time the signal was received, the strength of the signal, and the MAC address of the device from which it was sent.  No other information is, or indeed can be, collected, so we cannot tell who you are, who you call or what websites you visit.
+
+	<h3>Why is this data collected?</h3>
 	This data is collected to provide physical retalers with information such as the number of people who walkby the store, 
-	the number of people who enter, how long they stay for, and whther they return.  This would help a business improve their operations, as it helps the business figure out what people want.  
+	the number of people who enter, how long they stay for, and whether they return.  This would help a business improve their operations, as it helps the business figure out what people want.  
 	For example, in the case of a restaurant, if a certain deal results in more people coming in off the street, then the restaurant will know that it's a good deal, and will keep it.
 
-	<h2>Exactly what information does the business see?</h2>
+	<h3>Exactly what information does the business see?</h3>
 	The businesses who subscribe to this service only have access to the statistics below.  For a given time frame, such as an hour, day or week, they can see:
 	<ol>
 		<li>The number of people who walk by the store</li>
@@ -17,8 +20,12 @@
 		<li>The average number of visits per person</li>
 	</ol>
 
-	<h2>Is the data secure?</h2>
+	<h3>Is the data secure?</h3>
 	The data is transferred from the sensor to the server over a secure, encrypted tunnel.  When the data arrives at the server, the MAC address if anonymised further using a hash function - a one-way encrytion which cannot be reversed.
+
+	<h3>Can I opt out?</h3>
+	Yes, go <a href="/optout/">here</a>, where you can easily opt out and delete all information pertaining to your MAC address in the system.
+
 
 </div>
 

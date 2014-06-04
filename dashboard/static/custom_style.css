@@ -56,6 +56,11 @@ div.row.box {
 	border-radius: 20px;
 }
 
+div.caption-text {
+	background: rgba(0,0,0,0.35);
+	border-radius: 8px;
+}
+
 .graph_bottom_label {
 	margin: -25px 0px 0px 180px;
 	font: -webkit-small-control;
