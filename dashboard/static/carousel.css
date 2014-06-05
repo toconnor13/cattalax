@@ -56,11 +56,13 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.75;
  /* margin-top: -90px;*/
 }
 
-
+div.caption-text {
+	background: rgba(0,0,0,0.35);
+	border-radius: 8px;
+}
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
