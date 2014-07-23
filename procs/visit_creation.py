@@ -155,7 +155,8 @@ def record_capture(addr, shop, cursor, t0_stamp, t1_stamp):
 	g_d = behaviour_summary(addr, cursor, shop, t0_stamp, t1_stamp)
 	visits = len(g_d)/4
 	timestamp=int(g_d[count+1])
-	dt = datetime.fromtimestamp(timestamp, tz=pytz.utc)
+	tzone = pytz.timezone('Europe/Dublin')
+	dt = datetime.fromtimestamp(timestamp, tz=tzone)
 	time_tuple = time_list(dt, shop)
 	count = 0
 	for i in range(visits):
@@ -204,7 +205,7 @@ def analyse_shop(shop, cursor, t0, t1):
 			compute(hour)
 
 shop_list = [shop for shop in Outlet.objects.all()]
-t1 = timezone.now()
+t1 = timezone.now()+timedelta(hours=1)
 no_of_days=2
 t0 = t1 - timedelta(days=no_of_days)
 dt = datetime(year=t1.year, month=t1.month, day=t1.day, tzinfo=pytz.utc)
