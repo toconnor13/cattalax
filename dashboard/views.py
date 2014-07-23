@@ -126,6 +126,8 @@ def dashboard(request):
 	request.session['nav']= nav
 	vendor_username = request.user.username
 	outlet_list = Outlet.objects.filter(agent=vendor_username)
+	if vendor_username=="plazasight@gmail.com":
+		outlet_list=Outlet.objects.all()
 	pattern = '(\d\d)/(\d\d)/(\d\d\d\d)'
 	try:
 		request.session['set']
@@ -145,7 +147,7 @@ def dashboard(request):
 	else:
 		start = '02/24/2014'
 		end = '08/30/2015'
-		focus = "day"
+		focus = "week"
 		shop_id = outlet_list[0].sensor_no
 	vendor = outlet_list.get(sensor_no=shop_id) 
 	days_to_graph = Day.objects.filter(vendor=vendor)
@@ -204,7 +206,8 @@ def customer_piechart(time):
 def duration_bin(time):
 	xdata = ["0-5", "5-10", "10-20", "20-30", "30-60", "60+"]
 	ydata = [0, 0, 0, 0, 0, 0]
-	visits = time.visit_set.all()
+
+	visits = time.visit_set.all().filter(hour__hour__gte=7, hour__hour__lte=19)
 	duration_list = [v.duration for v in visits]
 	for duration in duration_list:
 		if duration < 300:
@@ -236,7 +239,7 @@ def duration_bin(time):
 def frequency_bin(time):
 	xdata = ["1", "2", "3", "4", "5", "6+"]
 	ydata = [0, 0, 0, 0, 0, 0]
-	visits = time.visit_set.all()
+	visits = time.visit_set.all().filter(hour__hour__gte=7, hour__hour__lte=19)
 	attendance = [v.patron.mac_addr for v in visits]
 	for customer in attendance:
 		if attendance.count(customer)==1:
@@ -285,6 +288,8 @@ def add_months(sourcedate, months):
 def detail(request, time_unit, object_id, levels=False):
 	vendor_username = request.user.username
 	outlet_list = Outlet.objects.filter(agent=vendor_username)
+	if vendor_username=="plazasight@gmail.com":
+		outlet_list = Outlet.objects.all() 
 	outlet = outlet_list.get(sensor_no=request.session['shop_id'])
 	focus = request.session['focus']
 	previous_time=False

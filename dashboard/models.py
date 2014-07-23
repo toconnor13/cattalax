@@ -60,7 +60,9 @@ class TimeUnit(models.Model):
 		abstract = True
 
 	def get_capture_rate(self):
-		if (self.no_of_walkbys==0):
+		if self.no_of_walkbys==0 and self.no_of_entries>0:
+			return '100'
+		elif self.no_of_walkbys==0 and self.no_of_entries==0:
 			return '0'
 		else:
 			rate =  float(self.no_of_entries)*100/float(self.no_of_walkbys)
@@ -117,8 +119,9 @@ class Week(TimeUnit):
 		return start_of_week.strftime("%a %d %b")
 
 	def print_self(self):
-		date = self.datetime.strftime("%A %d")
-		description = "Week of " + date
+		days_into_week = self.datetime.isocalendar()[2]
+		start_of_week = self.datetime - timedelta(days=days_into_week-1)
+		description = "Week of " + start_of_week.strftime("%a %d %b")
 		return description
 
 	def print_container(self):
