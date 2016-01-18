@@ -20,7 +20,7 @@ from dashboard.models import *
 # Connect to hoover database
 HOST="localhost"
 USER="root"
-PW="the power to do what is right"
+PW=os.environ['DB_PWD']
 DB="cattalax"
 con = MySQLdb.connect(HOST,USER,PW,DB)
 cur = con.cursor()
