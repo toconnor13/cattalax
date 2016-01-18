@@ -1,16 +1,24 @@
-In this project, the contents of the folders are as follows:
+This repository holds the code for the Django-powered website and and the Python and R data processing files.  
 
-scripts
-	This contain the Python files that creates the Django model instances. 
-	duration.py contain the R functions, that counts and describes the number of visits.
+PROCS FOLDER 
+This is a folder of = code that processes the raw wifi data.  There are three files.
+The visit_creation.py file defines most of the functions used to firstly create objects such as walkbys and visits,
+and secondly to create the aggregate statistics for the outlets.
+The exclude.py simply removes certain mac addresses e.g of other routers, consumer who wanted to opt out.
+The duration.py file defines an R function (that is wrapped in such a way that it can be called in a Python program) that computes
+the length of a visit.
 
-templates: This contains all the HTML files for the project.
+DASHBOARD:  This is a Djanjo application for the analytics, containing the models.py and views.py that executes the bulk of the processing for the website.
+EMAILUSERNAMES: This app enables the website to take email addresses as usernames.
+TEMPLATES: This contains all the HTML files for the project.
 
-dashboard:  This is the main folder, containing the models.py and views.py that executes the bulk of the processing.
+SCRIPTS FOLDER (FOR DELETION)
+This is junk code, composed of files that provided earlier versions of what is now in the Procs folder.
 
-emailusernames: This app enables the website to take email addresses as usernames.
 
-procs: Contains the file that processes the data from the pingsprings.
+
+
+
 
 
 
