@@ -20,12 +20,12 @@ from duration import *
 #	DATABASE_ENGINE='mysql',
 #	DATABASE_NAME='cat_dashboard',
 #	DATABASE_USER='root',
-#	DATABASE_PASSWORD='the power to do what is right',
+#	DATABASE_PASSWORD=os.environ["DB_PWD"],
 #	DATABASE_HOST='localhost',
 #	)
 # HOST="localhost"
 # USER="root"
-# PW="the power to do what is right"
+# PW=os.environ["DB_PWD"]
 # DB="cattalax"
 
 # con = MySQLdb.connect(HOST,USER,PW,DB)
